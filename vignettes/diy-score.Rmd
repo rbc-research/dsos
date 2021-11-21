@@ -1,0 +1,94 @@
+---
+title: "Bring Your Own Scores"
+author:
+ - name: Vathy M. Kamulete
+   affiliation: Royal Bank of Canada
+   email: vathy.kamulete@rbc.com
+date: "Last Updated: `r Sys.Date()`"
+bibliography: vignettes.bib
+output:
+  rmarkdown::html_document:
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+vignette: >
+  %\VignetteIndexEntry{Bring Your Own Scores}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+
+library("dsos")
+```
+
+Please see the
+[arXiv paper](https://arxiv.org/abs/2107.02990) for details.
+We denote the R package as `dsos`, to avoid confusion with `D-SOS`, the method.
+
+## DIY: Bring Your Own Scores
+
+We show how easy it is to implement `D-SOS` for a particular notion of
+outlyingness. Suppose we want to test for no adverse shift based on isolation
+scores in the context of multivariate two-sample comparison. To do so, we need
+two main ingredients: a score function and a method to compute the $p-$value.
+
+First, the scores are obtained using predictions from isolation forest with the
+`isotree` package [@isotree]. Isolation forest detects _isolated_ points,
+instances that are typically out-of-distribution relative to the high-density
+regions of the data distribution. Naturally, any performant method for
+density-based out-of-distribution detection can effectively be used to achieve
+the same goal. Isolation forest just happens to be a convenient way to do this.
+The internal function `outliers_no_split` shows the implementation of one such
+score function in the `dsos` package.
+
+```{r score-isolated-points, message=FALSE, warning=FALSE}
+dsos:::outliers_no_split
+```
+
+Second, we estimate the empirical null distribution for the $p-$value via
+permutations. For speed, this is implemented as a sequential Monte Carlo test
+with the `simctest` package [@simctest]. Permutations do not
+require to derive the asymptotic null distribution for the
+test statistic. The function `od_pt` in the `dsos` package combines
+the scoring with the inference. The prefix _od_ stands for outlier
+detection and the suffix _pt_, for permutations. `dsos` sometimes provides
+sample splitting and out-of-bag variants as alternatives to compute $p-$values.
+Both sample splitting and out-of-bag variants use the asymptotic
+null distribution for the test statistic. As a result, they can be
+appreciably faster than inference based on permutations. The code for `od_pt` 
+is relatively straightforward.
+
+```{r dsos-permutation, message=FALSE, warning=FALSE}
+dsos::od_pt
+```
+
+Take the [`iris`](https://en.wikipedia.org/wiki/Iris_flower_data_set) dataset
+for example. When the training set only consists of Iris setosa (flower species)
+and the test set, only of Iris versicolor, the data is incompatible with the null
+of no adverse shift. In other words, we have strong evidence that the test
+contains a disproportionate number of outliers, if the training set is the
+reference distribution.
+
+```{r iris-od}
+set.seed(12345)
+data(iris)
+x_train <- iris[1:50,1:4] # Training sample: Species == 'setosa'
+x_test <- iris[51:100,1:4] # Test sample: Species == 'versicolor'
+iris_test <- od_pt(x_train, x_test)
+plot(iris_test)
+```
+
+You can plug in your own scores in this framework. Those already implemented in
+the package can be useful but they are by means the only ones. If you favor a
+different method for out-of-distribution (outlier) detection, want to tune
+the hyperparameters, or choose a different notion of outlyingness altogether,
+`dsos` provides the building blocks to build your own. The workhorse function,
+powering the approach behind the scenes, is a way to calculate the the test
+statistic, the WAUC, from the outlier scores (see `wauc_from_os`).
+
+## References

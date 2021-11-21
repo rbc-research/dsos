@@ -1,0 +1,54 @@
+destination: docs
+
+template:
+  params:
+    bootswatch: journal
+
+reference:
+  - title: "CP - Class Probability"
+    desc: >
+      CP (Class Probability) refers to outlier scores
+      based on (probabilistic) discriminative classifiers.
+    contents:
+      - cp_at
+      - cp_pt
+      - cp_ss
+  - title: "OD - Outlier Detection"
+    desc: >
+      OD (Outlier Detection) refers to outlier scores
+      based on outlier detection.
+    contents:
+      - od_pt
+  - title: "RUE - Resampling Uncertainty"
+    desc: >
+      RUE (Resampling Uncertainty) refers to outlier scores
+      based on resampling uncertainty.
+    contents:
+      - rue_pt
+  - title: "RD - Residual diagnostic"
+    desc: >
+      RD (Residual Diagnostic) refers to outlier scores
+      based on residuals.
+    contents:
+      - rd_pt
+  - title: "Plot"
+    desc: >
+      Plotting functions.
+    contents:
+      - plot.outlier.test
+  - title: "Test Statistic"
+    desc: >
+      Compute specified test statistic.
+    contents:
+      - wauc_from_os
+
+development:
+  version_label: info
+
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+    - diy-score
+    - motivation
+    - dependencies

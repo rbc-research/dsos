@@ -1,0 +1,29 @@
+---
+title: "Acknowledgements"
+author:
+ - name: Vathy M. Kamulete
+   affiliation: Royal Bank of Canada
+   email: vathy.kamulete@rbc.com
+date: "Last Updated: `r Sys.Date()`"
+output: rmarkdown::html_document
+bibliography: vignettes.bib
+vignette: >
+  %\VignetteIndexEntry{Acknowledgements}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The key components of `dsos` depend on several publicly available `R` packages,
+including:
+
+- the `data.table` package [@data.table] for faster `data.frame`.
+- the `ranger` package [@ranger] for random forest;
+- the `isotree` package [@isotree] for isolation-based outlier detection;
+- the `ggplot2` package [@ggplot2] for visualizations;
+- the `WeightedROC` package [@WeightedROC] for computing the test statistic;
+- the `simctest` package [@simctest] for sequential Monte Carlo tests;
+
+We are grateful to the authors of each of these packages for making their
+software freely available.
+
+## References
