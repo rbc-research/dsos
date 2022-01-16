@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsos</a>
-        <span class="version label label-info" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-info" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rbc-research/dsos/">
+  <a href="https://github.com/vathymut/dsos/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -85,95 +81,92 @@
 
       
 
-      </header><script src="motivation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A 10-minute Crash Course</h1>
-                        <h4 class="author">Vathy M. Kamulete</h4>
+                        <h4 data-toc-skip class="author">Vathy M. Kamulete</h4>
             <address class="author_afil">
       Royal Bank of Canada<br><a class="author_email" href="mailto:#"></a><a href="mailto:vathy.kamulete@rbc.com" class="email">vathy.kamulete@rbc.com</a>
       </address>
                   
-            <h4 class="date">Last Updated: 2021-09-14</h4>
+            <h4 data-toc-skip class="date">Last Updated: 2022-01-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/rbc-research/dsos/blob/master/vignettes/motivation.Rmd"><code>vignettes/motivation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/vathymut/dsos/blob/HEAD/vignettes/motivation.Rmd" class="external-link"><code>vignettes/motivation.Rmd</code></a></small>
       <div class="hidden name"><code>motivation.Rmd</code></div>
 
     </div>
 
     
     
-<p>Note that this vignette is adapted from the <a href="https://arxiv.org/abs/2107.02990">arXiv paper</a></p>
-<div id="background" class="section level2">
-<h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
+<p>Note that this vignette is adapted from the <a href="https://arxiv.org/abs/2107.02990" class="external-link">arXiv paper</a></p>
+<div class="section level2">
+<h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h2>
 <p>Suppose we fit a predictive model on a training set and predict on a test set. Dataset shift <span class="citation">(Quionero-Candela et al. 2009; Moreno-Torres et al. 2012; Kelly, Hand, and Adams 1999)</span>, also known as data or population drift, occurs when training and test distributions are not alike. This is essentially a sample mismatch problem. Some regions of the data space are either too sparse or absent during training and gain importance at test time. We want methods to alert us to the presence of unexpected inputs in the test set <span class="citation">(Rabanser, Günnemann, and Lipton 2019)</span>. To do so, a measure of divergence between training and test set is required. Can we not simply use the many modern off-the-shelf multivariate tests of equal distributions for this?</p>
 <p>One reason for moving beyond tests of equal distributions is that they are often too strict. They require high fidelity between training and test set everywhere in the input domain. However, not <em>all</em> changes in distribution are a cause for concern – some changes are benign. Practitioners distrust these tests because of false alarms. <span class="citation">Polyzotis et al. (2019)</span> comment:</p>
 <blockquote>
 <p>statistical tests for detecting changes in the data distribution […] are too sensitive and also uninformative for the typical scale of data in machine learning pipelines, which led us to seek alternative methods to quantify changes between data distributions.</p>
 </blockquote>
-<p>Even when the difference is small or negligible, tests of equal distributions reject the null hypothesis of no difference. An alarm should only be raised if a shift warrants intervention. Retraining models when distribution changes are benign is both costly and ineffective. To tackle these challenges, we propose <code>D-SOS</code> instead. Monitoring model performance and data quality is a critical part of deploying safe and mature models in production and <code>D-SOS</code> provides robust and actionable tests for this <span class="citation">(Paleyes, Urma, and Lawrence 2020; Klaise et al. 2020; Sculley et al. 2014; Breck et al. 2017)</span>.</p>
+<p>Even when the difference is small or negligible, tests of equal distributions reject the null hypothesis of no difference. An alarm should only be raised if a shift warrants intervention. Retraining models when distribution shifts are benign is both costly and ineffective. Monitoring model performance and data quality is a critical part of deploying safe and mature models in production <span class="citation">(Paleyes, Urma, and Lawrence 2020; Sculley et al. 2014; Breck et al. 2017)</span>. To tackle these challenges, we propose <code>D-SOS</code> instead.</p>
 <p>In comparing the test set to the training set, <code>D-SOS</code> pays more attention to the regions –- typically, the outlying regions –- where we are most vulnerable. To confront false alarms, it uses a robust test statistic, namely the weighted area under the receiver operating characteristic curve (WAUC). The weights in the WAUC <span class="citation">(Li and Fine 2010)</span> discount the safe regions of the distribution. To the best of our knowledge, this is the first time that the WAUC is being used as a test statistic in this context. The goal of <code>D-SOS</code> is to detect <em>non-negligible adverse shifts</em>. This is reminiscent of noninferiority tests <span class="citation">(Wellek 2010)</span>, widely used in healthcare to determine if a new treatment is in fact not inferior to an older one. Colloquially, the <code>D-SOS</code> null hypothesis holds that the new sample is not substantively worse than the old sample, and not that the two are equal.</p>
-<p><code>D-SOS</code> moves beyond tests of equal distributions and lets users specify which notions of outlyingness to probe. The choice of the score function plays a central role in formalizing what we mean by <em>worse</em>. The scores can come from out-of-distribution detection, two-sample classification, uncertainty quantification, residual diagnostics, density estimation, dimension reduction, and more. While some of these scores are underused and underappreciated in two-sample tests, they are valid and can be more informative in some cases. The main takeaway is that given a generic method that assigns an outlier score to a data point, <code>D-SOS</code> uplifts these scores and turns them into a two-sample test for no adverse shift.</p>
+<p><code>D-SOS</code> moves beyond tests of equal distributions and lets users specify which notions of outlyingness to probe. The choice of the score function plays a central role in formalizing what we mean by <em>worse</em>. The scores can come from out-of-distribution detection, two-sample classification, uncertainty quantification, residual diagnostics, density estimation, dimension reduction, and more. While some of these scores are underused and underappreciated in two-sample tests, they can be more informative in some cases. The main takeaway is that given a method to assign an outlier score to a data point, <code>D-SOS</code> uplifts these scores and turns them into a two-sample test for no adverse shift.</p>
 </div>
-<div id="motivational-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#motivational-example" class="anchor"></a>Motivational example</h2>
+<div class="section level2">
+<h2 id="motivational-example">Motivational example<a class="anchor" aria-label="anchor" href="#motivational-example"></a>
+</h2>
 <p>For illustration, we apply <code>D-SOS</code> to the canonical <code>iris</code> dataset <span class="citation">(Anderson 1935)</span>. The task is to classify the species of Iris flowers based on <span class="math inline">\(d=4\)</span> covariates (features) and <span class="math inline">\(n=50\)</span> observations for each species. The first two principal components of <code>iris</code> show that these species cluster together. We show how <code>D-SOS</code> helps diagnose false alarms. We highlight that (1) changes in distribution do not necessarily hurt predictive performance, and (2) points in the densest regions of the distribution can be the most difficult – unsafe – to predict.</p>
-<p>For the subsequent tests, we split <code>iris</code> into 2/3 training and 1/3 test set. Figure 1 displays these train-test pairs, split according to four partitioning strategies. These splits correspond to (1) random sampling, (2) stratified sampling by species, (3) in-distribution (most dense) examples in the test set, and (4) out-of-distribution (least dense) examples in the test set. Looking down each column in Figure 1 shows the same split for different <code>D-SOS</code> tests. The shape and color of each point map to the species and whether it is assigned to the training or test set and its size is proportional to its importance in a given test.</p>
+<p>For the subsequent tests, we split <code>iris</code> into 2/3 training and 1/3 test set. Figure  displays these train-test pairs, split according to two partitioning strategies. These splits correspond to (1) random sampling and (2) in-distribution (most dense) examples in the test set. The shape and color of each point map to species and to train-test membership; the size of each point is proportional to its weight, a measure of its importance, for the applicable test.</p>
 <p><img src="images/combined_pca_vignette.png" width="100%" height="100%"></p>
-<p>We consider four <code>D-SOS</code> tests of no adverse shift. The outlier score for each test determines its type. For two-sample classification, define this score as the probability of belonging to the test set. For density-based out-of-distribution (OOD) detection, the score is the isolation score, which is (roughly) inversely related to the local density. For residual diagnostics, it is the out-of-sample (out-of-bag) prediction error from random forests. Finally, for confidence-based OOD detection (prediction uncertainty), it is the standard error of the mean prediction. Only the first notion of outlyingness – two-sample classification – pertains to modern tests of equal distributions; the others capture other meaningful notions of adverse shifts. For all these scores, higher is <em>worse</em>: higher scores indicate that the observation is diverging from the desired outcome or that it does not conform to the training set. Looking across each row in Figure 1 shows the same <code>D-SOS</code> test for different sample splits.</p>
-<p>How do the sample splits in Figure 1 fare with respect to these <code>D-SOS</code> tests? Let <span class="math inline">\(s\)</span> and <span class="math inline">\(p\)</span> denote <span class="math inline">\(s-\)</span>value and <span class="math inline">\(p-\)</span>value. The results are reported on the <span class="math inline">\(s = -\, \log_{2}(p)\)</span> scale because it is intuitive and lends itself to comparison. An <span class="math inline">\(s-\)</span>value of <span class="math inline">\(k\)</span> can be interpreted as seeing <span class="math inline">\(k\)</span> independent coin flips with the same outcome – all heads or all tails – if the null is that the coin is <em>fair</em> <span class="citation">(Greenland 2019)</span>. This conveys how incompatible the data is with the null hypothesis. For plotting, we winsorize (clip) <span class="math inline">\(s-\)</span>values to a low and high of 1 and 10 respectively. We also display a secondary y-axis with the <span class="math inline">\(p-\)</span>value as a cognitive bridge.</p>
-<p>In Figure 2, the case with (1) random sampling exemplifies the type of false alarms we want to avoid. Two-sample classification, standing in for tests of equal distributions, is incompatible with the null of no adverse shift (a <span class="math inline">\(s-\)</span>value of around 8). But this shift does not carry over to the other tests. Residual diagnostics, density-based and confidence-based OOD detection are all fairly compatible with the view that the test set is not worse. Had we been entirely reliant on two-sample classification, we may not have realized that this shift is essentially benign. Tests of equal distributions alone give a narrow perspective on dataset shift. Contrast (1) random with (2) stratified sampling. When stratified by species, all the tests are compatible with the null of no adverse shift.</p>
+<p>We consider four tests of no adverse shift. Each test uses a different score. For two-sample classification, this score is the probability of belonging to the test set. For density-based out-of-distribution (OOD) detection, the score comes from isolation forest – this is (roughly) inversely related to the local density. For residual diagnostics, it is the out-of-sample (out-of-bag) prediction error from random forests. Finally, for confidence-based OOD detection (prediction uncertainty), it is the standard error of the mean prediction from random forests. Only the first notion of outlyingness – two-sample classification – pertains to modern tests of equal distributions; the others capture other meaningful notions of adverse shifts. For all these scores, higher is <em>worse</em>: higher scores indicate that the observation is diverging from the desired outcome or that it does not conform to the training set.</p>
+<p>How do the splits in Figure 1 fare with respect to the tests? Let <span class="math inline">\(s\)</span> and <span class="math inline">\(p\)</span> denote <span class="math inline">\(s-\)</span>value and <span class="math inline">\(p-\)</span>value. The results are reported on the <span class="math inline">\(s = -\, \log_{2}(p)\)</span> scale because it is intuitive and lends itself to comparison. An <span class="math inline">\(s-\)</span>value of <span class="math inline">\(k\)</span> can be interpreted as seeing <span class="math inline">\(k\)</span> independent coin flips with the same outcome – all heads or all tails – if the null is that of a <em>fair</em> coin <span class="citation">(Greenland 2019)</span>. This conveys how incompatible the data is with the null. For plotting, we winsorize (clip) <span class="math inline">\(s-\)</span>values to a low and high of 1 and 10 respectively. We also display a secondary y-axis with the <span class="math inline">\(p-\)</span>value as a cognitive bridge.</p>
+<p>In Figure 2, the case with (1) random sampling exemplifies the type of false alarms we want to avoid. Two-sample classification, standing in for tests of equal distributions, is incompatible with the null of no adverse shift (a <span class="math inline">\(s-\)</span>value of around 8). But this shift does not carry over to the other tests. Residual diagnostics, density-based and confidence-based OOD detection are all fairly compatible with the view that the test set is not worse. Had we been entirely reliant on two-sample classification, we may not have realized that this shift is essentially benign. Tests of equal distributions alone give a narrow perspective on dataset shift.</p>
 <p><img src="images/combined_dsos_vignette.png" width="100%" height="100%"></p>
-<p>We expect the density-based OOD detection to waive the (3) in-distribution test set and flag the (4) out-of-distribution one. Indeed, the results in Figure 2 concur. We might be tempted to conclude that the in-distribution observations are <em>safe</em>, and yet, the tests based on residual diagnostics and confidence-based OOD detection (prediction uncertainty) are fairly incompatible with this view. This is because some of the in-distribution (densest) points are concentrated in a region where the classifier does not discriminate well: the species ‘versicolor’ and ‘virginica’ overlap to some degree. That is, the densest observations are not necessarily safe. Density-based OOD detection glosses over this. The trouble may very well come from the in-distribution points. <code>D-SOS</code> offers a more holistic perspective of dataset shift because it borrows strength from these complementary notions of outlyingness.</p>
+<p>Returning to Figure 2, density-based OOD detection does not flag the (2) in-distribution test set as expected. We might be tempted to conclude that the in-distribution observations are <em>safe</em>, and yet, the tests based on residual diagnostics and confidence-based OOD detection are fairly incompatible with this view. Some of the densest points are concentrated in a region where the classifier does not discriminate well: the species ‘versicolor’ and ‘virginica’ overlap. That is, the densest observations are not necessarily safe. Density-based OOD detection glosses over this: the trouble may well come from inliers that are difficult to predict. We get a more holistic perspective of dataset shift because of these complementary notions of outlyingness.</p>
 <p>The point of this exercise is twofold. First, we stress the limits of tests of equal distributions when testing for dataset shift. They are unable, by definition, to detect whether the shift is benign or not. Second, we propose a family of tests based on outlier scores, <code>D-SOS</code>, which offers a more holistic view of dataset shift. <code>D-SOS</code> is flexible and can be easily extended to test for other modern notions of outlyingness such as trust scores <span class="citation">(Jiang et al. 2018)</span>. We hope this encourages more people to test for <em>adverse</em> shifts.</p>
 </div>
-<div id="references" class="section level2 unnumbered">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references">
-<div id="ref-anderson1935irises">
-<p>Anderson, Edgar. 1935. “The Irises of the Gaspe Peninsula.” <em>Bull. Am. Iris Soc.</em> 59: 2–5.</p>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-anderson1935irises" class="csl-entry">
+Anderson, Edgar. 1935. <span>“The Irises of the Gaspe Peninsula.”</span> <em>Bull. Am. Iris Soc.</em> 59: 2–5.
 </div>
-<div id="ref-breck2017ml">
-<p>Breck, Eric, Shanqing Cai, Eric Nielsen, Michael Salib, and D Sculley. 2017. “The Ml Test Score: A Rubric for Ml Production Readiness and Technical Debt Reduction.” In <em>2017 Ieee International Conference on Big Data (Big Data)</em>, 1123–32. IEEE.</p>
+<div id="ref-breck2017ml" class="csl-entry">
+Breck, Eric, Shanqing Cai, Eric Nielsen, Michael Salib, and D Sculley. 2017. <span>“The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction.”</span> In <em>2017 IEEE International Conference on Big Data (Big Data)</em>, 1123–32. IEEE.
 </div>
-<div id="ref-greenland2019valid">
-<p>Greenland, Sander. 2019. “Valid P-Values Behave Exactly as They Should: Some Misleading Criticisms of P-Values and Their Resolution with S-Values.” <em>The American Statistician</em> 73 (sup1): 106–14.</p>
+<div id="ref-greenland2019valid" class="csl-entry">
+Greenland, Sander. 2019. <span>“Valid p-Values Behave Exactly as They Should: Some Misleading Criticisms of p-Values and Their Resolution with s-Values.”</span> <em>The American Statistician</em> 73 (sup1): 106–14.
 </div>
-<div id="ref-jiang2018trust">
-<p>Jiang, Heinrich, Been Kim, Melody Y Guan, and Maya R Gupta. 2018. “To Trust or Not to Trust a Classifier.” In <em>NeurIPS</em>, 5546–57.</p>
+<div id="ref-jiang2018trust" class="csl-entry">
+Jiang, Heinrich, Been Kim, Melody Y Guan, and Maya R Gupta. 2018. <span>“To Trust or Not to Trust a Classifier.”</span> In <em>NeurIPS</em>, 5546–57.
 </div>
-<div id="ref-kelly1999impact">
-<p>Kelly, Mark G, David J Hand, and Niall M Adams. 1999. “The Impact of Changing Populations on Classifier Performance.” In <em>Proceedings of the Fifth Acm Sigkdd International Conference on Knowledge Discovery and Data Mining</em>, 367–71.</p>
+<div id="ref-kelly1999impact" class="csl-entry">
+Kelly, Mark G, David J Hand, and Niall M Adams. 1999. <span>“The Impact of Changing Populations on Classifier Performance.”</span> In <em>Proceedings of the Fifth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 367–71.
 </div>
-<div id="ref-klaise2020monitoring">
-<p>Klaise, Janis, Arnaud Van Looveren, Clive Cox, Giovanni Vacanti, and Alexandru Coca. 2020. “Monitoring and Explainability of Models in Production.” <em>arXiv Preprint arXiv:2007.06299</em>.</p>
+<div id="ref-li2010weighted" class="csl-entry">
+Li, Jialiang, and Jason P Fine. 2010. <span>“Weighted Area Under the Receiver Operating Characteristic Curve and Its Application to Gene Selection.”</span> <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 59 (4): 673–92.
 </div>
-<div id="ref-li2010weighted">
-<p>Li, Jialiang, and Jason P Fine. 2010. “Weighted Area Under the Receiver Operating Characteristic Curve and Its Application to Gene Selection.” <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 59 (4): 673–92.</p>
+<div id="ref-moreno2012unifying" class="csl-entry">
+Moreno-Torres, Jose G, Troy Raeder, Rocío Alaiz-Rodríguez, Nitesh V Chawla, and Francisco Herrera. 2012. <span>“A Unifying View on Dataset Shift in Classification.”</span> <em>Pattern Recognition</em> 45 (1): 521–30.
 </div>
-<div id="ref-moreno2012unifying">
-<p>Moreno-Torres, Jose G, Troy Raeder, Rocío Alaiz-Rodríguez, Nitesh V Chawla, and Francisco Herrera. 2012. “A Unifying View on Dataset Shift in Classification.” <em>Pattern Recognition</em> 45 (1): 521–30.</p>
+<div id="ref-paleyes2020challenges" class="csl-entry">
+Paleyes, Andrei, Raoul-Gabriel Urma, and Neil D Lawrence. 2020. <span>“Challenges in Deploying Machine Learning: A Survey of Case Studies.”</span> <em>arXiv Preprint arXiv:2011.09926</em>.
 </div>
-<div id="ref-paleyes2020challenges">
-<p>Paleyes, Andrei, Raoul-Gabriel Urma, and Neil D Lawrence. 2020. “Challenges in Deploying Machine Learning: A Survey of Case Studies.” <em>arXiv Preprint arXiv:2011.09926</em>.</p>
+<div id="ref-polyzotis2019data" class="csl-entry">
+Polyzotis, Neoklis, Martin Zinkevich, Sudip Roy, Eric Breck, and Steven Whang. 2019. <span>“Data Validation for Machine Learning.”</span> <em>Proceedings of Machine Learning and Systems</em> 1: 334–47.
 </div>
-<div id="ref-polyzotis2019data">
-<p>Polyzotis, Neoklis, Martin Zinkevich, Sudip Roy, Eric Breck, and Steven Whang. 2019. “Data Validation for Machine Learning.” <em>Proceedings of Machine Learning and Systems</em> 1: 334–47.</p>
+<div id="ref-quionero2009dataset" class="csl-entry">
+Quionero-Candela, Joaquin, Masashi Sugiyama, Anton Schwaighofer, and Neil D Lawrence. 2009. <em>Dataset Shift in Machine Learning</em>. The MIT Press.
 </div>
-<div id="ref-quionero2009dataset">
-<p>Quionero-Candela, Joaquin, Masashi Sugiyama, Anton Schwaighofer, and Neil D Lawrence. 2009. <em>Dataset Shift in Machine Learning</em>. The MIT Press.</p>
+<div id="ref-rabanser2019failing" class="csl-entry">
+Rabanser, Stephan, Stephan Günnemann, and Zachary Lipton. 2019. <span>“Failing Loudly: An Empirical Study of Methods for Detecting Dataset Shift.”</span> In <em>Advances in Neural Information Processing Systems</em>, 1394–1406.
 </div>
-<div id="ref-rabanser2019failing">
-<p>Rabanser, Stephan, Stephan Günnemann, and Zachary Lipton. 2019. “Failing Loudly: An Empirical Study of Methods for Detecting Dataset Shift.” In <em>Advances in Neural Information Processing Systems</em>, 1394–1406.</p>
+<div id="ref-sculley2014machine" class="csl-entry">
+Sculley, David, Gary Holt, Daniel Golovin, Eugene Davydov, Todd Phillips, Dietmar Ebner, Vinay Chaudhary, and Michael Young. 2014. <span>“Machine Learning: The High Interest Credit Card of Technical Debt.”</span>
 </div>
-<div id="ref-sculley2014machine">
-<p>Sculley, David, Gary Holt, Daniel Golovin, Eugene Davydov, Todd Phillips, Dietmar Ebner, Vinay Chaudhary, and Michael Young. 2014. “Machine Learning: The High Interest Credit Card of Technical Debt.”</p>
-</div>
-<div id="ref-wellek2010testing">
-<p>Wellek, Stefan. 2010. <em>Testing Statistical Hypotheses of Equivalence and Noninferiority</em>. CRC Press.</p>
+<div id="ref-wellek2010testing" class="csl-entry">
+Wellek, Stefan. 2010. <em>Testing Statistical Hypotheses of Equivalence and Noninferiority</em>. CRC Press.
 </div>
 </div>
 </div>
@@ -190,11 +183,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Vathy M. Kamulete.</p>
+  <p></p>
+<p>Developed by Vathy M. Kamulete.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -202,6 +197,8 @@
 
   
 
+
+  
 
   </body>
 </html>

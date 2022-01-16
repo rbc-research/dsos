@@ -5,7 +5,7 @@ outliers_no_split <- function(x_train, x_test, num_trees = 500) {
 
   # First fit models
   iso_fit <- isotree::isolation.forest(
-    df = x_train,
+    data = x_train,
     ntrees = num_trees # 100 in original iForest paper
   )
 

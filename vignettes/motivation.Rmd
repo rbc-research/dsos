@@ -26,8 +26,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-library("dsos")
 ```
 
 Note that this vignette is adapted from the
@@ -59,12 +57,11 @@ tests because of false alarms. @polyzotis2019data comment:
 
 Even when the difference is small or negligible, tests of equal distributions
 reject the null hypothesis of no difference. An alarm should only be raised if
-a shift warrants intervention. Retraining models when distribution changes are
-benign is both costly and ineffective. To tackle these challenges, we propose
-`D-SOS` instead. Monitoring model performance and data quality is a critical
-part of deploying safe and mature models in production and `D-SOS`
-provides robust and actionable tests for this [@paleyes2020challenges;
-@klaise2020monitoring; @sculley2014machine; @breck2017ml].
+a shift warrants intervention. Retraining models when distribution shifts are
+benign is both costly and ineffective. Monitoring model performance and data
+quality is a critical part of deploying safe and mature models in production
+[@paleyes2020challenges; @sculley2014machine; @breck2017ml].
+To tackle these challenges, we propose `D-SOS` instead.
 
 In comparing the test set to the training set, `D-SOS` pays more attention to
 the regions –- typically, the outlying regions –- where we are most vulnerable.
@@ -85,10 +82,10 @@ central role in formalizing what we mean by *worse*. The scores can come from
 out-of-distribution detection, two-sample classification, uncertainty
 quantification, residual diagnostics, density estimation, dimension reduction,
 and more. While some of these scores are underused and underappreciated in
-two-sample tests, they are valid and can be more informative in some cases.
-The main takeaway is that given a generic method that assigns an outlier score
-to a data point, `D-SOS` uplifts these scores and turns them into a
-two-sample test for no adverse shift.
+two-sample tests, they can be more informative in some cases. The main takeaway
+is that given a method to assign an outlier score to a data point, `D-SOS`
+uplifts these scores and turns them into a two-sample test for no adverse
+shift.
 
 ## Motivational example
 
@@ -102,41 +99,39 @@ and (2) points in the densest regions of the distribution can be the most
 difficult -- unsafe -- to predict.
 
 For the subsequent tests, we split `iris` into 2/3 training and 1/3 test set.
-Figure 1 displays these train-test pairs, split according to
-four partitioning strategies. These splits correspond to (1) random sampling,
-(2) stratified sampling by species, (3) in-distribution (most dense) examples
-in the test set, and (4) out-of-distribution (least dense) examples in the test
-set. Looking down each column in Figure 1 shows the same split
-for different `D-SOS` tests. The shape and color of each point map to the
-species and whether it is assigned to the training or test set and its size
-is proportional to its importance in a given test.
+Figure \ref{fig:iris-pca} displays these train-test pairs, split according to
+two partitioning strategies. These splits correspond to (1) random sampling and
+(2) in-distribution (most dense) examples in the test set. The shape and color
+of each point map to species and to train-test membership; the size of each
+point is proportional to its weight, a measure of its importance, for the
+applicable test.
+
 
 ```{r pca-random, echo=FALSE, out.height="100%", out.width="100%"}
 knitr::include_graphics("images/combined_pca_vignette.png")
 ```
 
-We consider four `D-SOS` tests of no adverse shift. The outlier score for each
-test determines its type. For two-sample classification, define this score
-as the probability of belonging to the test set. For density-based
-out-of-distribution (OOD) detection, the score is the isolation score, which
+We consider four tests of no adverse shift. Each test uses a different score.
+For two-sample classification, this score is the probability
+of belonging to the test set. For density-based out-of-distribution
+(OOD) detection, the score comes from isolation forest -- this
 is (roughly) inversely related to the local density. For residual diagnostics,
 it is the out-of-sample (out-of-bag) prediction error from random forests.
-Finally, for confidence-based OOD detection (prediction uncertainty), it is the
-standard error of the mean prediction. Only the first notion of
-outlyingness -- two-sample classification -- pertains to modern tests of equal
-distributions; the others capture other meaningful notions of adverse shifts.
-For all these scores, higher is *worse*: higher scores indicate that the
-observation is diverging from the desired outcome or that it does not conform
-to the training set. Looking across each row in Figure 1 shows the same `D-SOS`
-test for different sample splits.
+Finally, for confidence-based OOD detection (prediction uncertainty), it is
+the standard error of the mean prediction from random forests.
+Only the first notion of outlyingness -- two-sample
+classification -- pertains to modern tests of equal distributions; the others
+capture other meaningful notions of adverse shifts. For all these scores, higher
+is *worse*: higher scores indicate that the observation is diverging from the
+desired outcome or that it does not conform to the training set.
 
-How do the sample splits in Figure 1 fare with respect to
-these `D-SOS` tests? Let $s$ and $p$ denote $s-$value and $p-$value. The
-results are reported on the $s = -\, \log_{2}(p)$ scale because it is
-intuitive and lends itself to comparison. An $s-$value of $k$ can be interpreted
+How do the splits in Figure 1 fare with respect to
+the tests? Let $s$ and $p$ denote $s-$value and $p-$value. The
+results are reported on the $s = -\, \log_{2}(p)$ scale because it is intuitive
+and lends itself to comparison. An $s-$value of $k$ can be interpreted
 as seeing $k$ independent coin flips with the same outcome -- all heads or
-all tails -- if the null is that the coin is *fair* [@greenland2019valid]. This
-conveys how incompatible the data is with the null hypothesis. For plotting, we
+all tails -- if the null is that of a *fair* coin [@greenland2019valid]. This
+conveys how incompatible the data is with the null. For plotting, we
 winsorize (clip) $s-$values to a low and high of 1 and 10 respectively. We
 also display a secondary y-axis with the $p-$value as a cognitive bridge.
 
@@ -148,26 +143,22 @@ other tests. Residual diagnostics, density-based and confidence-based OOD
 detection are all fairly compatible with the view that the test set is not worse.
 Had we been entirely reliant on two-sample classification, we may not have
 realized that this shift is essentially benign. Tests of equal distributions
-alone give a narrow perspective on dataset shift. Contrast (1) random
-with (2) stratified sampling. When stratified by species, all the tests are
-compatible with the null of no adverse shift.
+alone give a narrow perspective on dataset shift.
 
 ```{r dsos-outlier, echo=FALSE, out.height="100%", out.width="100%"}
 knitr::include_graphics("images/combined_dsos_vignette.png")
 ```
 
-We expect the density-based OOD detection to waive the (3) in-distribution test
-set and flag the (4) out-of-distribution one. Indeed, the results in Figure
-2 concur. We might be tempted to conclude that the
-in-distribution observations are *safe*, and yet, the tests based on residual
-diagnostics and confidence-based OOD detection (prediction uncertainty) are
-fairly incompatible with this view. This is because some of the in-distribution
-(densest) points are concentrated in a region where the classifier does not
-discriminate well: the species 'versicolor' and 'virginica' overlap to some
-degree. That is, the densest observations are not necessarily safe.
-Density-based OOD detection glosses over this. The trouble may very well come
-from the in-distribution points. `D-SOS` offers a more holistic
-perspective of dataset shift because it borrows strength from these
+Returning to Figure 2, density-based OOD detection does not
+flag the (2) in-distribution test set as expected.
+We might be tempted to conclude that the in-distribution observations are
+*safe*, and yet, the tests based on residual diagnostics and confidence-based
+OOD detection are fairly incompatible with this view. Some of the densest
+points are concentrated in a region where the classifier does not discriminate
+well: the species 'versicolor' and 'virginica' overlap. That is, the densest
+observations are not necessarily safe. Density-based OOD detection glosses over
+this: the trouble may well come from inliers that are difficult to predict.
+We get a more holistic perspective of dataset shift because of these
 complementary notions of outlyingness.
 
 The point of this exercise is twofold. First, we stress the limits of

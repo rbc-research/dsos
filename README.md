@@ -2,7 +2,6 @@
 # `D-SOS`: Dataset shift with outlier scores
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -11,6 +10,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![CRAN](https://www.r-pkg.org/badges/version/dsos)](https://cran.r-project.org/package=dsos)
 [![arXiv](https://img.shields.io/badge/paper-arXiv-yellow)](https://arxiv.org/abs/2107.02990)
+[![Downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
 <!-- badges: end -->
 
 ## Overview
@@ -30,11 +30,10 @@ If the package is on [CRAN](https://CRAN.R-project.org), install with
 install.packages("dsos")
 ```
 
-Assuming you have found this repo on Github, install with:
+From GitHub, install with:
 
 ``` r
-remotes::install_github("{who}/dsos")
-# Replace {who} with the appropriate user (could be an organization)
+remotes::install_github("vathymut/dsos")
 ```
 
 ## Example

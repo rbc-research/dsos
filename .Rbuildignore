@@ -1,0 +1,12 @@
+.gitignore
+^.*\.Rproj$
+^\.Rproj\.user$
+^CONDUCT\.md$
+^\.travis\.yml$
+^cran-comments\.md$
+^_pkgdown.yml
+^codecov\.yml$
+^NEWS\.md$
+^docs$
+^README.md$
+^README.Rmd$

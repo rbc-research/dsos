@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsos</a>
-        <span class="version label label-info" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-info" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rbc-research/dsos/">
+  <a href="https://github.com/vathymut/dsos/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -85,76 +81,91 @@
 
       
 
-      </header><script src="diy-score_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Bring Your Own Scores</h1>
-                        <h4 class="author">Vathy M. Kamulete</h4>
+                        <h4 data-toc-skip class="author">Vathy M. Kamulete</h4>
             <address class="author_afil">
       Royal Bank of Canada<br><a class="author_email" href="mailto:#"></a><a href="mailto:vathy.kamulete@rbc.com" class="email">vathy.kamulete@rbc.com</a>
       </address>
                   
-            <h4 class="date">Last Updated: 2021-09-14</h4>
+            <h4 data-toc-skip class="date">Last Updated: 2022-01-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/rbc-research/dsos/blob/master/vignettes/diy-score.Rmd"><code>vignettes/diy-score.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/vathymut/dsos/blob/HEAD/vignettes/diy-score.Rmd" class="external-link"><code>vignettes/diy-score.Rmd</code></a></small>
       <div class="hidden name"><code>diy-score.Rmd</code></div>
 
     </div>
 
     
     
-<p>Please see the <a href="https://arxiv.org/abs/2107.02990">arXiv paper</a> for details. We denote the R package as <code>dsos</code>, to avoid confusion with <code>D-SOS</code>, the method.</p>
-<div id="diy-bring-your-own-scores" class="section level2">
-<h2 class="hasAnchor">
-<a href="#diy-bring-your-own-scores" class="anchor"></a>DIY: Bring Your Own Scores</h2>
+<p>Please see the <a href="https://arxiv.org/abs/2107.02990" class="external-link">arXiv paper</a> for details. We denote the R package as <code>dsos</code>, to avoid confusion with <code>D-SOS</code>, the method.</p>
+<div class="section level2">
+<h2 id="diy-bring-your-own-scores">DIY: Bring Your Own Scores<a class="anchor" aria-label="anchor" href="#diy-bring-your-own-scores"></a>
+</h2>
 <p>We show how easy it is to implement <code>D-SOS</code> for a particular notion of outlyingness. Suppose we want to test for no adverse shift based on isolation scores in the context of multivariate two-sample comparison. To do so, we need two main ingredients: a score function and a method to compute the <span class="math inline">\(p-\)</span>value.</p>
 <p>First, the scores are obtained using predictions from isolation forest with the <code>isotree</code> package <span class="citation">(Cortes 2020)</span>. Isolation forest detects <em>isolated</em> points, instances that are typically out-of-distribution relative to the high-density regions of the data distribution. Naturally, any performant method for density-based out-of-distribution detection can effectively be used to achieve the same goal. Isolation forest just happens to be a convenient way to do this. The internal function <code>outliers_no_split</code> shows the implementation of one such score function in the <code>dsos</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">dsos</span><span class="fu">:::</span><span class="va">outliers_no_split</span>
-<span class="co">## function (x_train, x_test, num_trees = 500) </span>
-<span class="co">## {</span>
-<span class="co">##     iso_fit &lt;- isotree::isolation.forest(df = x_train, ntrees = num_trees)</span>
-<span class="co">##     os_train &lt;- predict(iso_fit, newdata = x_train)</span>
-<span class="co">##     os_test &lt;- predict(iso_fit, newdata = x_test)</span>
-<span class="co">##     return(list(test = os_test, train = os_train))</span>
+<span class="co">## function(x_train, x_test, num_trees = 500) {</span>
+<span class="co">## </span>
+<span class="co">##   # First fit models</span>
+<span class="co">##   iso_fit &lt;- isotree::isolation.forest(</span>
+<span class="co">##     data = x_train,</span>
+<span class="co">##     ntrees = num_trees # 100 in original iForest paper</span>
+<span class="co">##   )</span>
+<span class="co">## </span>
+<span class="co">##   # Then predict</span>
+<span class="co">##   os_train &lt;- predict(iso_fit, newdata = x_train)</span>
+<span class="co">##   os_test &lt;- predict(iso_fit, newdata = x_test)</span>
+<span class="co">##   return(list(test = os_test, train = os_train))</span>
 <span class="co">## }</span>
-<span class="co">## &lt;bytecode: 0x000000000a0f7898&gt;</span>
+<span class="co">## &lt;bytecode: 0x0a289740&gt;</span>
 <span class="co">## &lt;environment: namespace:dsos&gt;</span></code></pre></div>
 <p>Second, we estimate the empirical null distribution for the <span class="math inline">\(p-\)</span>value via permutations. For speed, this is implemented as a sequential Monte Carlo test with the <code>simctest</code> package <span class="citation">(Gandy 2009)</span>. Permutations do not require to derive the asymptotic null distribution for the test statistic. The function <code>od_pt</code> in the <code>dsos</code> package combines the scoring with the inference. The prefix <em>od</em> stands for outlier detection and the suffix <em>pt</em>, for permutations. <code>dsos</code> sometimes provides sample splitting and out-of-bag variants as alternatives to compute <span class="math inline">\(p-\)</span>values. Both sample splitting and out-of-bag variants use the asymptotic null distribution for the test statistic. As a result, they can be appreciably faster than inference based on permutations. The code for <code>od_pt</code> is relatively straightforward.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">dsos</span><span class="fu">::</span><span class="va"><a href="../reference/od_pt.html">od_pt</a></span>
-<span class="co">## function (x_train, x_test, R = 1000, num_trees = 500, sub_ratio = 1/2) </span>
-<span class="co">## {</span>
-<span class="co">##     scorer &lt;- function(x_train, x_test) {</span>
-<span class="co">##         outliers_no_split(x_train = x_train, x_test = x_test, </span>
-<span class="co">##             num_trees = num_trees)</span>
-<span class="co">##     }</span>
-<span class="co">##     result &lt;- exchangeable_null(x_train, x_test, scorer, R = R, </span>
-<span class="co">##         is_oob = FALSE)</span>
-<span class="co">##     return(result)</span>
+<span class="co">## function(x_train,</span>
+<span class="co">##                   x_test,</span>
+<span class="co">##                   R = 1e3,</span>
+<span class="co">##                   num_trees = 500,</span>
+<span class="co">##                   sub_ratio = 1 / 2) {</span>
+<span class="co">## </span>
+<span class="co">##   # Create scorer function</span>
+<span class="co">##   scorer &lt;- function(x_train, x_test) {</span>
+<span class="co">##     outliers_no_split(</span>
+<span class="co">##       x_train = x_train,</span>
+<span class="co">##       x_test = x_test,</span>
+<span class="co">##       num_trees = num_trees</span>
+<span class="co">##     )</span>
+<span class="co">##   }</span>
+<span class="co">## </span>
+<span class="co">##   # Calculate stats for two-sample test</span>
+<span class="co">##   result &lt;- exchangeable_null(x_train, x_test, scorer, R = R, is_oob = FALSE)</span>
+<span class="co">##   return(result)</span>
 <span class="co">## }</span>
-<span class="co">## &lt;bytecode: 0x00000000122656f8&gt;</span>
+<span class="co">## &lt;bytecode: 0x0a181ff8&gt;</span>
 <span class="co">## &lt;environment: namespace:dsos&gt;</span></code></pre></div>
-<p>Take the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set"><code>iris</code></a> dataset for example. When the training set only consists of Iris setosa (flower species) and the test set, only of Iris versicolor, the data is incompatible with the null of no adverse shift. In other words, we have strong evidence that the test contains a disproportionate number of outliers, if the training set is the reference distribution.</p>
+<p>Take the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set" class="external-link"><code>iris</code></a> dataset for example. When the training set only consists of Iris setosa (flower species) and the test set, only of Iris versicolor, the data is incompatible with the null of no adverse shift. In other words, we have strong evidence that the test contains a disproportionate number of outliers, if the training set is the reference distribution.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 <span class="va">x_train</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'setosa'</span>
 <span class="va">x_test</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'versicolor'</span>
 <span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/od_pt.html">od_pt</a></span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></code></pre></div>
 <p><img src="diy-score_files/figure-html/iris-od-1.png" width="700"></p>
 <p>You can plug in your own scores in this framework. Those already implemented in the package can be useful but they are by means the only ones. If you favor a different method for out-of-distribution (outlier) detection, want to tune the hyperparameters, or choose a different notion of outlyingness altogether, <code>dsos</code> provides the building blocks to build your own. The workhorse function, powering the approach behind the scenes, is a way to calculate the the test statistic, the WAUC, from the outlier scores (see <code>wauc_from_os</code>).</p>
 </div>
-<div id="references" class="section level2 unnumbered">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references">
-<div id="ref-isotree">
-<p>Cortes, David. 2020. <em>Isotree: Isolation-Based Outlier Detection</em>. <a href="https://CRAN.R-project.org/package=isotree">https://CRAN.R-project.org/package=isotree</a>.</p>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-isotree" class="csl-entry">
+Cortes, David. 2020. <em>Isotree: Isolation-Based Outlier Detection</em>. <a href="https://CRAN.R-project.org/package=isotree" class="external-link">https://CRAN.R-project.org/package=isotree</a>.
 </div>
-<div id="ref-simctest">
-<p>Gandy, Axel. 2009. “Sequential Implementation of Monte Carlo Tests with Uniformly Bounded Resampling Risk.” <em>Journal of the American Statistical Association</em> 104 (488): 1504–11.</p>
+<div id="ref-simctest" class="csl-entry">
+Gandy, Axel. 2009. <span>“Sequential Implementation of Monte Carlo Tests with Uniformly Bounded Resampling Risk.”</span> <em>Journal of the American Statistical Association</em> 104 (488): 1504–11.
 </div>
 </div>
 </div>
@@ -171,11 +182,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Vathy M. Kamulete.</p>
+  <p></p>
+<p>Developed by Vathy M. Kamulete.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -183,6 +196,8 @@
 
   
 
+
+  
 
   </body>
 </html>

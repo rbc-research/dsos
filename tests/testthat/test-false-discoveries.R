@@ -1,17 +1,16 @@
 suppressPackageStartupMessages({
   library(dsos)
-  library(fdrtool)
   library(testthat)
 })
 
 set.seed(123456)
 null_proportion <- 0.75
+n_obs <- 4e2
+n_reps <- 2e3
 
 test_that("High null proportion", {
   suppressWarnings(skip_on_cran())
 
-  n_obs <- 4e2
-  n_reps <- 2e3
   pvalues <- replicate(
     n = n_reps,
     expr = {
@@ -21,6 +20,7 @@ test_that("High null proportion", {
       c(cp_split$p_value)
     }
   )
-  fdr_cp <- fdrtool(pvalues, statistic = "pvalue", plot = FALSE, verbose = FALSE)
+  fdr_cp <- fdrtool::fdrtool(pvalues, statistic = "pvalue", plot = FALSE, verbose = FALSE)
   expect_gt(fdr_cp$param[, "eta0"], null_proportion)
+  expect_gt(1.0, null_proportion)
 })

@@ -5,11 +5,11 @@ Authors@R:
     c(person(given = "Vathy M.",
              family = "Kamulete",
              role = c("aut", "cre"),
-             email = "vathy.kamulete@rbccm.com",
+             email = "vathymut@gmail.com",
              comment = c(ORCID = "0000-0002-4451-3743")),
       person(family = "Royal Bank of Canada (RBC)",
              role = "cph",
-             comment = "Research supported and funded by RBC"))
+             comment = "Research supported by RBC"))
 Description: Test for no adverse shift in two-sample comparison when we
     have a training set, the reference distribution, and a test set. The
     approach is flexible and relies on a robust and powerful test
@@ -18,8 +18,8 @@ Description: Test for no adverse shift in two-sample comparison when we
     trust scores and prediction uncertainty can be used as the underlying
     scores for example.
 License: GPL (>= 3)
-URL: https://github.com/rbc-research/dsos
-BugReports: https://github.com/rbc-research/dsos/issues
+URL: https://github.com/vathymut/dsos
+BugReports: https://github.com/vathymut/dsos/issues
 Imports: 
     data.table (>= 1.14.0),
     ggplot2 (>= 3.3.3),
@@ -38,4 +38,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-US
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

@@ -1,0 +1,6 @@
+# Ignore file and file extensions
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj

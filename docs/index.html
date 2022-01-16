@@ -25,6 +25,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,18 +39,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dsos</a>
-        <span class="version label label-info" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-info" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -76,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rbc-research/dsos/">
+  <a href="https://github.com/vathymut/dsos/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -93,103 +89,114 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="d-sos-dataset-shift-with-outlier-scores" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#d-sos-dataset-shift-with-outlier-scores" class="anchor"></a><code>D-SOS</code>: Dataset shift with outlier scores</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="d-sos-dataset-shift-with-outlier-scores">
+<code>D-SOS</code>: Dataset shift with outlier scores<a class="anchor" aria-label="anchor" href="#d-sos-dataset-shift-with-outlier-scores"></a>
+</h1></div>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p><code>dsos</code> tests for no adverse shift based on outlier scores. Colloquially, these tests check whether the new sample is not substantively worse than the old sample, not if the two are equal as tests of equal distributions do. <code>dsos</code> implements a family of two-sample comparison which assumes that we have both a training set, the reference distribution, and a test set.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>If the package is on <a href="https://CRAN.R-project.org">CRAN</a>, install with</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>If the package is on <a href="https://CRAN.R-project.org" class="external-link">CRAN</a>, install with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dsos"</span><span class="op">)</span></code></pre></div>
-<p>Assuming you have found this repo on Github, install with:</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dsos"</span><span class="op">)</span></code></pre></div>
+<p>From GitHub, install with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"{who}/dsos"</span><span class="op">)</span>
-<span class="co"># Replace {who} with the appropriate user (could be an organization)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vathymut/dsos"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p>Use <code>dsos</code> to test for adverse shift on the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set"><code>iris</code></a> dataset. Here, the outlier scores are from extended isolation forest for density-based out-of-distribution (OOD) detection:</p>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>Use <code>dsos</code> to test for adverse shift on the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set" class="external-link"><code>iris</code></a> dataset. Here, the outlier scores are from extended isolation forest for density-based out-of-distribution (OOD) detection:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rbc-research/dsos">dsos</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vathymut/dsos" class="external-link">dsos</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 <span class="va">versicolor</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'versicolor'</span>
 <span class="va">virginica</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">150</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'virginica'</span>
 <span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/od_pt.html">od_pt</a></span><span class="op">(</span>x_train <span class="op">=</span> <span class="va">versicolor</span>, x_test <span class="op">=</span> <span class="va">virginica</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 <p>Among others, <code>dsos</code> also implements a method for confidence-based OOD detection via prediction (resampling) uncertainty.</p>
 </div>
-<div id="reference" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reference" class="anchor"></a>Reference</h2>
-<p>To cite this work and for technical details, please refer to the <a href="https://arxiv.org/abs/2107.02990">arXiv paper</a>. Sample Bibtex is given below:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb4-1"><a href="#cb4-1"></a><span class="va">@misc</span>{<span class="ot">kamulete2021test</span>,</span>
-<span id="cb4-2"><a href="#cb4-2"></a>      <span class="dt">title</span>={Test for non-negligible adverse shifts}, </span>
-<span id="cb4-3"><a href="#cb4-3"></a>      <span class="dt">author</span>={Vathy M. Kamulete},</span>
-<span id="cb4-4"><a href="#cb4-4"></a>      <span class="dt">year</span>={2021},</span>
-<span id="cb4-5"><a href="#cb4-5"></a>      <span class="dt">eprint</span>={2107.02990},</span>
-<span id="cb4-6"><a href="#cb4-6"></a>      <span class="dt">archivePrefix</span>={arXiv},</span>
-<span id="cb4-7"><a href="#cb4-7"></a>      <span class="dt">primaryClass</span>={stat.ML}</span>
-<span id="cb4-8"><a href="#cb4-8"></a>}</span></code></pre></div>
+<div class="section level2">
+<h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
+</h2>
+<p>To cite this work and for technical details, please refer to the <a href="https://arxiv.org/abs/2107.02990" class="external-link">arXiv paper</a>. Sample Bibtex is given below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">@misc</span>{<span class="ot">kamulete2021test</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span>={Test for non-negligible adverse shifts}, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      <span class="dt">author</span>={Vathy M. Kamulete},</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">year</span>={2021},</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">eprint</span>={2107.02990},</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">archivePrefix</span>={arXiv},</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">primaryClass</span>={stat.ML}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/rbc-research/dsos/">https://​github.com/​rbc-research/​dsos/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/rbc-research/dsos/issues">https://​github.com/​rbc-research/​dsos/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small>GPL (&gt;= 3)</small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Vathy M. Kamulete <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4451-3743" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://github.com/vathymut/dsos/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/vathymut/dsos/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/License-GPL3-green.svg" alt="License: GPL3"></a></li>
-<li><a href="https://cran.r-project.org/package=dsos"><img src="https://www.r-pkg.org/badges/version/dsos" alt="CRAN"></a></li>
-<li><a href="https://arxiv.org/abs/2107.02990"><img src="https://img.shields.io/badge/paper-arXiv-yellow" alt="arXiv"></a></li>
+<li>GPL (&gt;= 3)</li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing dsos</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Vathy M. Kamulete <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4451-3743" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://www.tidyverse.org/lifecycle" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="external-link"><img src="https://img.shields.io/badge/License-GPL3-green.svg" alt="License: GPL3"></a></li>
+<li><a href="https://cran.r-project.org/package=dsos" class="external-link"><img src="https://www.r-pkg.org/badges/version/dsos" alt="CRAN"></a></li>
+<li><a href="https://arxiv.org/abs/2107.02990" class="external-link"><img src="https://img.shields.io/badge/paper-arXiv-yellow" alt="arXiv"></a></li>
+<li><a href="https://cran.r-project.org/package=dsos" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/dsos" alt="Downloads"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Vathy M. Kamulete.</p>
+  <p></p>
+<p>Developed by Vathy M. Kamulete.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -197,6 +204,8 @@
 
   
 
+
+  
 
   </body>
 </html>
