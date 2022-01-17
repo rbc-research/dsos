@@ -1,4 +1,10 @@
-# Test environments
+## Resubmission
+
+This is a resubmission. In this version, I changed default argument to satisfy
+Julia Haider's request: "Please ensure that you do not use more than 2 cores in
+your examples [...]. Please fix and resubmit."
+
+## Test environments
 
 * local Windows 10 x64, R installation, R 4.0.5
 * R-hub Ubuntu Linux 20.04.1 LTS, R-release, GCC
