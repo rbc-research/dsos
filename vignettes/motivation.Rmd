@@ -1,8 +1,7 @@
 ---
 title: "A 10-minute Crash Course"
 resource_files:
-  - images/combined_dsos_vignette.png
-  - images/combined_pca_vignette.png
+  - images/combined_dsos.png
 author:
  - name: Vathy M. Kamulete
    affiliation: Royal Bank of Canada
@@ -29,18 +28,18 @@ knitr::opts_chunk$set(
 ```
 
 Note that this vignette is adapted from the
-[paper](https://openreview.net/forum?id=S5UG2BLi9xc)
+[paper](https://openreview.net/forum?id=S5UG2BLi9xc) as cited
+below [@kamulete2022test].
 
 ## Background
 
 Suppose we fit a predictive model on a training set and predict on a test set.
-Dataset shift [@quionero2009dataset; @moreno2012unifying; @kelly1999impact],
-also known as data or population drift,
+Dataset shift, also known as data or population drift,
 occurs when training and test distributions are not alike. This is essentially
 a sample mismatch problem. Some regions of the data space are either too
 sparse or absent during training and gain importance at test time. We want
-methods to alert us to the presence of unexpected inputs in the test set
-[@rabanser2019failing]. To do so, a measure of divergence between training
+methods to alert us to the presence of unexpected inputs in the test set.
+To do so, a measure of divergence between training
 and test set is required. Can we not simply use the many modern off-the-shelf
 multivariate tests of equal distributions for this?
 
@@ -59,19 +58,18 @@ Even when the difference is small or negligible, tests of equal distributions
 reject the null hypothesis of no difference. An alarm should only be raised if
 a shift warrants intervention. Retraining models when distribution shifts are
 benign is both costly and ineffective. Monitoring model performance and data
-quality is a critical part of deploying safe and mature models in production
-[@paleyes2020challenges; @sculley2014machine; @breck2017ml].
+quality is a critical part of deploying safe and mature models in production.
 To tackle these challenges, we propose `D-SOS` instead.
 
 In comparing the test set to the training set, `D-SOS` pays more attention to
 the regions –- typically, the outlying regions –- where we are most vulnerable.
 To confront false alarms, it uses a robust test statistic, namely the
-weighted area under the receiver operating characteristic curve (WAUC). The
-weights in the WAUC [@li2010weighted] discount the safe regions of the
+weighted area under the receiver operating characteristic curve (WAUC).
+The weights in the WAUC discount the safe regions of the
 distribution. To the best of our knowledge, this is the first time that the
 WAUC is being used as a test statistic in this context. The goal of `D-SOS` is
-to detect *non-negligible adverse shifts*. This is reminiscent of noninferiority
-tests [@wellek2010testing], widely used in healthcare to determine if a new
+to detect *non-negligible adverse shifts*. This is reminiscent of
+noninferiority tests, widely used in healthcare to determine if a new
 treatment is in fact not inferior to an older one. Colloquially, the `D-SOS`
 null hypothesis holds that the new sample is not substantively worse than the
 old sample, and not that the two are equal.
@@ -89,27 +87,13 @@ shift.
 
 ## Motivational example
 
-For illustration, we apply `D-SOS` to the canonical `iris` dataset
-[@anderson1935irises]. The task is to classify the species of Iris flowers
+For illustration, we apply `D-SOS` to the canonical `iris` dataset.
+The task is to classify the species of Iris flowers
 based on $d=4$ covariates (features) and $n=50$ observations for each
-species. The first two principal components of `iris` show that these species
-cluster together. We show how `D-SOS` helps diagnose false alarms. We highlight
+species. We show how `D-SOS` helps diagnose false alarms. We highlight
 that (1) changes in distribution do not necessarily hurt predictive performance,
 and (2) points in the densest regions of the distribution can be the most
 difficult -- unsafe -- to predict.
-
-For the subsequent tests, we split `iris` into 2/3 training and 1/3 test set.
-Figure \ref{fig:iris-pca} displays these train-test pairs, split according to
-two partitioning strategies. These splits correspond to (1) random sampling and
-(2) in-distribution (most dense) examples in the test set. The shape and color
-of each point map to species and to train-test membership; the size of each
-point is proportional to its weight, a measure of its importance, for the
-applicable test.
-
-
-```{r pca-random, echo=FALSE, out.height="100%", out.width="100%"}
-knitr::include_graphics("images/combined_pca_vignette.png")
-```
 
 We consider four tests of no adverse shift. Each test uses a different score.
 For two-sample classification, this score is the probability
@@ -125,49 +109,50 @@ capture other meaningful notions of adverse shifts. For all these scores, higher
 is *worse*: higher scores indicate that the observation is diverging from the
 desired outcome or that it does not conform to the training set.
 
-How do the splits in Figure 1 fare with respect to
-the tests? Let $s$ and $p$ denote $s-$value and $p-$value. The
-results are reported on the $s = -\, \log_{2}(p)$ scale because it is intuitive
-and lends itself to comparison. An $s-$value of $k$ can be interpreted
-as seeing $k$ independent coin flips with the same outcome -- all heads or
-all tails -- if the null is that of a *fair* coin [@greenland2019valid]. This
-conveys how incompatible the data is with the null. For plotting, we
-winsorize (clip) $s-$values to a low and high of 1 and 10 respectively. We
-also display a secondary y-axis with the $p-$value as a cognitive bridge.
+For the subsequent tests, we split iris into 2/3 training and 1/3 test set. The
+train-test pairs correspond to two partitioning strategies: (1) random sampling
+and (2) in-distribution (most dense) examples in the test set. How do these
+sample splits fare with respect to the aforementioned tests? Let $s$ and $p$
+denote $s$−value and $p$−value. The results are reported on the $s = − log2(p)$
+scale because it is intuitive. An $s$−value of k
+can be interpreted as seeing k independent coin flips with the same outcome –-
+all heads or all tails –- if the null is that of a fair coin. This conveys how
+incompatible the data is with the null.
 
-In Figure 2, the case with (1) random sampling exemplifies
-the type of false alarms we want to avoid. Two-sample classification, standing
-in for tests of equal distributions, is incompatible with the null of no adverse
-shift (a $s-$value of around 8). But this shift does not carry over to the
-other tests. Residual diagnostics, density-based and confidence-based OOD
-detection are all fairly compatible with the view that the test set is not worse.
-Had we been entirely reliant on two-sample classification, we may not have
-realized that this shift is essentially benign. Tests of equal distributions
-alone give a narrow perspective on dataset shift.
+As plotted, the case with (1) random sampling in
+<b><span style="color:green;">green</span></b> exemplifies
+the type of false alarms we want to avoid. Two-sample classification,
+standing in for tests of equal distributions, is incompatible with the null of
+no adverse shift (a $s$−value of around 8). But this shift does not carry over
+to the other tests. Residual diagnostics, density-based and confidence-based
+OOD detection are all fairly compatible with the view that the test set is not
+worse. Had we been entirely reliant on two-sample classification, we may not
+have realized that this shift is essentially benign. Tests of equal
+distributions alone give a narrow perspective on dataset shift.
 
 ```{r dsos-outlier, echo=FALSE, out.height="100%", out.width="100%"}
-knitr::include_graphics("images/combined_dsos_vignette.png")
+knitr::include_graphics("images/combined_dsos.png")
 ```
 
-Returning to Figure 2, density-based OOD detection does not
-flag the (2) in-distribution test set as expected.
-We might be tempted to conclude that the in-distribution observations are
-*safe*, and yet, the tests based on residual diagnostics and confidence-based
-OOD detection are fairly incompatible with this view. Some of the densest
-points are concentrated in a region where the classifier does not discriminate
-well: the species 'versicolor' and 'virginica' overlap. That is, the densest
-observations are not necessarily safe. Density-based OOD detection glosses over
-this: the trouble may well come from inliers that are difficult to predict.
-We get a more holistic perspective of dataset shift because of these
-complementary notions of outlyingness.
+Moving on to the case with (2) in-distribution test set in
+<b><span style="color:red;">red</span></b>, 
+density-based OOD detection does not flag this sample as expected. We might
+be tempted to conclude that the in-distribution observations are safe, and yet,
+the tests based on residual diagnostics and confidence-based OOD detection are
+fairly incompatible with this view. Some of the densest points are concentrated
+in a region where the classifier does not discriminate very well: the species
+`versicolor` and `virginica` overlap. That is, the densest observations are
+not necessarily safe. Density-based OOD detection glosses over this: the
+trouble may well come from inliers that are difficult to predict. We get a more
+holistic perspective of dataset shift because of these complementary notions
+of outlyingness.
 
 The point of this exercise is twofold. First, we stress the limits of
 tests of equal distributions when testing for dataset shift. They are
 unable, by definition, to detect whether the shift is benign or not.
 Second, we propose a family of tests based on outlier scores, `D-SOS`,
-which offers a more holistic view of dataset shift. `D-SOS`
-is flexible and can be easily extended to test for other modern notions of
-outlyingness such as trust scores [@jiang2018trust]. We hope this
-encourages more people to test for *adverse* shifts.
+which offers a more holistic view of dataset shift. `D-SOS` is flexible and
+can be easily extended to test for other modern notions of outlyingness such as
+trust scores. We hope this encourages more people to test for *adverse* shifts.
 
 ## References

@@ -62,17 +62,16 @@ detection via prediction (resampling) uncertainty.
 
 ## Reference
 
-To cite this work and for technical details, please refer to the [arXiv
-paper](https://openreview.net/forum?id=S5UG2BLi9xc). Sample Bibtex is
+To cite this work and for technical details, please refer to the
+[paper](https://openreview.net/forum?id=S5UG2BLi9xc). Sample Bibtex is
 given below:
 
 ``` bibtex
-@misc{kamulete2021test,
-      title={Test for non-negligible adverse shifts}, 
-      author={Vathy M. Kamulete},
-      year={2021},
-      eprint={2107.02990},
-      archivePrefix={arXiv},
-      primaryClass={stat.ML}
+@inproceedings{kamulete2022test,
+  title     = {Test for non-negligible adverse shifts},
+  author    = {Vathy M. Kamulete},
+  booktitle = {The 38th Conference on Uncertainty in Artificial Intelligence},
+  year      = {2022},
+  url       = {https://openreview.net/forum?id=S5UG2BLi9xc}
 }
 ```
