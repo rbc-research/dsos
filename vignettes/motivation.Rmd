@@ -135,7 +135,7 @@ knitr::include_graphics("images/combined_dsos.png")
 ```
 
 Moving on to the case with (2) in-distribution test set in
-<b><span style="color:red;">red</span></b>, 
+<b><span style="color:orange;">orange</span></b>, 
 density-based OOD detection does not flag this sample as expected. We might
 be tempted to conclude that the in-distribution observations are safe, and yet,
 the tests based on residual diagnostics and confidence-based OOD detection are

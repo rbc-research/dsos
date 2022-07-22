@@ -64,9 +64,9 @@ str(iris_test)
 }
 }
 \references{
-Kamulete, V. M. (2021).
+Kamulete, V. M. (2022). 
 \emph{Test for non-negligible adverse shifts}.
-arXiv preprint arXiv:2107.02990.
+In Uncertainty in Artificial Intelligence. PMLR.
 
 Ciemencon, S., Depecker, M., & Vayatis, N. (2009, December).
 \emph{AUC optimization and the two-sample problem}.

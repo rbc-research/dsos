@@ -72,9 +72,9 @@ str(iris_test)
 }
 }
 \references{
-Kamulete, V. M. (2021).
+Kamulete, V. M. (2022). 
 \emph{Test for non-negligible adverse shifts}.
-arXiv preprint arXiv:2107.02990.
+In Uncertainty in Artificial Intelligence. PMLR.
 
 Schulam, P., & Saria, S. (2019, April).
 Can you trust this prediction? Auditing pointwise reliability after learning.

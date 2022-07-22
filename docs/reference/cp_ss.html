@@ -30,7 +30,7 @@ belonging to the test set is the relevant notion of outlyingness."><!-- mathjax 
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -77,25 +77,36 @@ belonging to the test set is the relevant notion of outlyingness.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cp_ss</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span>, sub_ratio <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, R <span class="op">=</span> <span class="fl">1000</span>, num_trees <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cp_ss</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span>, sub_ratio <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, R <span class="op">=</span> <span class="fl">1000</span>, num_trees <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x_train</dt>
 <dd><p>Training sample.</p></dd>
+
+
 <dt>x_test</dt>
 <dd><p>Test sample.</p></dd>
+
+
 <dt>sub_ratio</dt>
 <dd><p>Subsampling ratio for sample splitting. May be ignored.</p></dd>
+
+
 <dt>R</dt>
 <dd><p>The number of permutations. May be ignored.</p></dd>
+
+
 <dt>num_trees</dt>
 <dd><p>The number of trees in random forests.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A named list or object of class <code>outlier.test</code> containing:</p><ul><li><p><code>statistic</code>: observed WAUC statistic</p></li>
+    
+
+<p>A named list or object of class <code>outlier.test</code> containing:</p><ul><li><p><code>statistic</code>: observed WAUC statistic</p></li>
 <li><p><code>seq_mct</code>: sequential Monte Carlo test, if applicable</p></li>
 <li><p><code>p_value</code>: p-value</p></li>
 <li><p><code>outlier_scores</code>: outlier scores from training and test set</p></li>
@@ -123,9 +134,9 @@ default in this implementation.</p>
     </div>
     <div id="references">
     <h2>References</h2>
-    <p>Kamulete, V. M. (2021).
+    <p>Kamulete, V. M. (2022). 
 <em>Test for non-negligible adverse shifts</em>.
-arXiv preprint arXiv:2107.02990.</p>
+In Uncertainty in Artificial Intelligence. PMLR.</p>
 <p>Ciemencon, S., Depecker, M., &amp; Vayatis, N. (2009, December).
 <em>AUC optimization and the two-sample problem</em>.
 In Proceedings of the 22nd International Conference on Neural Information Processing Systems (pp. 360-368).</p>
@@ -153,14 +164,14 @@ Annals of Statistics, 47(6), 3438-3469.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vathymut/dsos" class="external-link">dsos</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x_train</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'setosa'</span></span>
-<span class="r-in"><span class="va">x_test</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'versicolor'</span></span>
-<span class="r-in"><span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="cp_at.html">cp_at</a></span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span> <span class="co"># Can also use: cp_ss and cp_pt</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vathymut/dsos" class="external-link">dsos</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x_train</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'setosa'</span></span></span>
+<span class="r-in"><span><span class="va">x_test</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'versicolor'</span></span></span>
+<span class="r-in"><span><span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="cp_at.html">cp_at</a></span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span> <span class="co"># Can also use: cp_ss and cp_pt</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ statistic     : num 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ p_value       : num 0</span>
@@ -168,7 +179,7 @@ Annals of Statistics, 47(6), 3438-3469.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ train: num [1:50] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ test : num [1:50] 1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "outlier.test"</span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -183,7 +194,7 @@ Annals of Statistics, 47(6), 3438-3469.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
