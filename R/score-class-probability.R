@@ -118,9 +118,9 @@ memberships_after_split <- function(x_train,
 #' supervised method for binary classification can replace random forests, the
 #' default in this implementation.
 #'
-#' @references Kamulete, V. M. (2021).
+#' @references Kamulete, V. M. (2022). 
 #' \emph{Test for non-negligible adverse shifts}.
-#' arXiv preprint arXiv:2107.02990.
+#' In Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @references Ciemencon, S., Depecker, M., & Vayatis, N. (2009, December).
 #' \emph{AUC optimization and the two-sample problem}.

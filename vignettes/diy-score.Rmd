@@ -27,7 +27,7 @@ library("dsos")
 ```
 
 Please see the
-[arXiv paper](https://arxiv.org/abs/2107.02990) for details.
+[paper](https://openreview.net/forum?id=S5UG2BLi9xc) for details.
 We denote the R package as `dsos`, to avoid confusion with `D-SOS`, the method.
 
 ## DIY: Bring Your Own Scores

@@ -53,9 +53,9 @@ residuals_no_split <- function(x_train,
 #' supervised learning. For a contemporaneous example of this approach also using
 #' machine learning, see see Janková et al. (2020) and references therein.
 #'
-#' @references Kamulete, V. M. (2021).
+#' @references Kamulete, V. M. (2022). 
 #' \emph{Test for non-negligible adverse shifts}.
-#' arXiv preprint arXiv:2107.02990.
+#' In Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @references Janková, J., Shah, R. D., Bühlmann, P., & Samworth, R. J. (2020).
 #' \emph{Goodness-of-fit testing in high dimensional generalized linear models}.

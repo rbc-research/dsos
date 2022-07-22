@@ -9,7 +9,8 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 [![License:
 GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![CRAN](https://www.r-pkg.org/badges/version/dsos)](https://cran.r-project.org/package=dsos)
-[![arXiv](https://img.shields.io/badge/paper-arXiv-yellow)](https://arxiv.org/abs/2107.02990)
+[![UAI
+2022](https://img.shields.io/badge/paper-UAI-yellow)](https://openreview.net/forum?id=S5UG2BLi9xc)
 [![Downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
 <!-- badges: end -->
 
@@ -33,6 +34,7 @@ install.packages("dsos")
 From GitHub, install with:
 
 ``` r
+# install.packages("remotes")
 remotes::install_github("vathymut/dsos")
 ```
 
@@ -61,7 +63,8 @@ detection via prediction (resampling) uncertainty.
 ## Reference
 
 To cite this work and for technical details, please refer to the [arXiv
-paper](https://arxiv.org/abs/2107.02990). Sample Bibtex is given below:
+paper](https://openreview.net/forum?id=S5UG2BLi9xc). Sample Bibtex is
+given below:
 
 ``` bibtex
 @misc{kamulete2021test,

@@ -32,9 +32,9 @@ outliers_no_split <- function(x_train, x_test, num_trees = 500) {
 #' Any performant method for density-based out-of-distribution detection can
 #' replace isolation forest, the default in this implementation.
 #'
-#' @references Kamulete, V. M. (2021).
+#' @references Kamulete, V. M. (2022). 
 #' \emph{Test for non-negligible adverse shifts}.
-#' arXiv preprint arXiv:2107.02990.
+#' In Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @references Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December).
 #' \emph{Isolation forest}.
