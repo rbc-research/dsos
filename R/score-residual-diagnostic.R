@@ -55,7 +55,7 @@ residuals_no_split <- function(x_train,
 #'
 #' @references Kamulete, V. M. (2022). 
 #' \emph{Test for non-negligible adverse shifts}.
-#' In Uncertainty in Artificial Intelligence. PMLR.
+#' In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @references Janková, J., Shah, R. D., Bühlmann, P., & Samworth, R. J. (2020).
 #' \emph{Goodness-of-fit testing in high dimensional generalized linear models}.

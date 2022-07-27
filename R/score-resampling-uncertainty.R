@@ -40,7 +40,7 @@ rue_no_split <- function(x_train,
 #'
 #' @references Kamulete, V. M. (2022). 
 #' \emph{Test for non-negligible adverse shifts}.
-#' In Uncertainty in Artificial Intelligence. PMLR.
+#' In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @references Schulam, P., & Saria, S. (2019, April).
 #' Can you trust this prediction? Auditing pointwise reliability after learning.
