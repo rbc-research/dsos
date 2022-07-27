@@ -120,7 +120,7 @@ memberships_after_split <- function(x_train,
 #'
 #' @references Kamulete, V. M. (2022). 
 #' \emph{Test for non-negligible adverse shifts}.
-#' In Uncertainty in Artificial Intelligence. PMLR.
+#' In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @references Ciemencon, S., Depecker, M., & Vayatis, N. (2009, December).
 #' \emph{AUC optimization and the two-sample problem}.

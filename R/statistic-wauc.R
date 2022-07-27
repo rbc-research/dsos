@@ -82,7 +82,7 @@ wauc <- function(y, prob, weighter) {
 #'
 #' @references Kamulete, V. M. (2022).
 #' \emph{Test for non-negligible adverse shifts}.
-#' In Uncertainty in Artificial Intelligence. PMLR.
+#' In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @export
 wauc_from_os <- function(os_train, os_test) {
