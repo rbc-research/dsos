@@ -1,53 +1,5 @@
 #' @noRd
 #' @keywords  internal
-smc_pvalue <- function(test_stat, permute_fn, R = 1e3) {
-
-  # Generate null distribution via SMC
-  gen_smc <- function() {
-    gen_stat <- permute_fn()
-    return(gen_stat >= test_stat)
-  }
-  res <- simctest::simctest(gen_smc, maxsteps = R)
-  p_value <- res@pos / res@steps
-
-  # Wrap result in a list
-  test_list <- list()
-  test_list[["seq_mct"]] <- res
-  test_list[["statistic"]] <- test_stat
-  test_list[["p_value"]] <- p_value
-  test_list[["outlier_scores"]] <- NULL
-  class(test_list) <- "outlier.test"
-  return(test_list)
-}
-
-#' @noRd
-#' @keywords  internal
-exchangeable_null <- function(x_train,
-                              x_test,
-                              scorer,
-                              is_oob = TRUE,
-                              R = 1e3) {
-  # Set as data.tables
-  x_train <- data.table::as.data.table(x_train)
-  x_test <- data.table::as.data.table(x_test)
-
-  # Get observed wauc and helper functions
-  helper <- wauc_helper(x_train, x_test, scorer)
-  test_stat <- helper$test_stat
-  if (is_oob) {
-    permute_fn <- helper$permute_os_fn
-  } else {
-    permute_fn <- helper$permute_data_fn
-  }
-
-  # Gather test info
-  test_list <- smc_pvalue(test_stat, permute_fn, R)
-  test_list[["outlier_scores"]] <- helper$os_list
-  return(test_list)
-}
-
-#' @noRd
-#' @keywords  internal
 asymptotic_sd <- function(n_train = 100, n_test = 100) {
   # Calculate each expression from analytical formula
   # See formula (9) in https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4129959/
