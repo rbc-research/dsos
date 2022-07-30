@@ -23,7 +23,7 @@
 #' Isolation forest detects \emph{isolated} points that are typically
 #' out-of-distribution relative to the high-density regions of the data
 #' distribution. Any performant method for density-based out-of-distribution
-#' detection can replace isolation forest, the default in this implementation.
+#' detection can replace isolation forest.
 #'
 #' @references Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December).
 #' \emph{Isolation forest}.
@@ -36,7 +36,7 @@
 #' IEEE.
 #'
 #' #' @details
-#' \code{od_scorer} first fits to the training data and then predict in-sample
+#' \code{score_od} first fits to the training data and then predict in-sample
 #' for this reference sample. Then it predicts out-of-sample for the test set.
 #' As a result, estimating p-value via permutations require refitting the
 #' algorithm for every permutation.
@@ -50,12 +50,12 @@
 #' data(iris)
 #' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 #' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-#' od_scorer(setosa, versicolor)
+#' score_od(setosa, versicolor)
 #' }
 #' @family scoring
 #'
 #' @export
-od_scorer <- function(x_train, x_test, n_trees = 500) {
+score_od <- function(x_train, x_test, n_trees = 500L) {
 
   # First fit models
   iso_fit <- isotree::isolation.forest(
@@ -77,14 +77,14 @@ od_scorer <- function(x_train, x_test, n_trees = 500) {
 #' \pkg{ranger} package. The prefix \emph{rd} stands for residual diagnostic,
 #' the relevant notion of outlyingness. This function is useful to test for
 #' dataset shift via prediction errors from the underlying supervised
-#' algorithm, namely random forest in this implementation.
+#' algorithm.
 #'
 #' @param x_train Training (reference) sample.
 #' @param x_test Test sample.
 #' @param response_name The column name of the categorical outcome to predict.
 #' @param n_trees The number of trees in random forest.
 #'
-#' @inherit od_scorer return
+#' @inherit score_od return
 #'
 #' @section Notes:
 #' Residuals traditionally underpin diagnostics (misspecification) tests in
@@ -100,7 +100,7 @@ od_scorer <- function(x_train, x_test, n_trees = 500) {
 #' Computational Statistics & Data Analysis, 170, 107435.
 #'
 #' @details
-#' \code{rd_scorer} first fits to the training data and uses out-of-bag
+#' \code{score_rd} first fits to the training data and uses out-of-bag
 #' predictions to estimate errors (residuals) for this reference sample. Then it
 #' leverages out-of-sample predictions to calculate errors for the test set.
 #' As a result, estimating p-value via permutations does not require refitting
@@ -115,13 +115,13 @@ od_scorer <- function(x_train, x_test, n_trees = 500) {
 #' idx <- sample(nrow(iris), 2 / 3 * nrow(iris))
 #' xy_train <- iris[idx, ]
 #' xy_test <- iris[-idx, ]
-#' rd_scorer(xy_train, xy_test, n_trees = 500L, response_name = "Species")
+#' score_rd(xy_train, xy_test, n_trees = 500L, response_name = "Species")
 #' }
 #'
 #' @family scoring
 #'
 #' @export
-rd_scorer <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
+score_rd <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 
   # First fit models
   rf_args <- classifier_args(
@@ -154,18 +154,17 @@ rd_scorer <- function(x_train, x_test, n_trees = 500L, response_name = "label") 
 #' Estimate prediction uncertainty using random forest with the \pkg{ranger}
 #' package. The prefix \emph{rue} stands for resampling uncertainty estimation,
 #' the relevant notion of outlyingness. This function is useful to test for
-#' dataset shift via prediction uncertainty from the underlying supervised
-#' algorithm, namely random forest in this implementation.
+#' dataset shift via prediction uncertainty from supervised algorithms.
 #'
-#' @inherit rd_scorer return param
+#' @inherit score_rd return param
 #'
 #' @section Notes:
 #' For prediction uncertainty, we essentially implement the approach in
 #' Schulam & Saria (2019) with random forest. The standard errors of the mean
-#' predictions are the specified outlier scores. Any performant method for
-#' confidence-based out-of-distribution detection can replace random forest,
-#' the baseline in this implementation. Other methods for confidence-based
-#' out-of-distribution detection are discussed in Berger et al. (2021).
+#' predictions are the outlier scores. Any performant method for
+#' confidence-based out-of-distribution (OOD) detection can replace random
+#' forest. Berger et al. (2021) compares methods for confidence-based OOD
+#' detection.
 #'
 #' @references Schulam, P., & Saria, S. (2019, April).
 #' \emph{Can you trust this prediction? Auditing pointwise reliability after learning}.
@@ -178,7 +177,7 @@ rd_scorer <- function(x_train, x_test, n_trees = 500L, response_name = "label") 
 #' Springer, Cham.
 #'
 #' @details
-#' \code{rue_scorer} first fits to the training data and uses out-of-bag
+#' \code{score_rue} first fits to the training data and uses out-of-bag
 #' predictions to estimate prediction uncertainty for this reference
 #' sample. Then it leverages out-of-sample predictions to do the same for
 #' the test set. As a result, estimating p-value via permutations does not
@@ -192,13 +191,13 @@ rd_scorer <- function(x_train, x_test, n_trees = 500L, response_name = "label") 
 #' idx <- sample(nrow(iris), 2 / 3 * nrow(iris))
 #' xy_train <- iris[idx, ]
 #' xy_test <- iris[-idx, ]
-#' rue_scorer(xy_train, xy_test, n_trees = 500L, response_name = "Species")
+#' score_rue(xy_train, xy_test, n_trees = 500L, response_name = "Species")
 #' }
 #'
 #' @family scoring
 #'
 #' @export
-rue_scorer <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
+score_rue <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 
   # First fit models
   rue_args <- classifier_args(
@@ -212,4 +211,73 @@ rue_scorer <- function(x_train, x_test, n_trees = 500L, response_name = "label")
   rue_train <- se_predicted(rue_model, x_train, is_training = TRUE)
   rue_test <- se_predicted(rue_model, x_test, is_training = FALSE)
   return(list(test = rue_test, train = rue_train))
+}
+
+#' @title
+#' Predict Class Probability (Sample Membership)
+#'
+#' @description
+#' Predict class probability using random forest with the \pkg{ranger}
+#' package. The prefix \emph{cp} stands for class probability, which reflects
+#' sample membership between training and test set. This function is useful to
+#' test for dataset shift via classifier performance to mimic tests of equal
+#' distribution.
+#'
+#' @inherit score_rd return param
+#'
+#' @section Notes:
+#' Kim et al. (2022) describes how a classifier can serve as a proxy for
+#' two-sample comparison. As in Hediger et al. (2022), we use random forest as
+#' the underlying classifier. The probability of belonging to the test set, as
+#' as opposed to the training set, is the outlier score. That is, the binary
+#' classifier assigns training and test set to different classes.
+#'
+#' @references Hediger, S., Michel, L., & Näf, J. (2022).
+#' \emph{On the use of random forest for two-sample testing}.
+#' Computational Statistics & Data Analysis, 170, 107435.
+#'
+#' @references Kim, I., Ramdas, A., Singh, A., & Wasserman, L. (2021).
+#' \emph{Classification accuracy as a proxy for two-sample testing}.
+#' The Annals of Statistics, 49(1), 411-434.
+#'
+#' @details
+#' \code{score_cp} fits a classifier to discriminate between training and test
+#' sets. It uses out-of-bag predictions, namely class probabilities, to
+#' estimate sample memberships. As a result, estimating p-value via permutations
+#' does not require refitting the algorithm for every permutation.
+#'
+#' @examples
+#' \donttest{
+#' library(dsos)
+#' set.seed(12345)
+#' data(iris)
+#' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
+#' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
+#' iris_test <- score_cp(setosa, versicolor, response_name = "label")
+#' str(iris_test)
+#' }
+#'
+#' @family scoring
+#'
+#' @export
+score_cp <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
+
+  # First fit models
+  rf_data <- stack_data(x_train, x_test, response_name = response_name)
+  rf_args <- classifier_args(
+    data = rf_data,
+    num_trees = n_trees,
+    response_name = response_name
+  )
+
+  # Then predict based on out-of-bag samples
+  predictions <- do.call(what = ranger::ranger, args = rf_args)$predictions[, 2]
+
+  # Split scores
+  n_train <- nrow(x_train)
+  n_test <- nrow(x_test)
+  n_all <- n_train + n_test
+  os_train <- predictions[1:n_train]
+  os_test <- predictions[(n_train + 1L):n_all]
+  return(list(train = os_train, test = os_test))
 }
