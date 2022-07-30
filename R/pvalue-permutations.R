@@ -110,14 +110,21 @@ exchangeable_null <- function(x_train,
 #' xy_test <- iris[-idx, ]
 #'
 #' # First example: residual diagnostics
-#' scorer_1 <- function(x_train, x_test) rd_scorer(x_train, x_test, response_name = "Species")
-#' iris_1 <- oob_pt(x_train, x_test, scorer = scorer_1)
-#' str(iris_1)
+#' scorer_1 <- function(x_train, x_test) score_rd(x_train, x_test, response_name = "Species")
+#' rd_test <- oob_pt(x_train, x_test, scorer = scorer_1)
+#' str(rd_test)
 #'
-#' # Second example: sample memberships (class probabilities)
-#' scorer_2 <- function(x_train, x_test) rd_scorer(x_train, x_test, response_name = "Species")
-#' iris_2 <- oob_pt(x_train, x_test, scorer = scorer_2)
-#' str(iris_2)
+#' # Second example: prediction uncertainty
+#' scorer_2 <- function(x_train, x_test) score_rue(x_train, x_test, response_name = "Species")
+#' rue_test <- oob_pt(x_train, x_test, scorer = scorer_2)
+#' str(rue_test)
+#'
+#' # Third example: sample memberships (class probabilities)
+#' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
+#' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
+#' scorer_3 <- function(x_train, x_test) score_cp(x_train, x_test)
+#' cp_test <- oob_pt(setosa, versicolor, scorer = scorer_3)
+#' str(cp_test)
 #' }
 #'
 #' @family permutation
@@ -154,9 +161,10 @@ oob_pt <- function(x_train, x_test, scorer, n_pt = 2e3) {
 #' library(dsos)
 #' set.seed(12345)
 #' data(iris)
-#' x_train <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
-#' x_test <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-#' iris_test <- refit_pt(x_train, x_test, scorer = od_scorer)
+#' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
+#' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
+#' scorer <- function(x_train, x_test) score_od(x_train, x_test)
+#' iris_test <- refit_pt(setosa, versicolor, scorer = scorer)
 #' str(iris_test)
 #' }
 #'

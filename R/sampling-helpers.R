@@ -35,6 +35,27 @@ split_data <- function(data, sub_ratio = 1 / 2) {
 
 #' @noRd
 #' @keywords  internal
+stack_data <- function(x_train, x_test, response_name = "label") {
+
+  # Get number of observations in splits
+  n_train <- nrow(x_train)
+  n_test <- nrow(x_test)
+
+  # Create labels for each dataset
+  y_train <- as.factor(rep(0, n_train))
+  y_test <- as.factor(rep(1, n_test))
+  data.table::setDT(x_train)
+  data.table::setDT(x_test)
+  data.table::set(x_train, j = response_name, value = y_train)
+  data.table::set(x_test, j = response_name, value = y_test)
+
+  # Merge datasets
+  x_merged <- data.table::rbindlist(list(x_train, x_test))
+  return(x_merged)
+}
+
+#' @noRd
+#' @keywords  internal
 permute_wauc_from_data <- function(data, n_shuffle, scorer) {
   shuffled <- shuffle_data(data, n_shuffle)
   wauc_stat <- wauc_from_data(
