@@ -191,7 +191,8 @@ score_rd <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 #' idx <- sample(nrow(iris), 2 / 3 * nrow(iris))
 #' xy_train <- iris[idx, ]
 #' xy_test <- iris[-idx, ]
-#' score_rue(xy_train, xy_test, n_trees = 500L, response_name = "Species")
+#' outlier_scores <- score_rue(xy_train, xy_test, response_name = "Species")
+#' str(outlier_scores)
 #' }
 #'
 #' @family scoring
@@ -253,8 +254,8 @@ score_rue <- function(x_train, x_test, n_trees = 500L, response_name = "label") 
 #' data(iris)
 #' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 #' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-#' iris_test <- score_cp(setosa, versicolor, response_name = "label")
-#' str(iris_test)
+#' outlier_scores <- score_cp(setosa, versicolor, response_name = "label")
+#' str(outlier_scores)
 #' }
 #'
 #' @family scoring
