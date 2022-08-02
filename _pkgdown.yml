@@ -5,32 +5,31 @@ template:
     bootswatch: journal
 
 reference:
-  - title: "CP - Class Probability"
+  - title: "PT - Permutation Test"
     desc: >
-      CP (Class Probability) refers to outlier scores
-      based on (probabilistic) discriminative classifiers.
+      Test for no adverse shift via permutations.
     contents:
-      - cp_at
-      - cp_pt
-      - cp_ss
-  - title: "OD - Outlier Detection"
+      - pt_refit
+      - pt_oob
+  - title: "AT - Asymptotic Test"
     desc: >
-      OD (Outlier Detection) refers to outlier scores
-      based on outlier detection.
+      Test for no adverse shift using the asymptotic null distribution.
     contents:
-      - od_pt
-  - title: "RUE - Resampling Uncertainty"
+      - at_oob
+  - title: "Scoring Functions"
     desc: >
-      RUE (Resampling Uncertainty) refers to outlier scores
-      based on resampling uncertainty.
+      Functions to compute outlier scores based on out-of-bag approximations
+      and/or refitting.
     contents:
-      - rue_pt
-  - title: "RD - Residual diagnostic"
+      - score_cp
+      - score_od
+      - score_rd
+      - score_rue
+  - title: "Split Functions"
     desc: >
-      RD (Residual Diagnostic) refers to outlier scores
-      based on residuals.
+      Functions to compute outlier scores based on sample splitting.
     contents:
-      - rd_pt
+      - split_cp
   - title: "Plot"
     desc: >
       Plotting functions.

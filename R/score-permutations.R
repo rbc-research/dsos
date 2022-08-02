@@ -148,7 +148,7 @@ score_rd <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 }
 
 #' @title
-#' Estimate Resampling Uncertainty (Prediction Confidence)
+#' Predict Resampling Uncertainty (Prediction Confidence)
 #'
 #' @description
 #' Estimate prediction uncertainty using random forest with the \pkg{ranger}

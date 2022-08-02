@@ -119,7 +119,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="va">versicolor</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'versicolor'</span></span>
 <span><span class="va">virginica</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">150</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'virginica'</span></span>
-<span><span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/od_pt.html">od_pt</a></span><span class="op">(</span>x_train <span class="op">=</span> <span class="va">versicolor</span>, x_test <span class="op">=</span> <span class="va">virginica</span><span class="op">)</span></span>
+<span><span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pt_refit.html">pt_refit</a></span><span class="op">(</span>x_train <span class="op">=</span> <span class="va">versicolor</span>, x_test <span class="op">=</span> <span class="va">virginica</span>, scorer <span class="op">=</span> <span class="va">score_od</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 <p>Among others, <code>dsos</code> also implements a method for confidence-based OOD detection via prediction (resampling) uncertainty.</p>
@@ -178,7 +178,7 @@
 <li><a href="https://www.tidyverse.org/lifecycle" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
 <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="external-link"><img src="https://img.shields.io/badge/License-GPL3-green.svg" alt="License: GPL3"></a></li>
 <li><a href="https://cran.r-project.org/package=dsos" class="external-link"><img src="https://www.r-pkg.org/badges/version/dsos" alt="CRAN"></a></li>
-<li><a href="https://openreview.net/forum?id=S5UG2BLi9xc" class="external-link"><img src="https://img.shields.io/badge/paper-UAI-yellow" alt="UAI 2022"></a></li>
+<li><a href="https://openreview.net/forum?id=S5UG2BLi9xc" class="external-link"><img src="https://img.shields.io/badge/paper-UAI%202022-yellow" alt="UAI 2022"></a></li>
 <li><a href="https://cran.r-project.org/package=dsos" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/dsos" alt="Downloads"></a></li>
 </ul>
 </div>

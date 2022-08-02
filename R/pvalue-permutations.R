@@ -146,7 +146,7 @@ pt_oob <- function(x_train, x_test, scorer, n_pt = 2e3) {
 }
 
 #' @title
-#' Permutation P-Value By Refitting
+#' Permutation Test By Refitting
 #'
 #' @inherit pt_oob description return references details
 #' @inheritParams pt_oob
