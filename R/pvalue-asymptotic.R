@@ -52,9 +52,55 @@ asymptotic_os <- function(os_train, os_test) {
   return(test_list)
 }
 
-#' @noRd
-#' @keywords  internal
-asymptotic_null <- function(x_train, x_test, scorer) {
+#' @title
+#' P-Value From Asymptotic Null Distribution
+#'
+#' @inherit pt_oob description return references
+#' @inheritSection pt_oob Notes
+#'
+#' @param x_train Training (reference/validation) sample.
+#' @param x_test Test sample.
+#' @param scorer Function which returns a named list with outlier scores from
+#' the training and test sample. The first argument to \code{scorer} must be
+#' \code{x_train}; the second, \code{x_test}. The returned named list contains
+#' two elements: \emph{train} and \emph{test}, each of which is a vector of
+#' (outlier) scores. See notes for more information.
+#'
+#' @details
+#' Li and Fine (2010) derives the asymptotic null distribution for the weighted
+#' AUC (WAUC), the test statistic. This approach does not use permutations
+#' and can, as a result, be much faster because it sidesteps the need to refit
+#' the scoring function \code{scorer}. This works well for large samples. The
+#' prefix \emph{at} stands for asymptotic test to tell it apart from the
+#' prefix \emph{pt}, the permutation based variant.
+#'
+#' @examples
+#' \donttest{
+#' library(dsos)
+#' set.seed(12345)
+#' data(iris)
+#' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
+#' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
+#'
+#' # Sample memberships with sample splitting
+#' scorer_split <- function(x_train, x_test) split_cp(x_train, x_test)
+#' cp_test <- at_oob(setosa, versicolor, scorer = scorer_split)
+#' str(cp_test)
+#'
+#' # Sample memberships without sample splitting (out-of-bag predictions)
+#' scorer_oob <- function(x_train, x_test) score_cp(x_train, x_test)
+#' oob_test <- at_oob(setosa, versicolor, scorer = scorer_oob)
+#' str(oob_test)
+#' }
+#'
+#' @family asymptotic-test
+#'
+#' @seealso
+#' [pt_oob()] for (faster) p-value approximation via out-of-bag predictions.
+#' [pt_refit()] for (slower) p-value approximation via refitting.
+#'
+#' @export
+at_oob <- function(x_train, x_test, scorer) {
 
   # Get list of outlier scores
   data.table::setDT(x_train)

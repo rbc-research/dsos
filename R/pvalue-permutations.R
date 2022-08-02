@@ -52,13 +52,13 @@ exchangeable_null <- function(x_train,
 #' @description
 #' Test for no adverse shift with outlier scores. Like goodness-of-fit testing,
 #' this two-sample comparison takes the training set, \code{x_train}, as the
-#' the reference. This method checks whether the test set, \code{x_test}, is
+#' the reference. The method checks whether the test set, \code{x_test}, is
 #' worse off relative to this reference distribution.
 #'
 #' @param x_train Training (reference/validation) sample.
 #' @param x_test Test sample.
-#' @param scorer Function which returns a named list with scores from the
-#' training and test sample. The first argument to \code{scorer} must be
+#' @param scorer Function which returns a named list with outlier scores from
+#' the training and test sample. The first argument to \code{scorer} must be
 #' \code{x_train}; the second, \code{x_test}. The returned named list contains
 #' two elements: \emph{train} and \emph{test}, each of which is a vector of
 #' (outlier) scores. See notes below for more information.
@@ -68,7 +68,7 @@ exchangeable_null <- function(x_train,
 #' A named list or object of class \code{outlier.test} containing:
 #' \itemize{
 #'    \item \code{statistic}: observed WAUC statistic
-#'    \item \code{seq_mct}: sequential Monte Carlo test
+#'    \item \code{seq_mct}: sequential Monte Carlo test, when applicable
 #'    \item \code{p_value}: p-value
 #'    \item \code{outlier_scores}: outlier scores from training and test set
 #' }
@@ -88,14 +88,14 @@ exchangeable_null <- function(x_train,
 #' @details
 #' The empirical null distribution uses \code{n_pt} permutations to estimate
 #' the p-value. For speed, this is implemented as a sequential Monte Carlo test
-#' with the \pkg{simctest} package. See Gandy (2009) for details. The suffix
+#' with the \pkg{simctest} package. See Gandy (2009) for details. The prefix
 #' \emph{pt} refers to permutation test. This approach does not use the
 #' asymptotic null distribution for the weighted AUC (WAUC), the test
 #' statistic. This is the recommended approach for small samples.
 #'
 #' @section Notes:
 #' The scoring function, \code{scorer}, predicts out-of-bag scores to mimic
-#' out-of-sample behaviour. The prefix \emph{oob} stands for out-of-bag to
+#' out-of-sample behaviour. The suffix \emph{oob} stands for out-of-bag to
 #' highlight this point. This out-of-bag variant avoids refitting the
 #' underlying algorithm from \code{scorer} at every permutation. It can, as a
 #' result, be computionally appealing.
@@ -111,29 +111,30 @@ exchangeable_null <- function(x_train,
 #'
 #' # First example: residual diagnostics
 #' scorer_1 <- function(x_train, x_test) score_rd(x_train, x_test, response_name = "Species")
-#' rd_test <- oob_pt(x_train, x_test, scorer = scorer_1)
+#' rd_test <- pt_oob(x_train, x_test, scorer = scorer_1)
 #' str(rd_test)
 #'
 #' # Second example: prediction uncertainty
 #' scorer_2 <- function(x_train, x_test) score_rue(x_train, x_test, response_name = "Species")
-#' rue_test <- oob_pt(x_train, x_test, scorer = scorer_2)
+#' rue_test <- pt_oob(x_train, x_test, scorer = scorer_2)
 #' str(rue_test)
 #'
 #' # Third example: sample memberships (class probabilities)
 #' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 #' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
 #' scorer_3 <- function(x_train, x_test) score_cp(x_train, x_test)
-#' cp_test <- oob_pt(setosa, versicolor, scorer = scorer_3)
+#' cp_test <- pt_oob(setosa, versicolor, scorer = scorer_3)
 #' str(cp_test)
 #' }
 #'
-#' @family permutation
+#' @family permutation-test
 #'
 #' @seealso
-#' [refit_pt()] for (slower) p-value approximation via refitting.
+#' [pt_refit()] for (slower) p-value approximation via refitting.
+#' [at_oob()] for p-value approximation from asymptotic null distribution.
 #'
 #' @export
-oob_pt <- function(x_train, x_test, scorer, n_pt = 2e3) {
+pt_oob <- function(x_train, x_test, scorer, n_pt = 2e3) {
   result <- exchangeable_null(
     x_train,
     x_test,
@@ -147,13 +148,13 @@ oob_pt <- function(x_train, x_test, scorer, n_pt = 2e3) {
 #' @title
 #' Permutation P-Value By Refitting
 #'
-#' @inherit oob_pt description param return references details
+#' @inherit pt_oob description param return references details
 #'
 #' @section Notes:
 #' The scoring function, \code{scorer}, predicts out-of-sample scores by
 #' refitting the underlying algorithm from \code{scorer} at every permutation
-#' The prefix \emph{refit} emphasizes this point. This is in contrast to the
-#' out-of-bag variant, \code{oob_pt}, which only fits once. This method can be
+#' The suffix \emph{refit} emphasizes this point. This is in contrast to the
+#' out-of-bag variant, \code{pt_oob}, which only fits once. This method can be
 #' be computionally expensive.
 #'
 #' @examples
@@ -164,17 +165,18 @@ oob_pt <- function(x_train, x_test, scorer, n_pt = 2e3) {
 #' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 #' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
 #' scorer <- function(x_train, x_test) score_od(x_train, x_test)
-#' iris_test <- refit_pt(setosa, versicolor, scorer = scorer)
+#' iris_test <- pt_refit(setosa, versicolor, scorer = scorer)
 #' str(iris_test)
 #' }
 #'
-#' @family permutation
+#' @family permutation-test
 #'
 #' @seealso
-#' [oob_pt()] for (faster) p-value approximation via out-of-bag predictions.
+#' [pt_oob()] for (faster) p-value approximation via out-of-bag predictions.
+#' [at_oob()] for p-value approximation from asymptotic null distribution.
 #'
 #' @export
-refit_pt <- function(x_train, x_test, scorer, n_pt = 2e3) {
+pt_refit <- function(x_train, x_test, scorer, n_pt = 2e3) {
   result <- exchangeable_null(
     x_train,
     x_test,

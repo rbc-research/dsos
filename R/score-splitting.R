@@ -32,7 +32,7 @@
 #' }
 #'
 #' @importFrom stats predict
-#' 
+#'
 #' @family splitting
 #'
 #' @seealso
