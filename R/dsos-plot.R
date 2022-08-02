@@ -93,7 +93,7 @@ prep_os_data <- function(x) {
 #' data(iris)
 #' x_train <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 #' x_test <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-#' iris_test <- od_pt(x_train, x_test)
+#' iris_test <- pt_refit(x_train, x_test, scorer = score_od)
 #' plot(iris_test)
 #' }
 #'

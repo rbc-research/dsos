@@ -9,17 +9,17 @@ alpha <- 0.05
 test_that("Inliers", {
   x1 <- data.frame(x = rnorm(n, sd = 1))
   x2 <- data.frame(x = rnorm(n, sd = 1 / 2))
-  expect_lt(cp_ss(x1, x2)$p_value, alpha)
+  expect_lt(at_oob(x1, x2, scorer = split_cp)$p_value, alpha)
 })
 
 test_that("Outliers", {
   x1 <- data.frame(x = rnorm(n, sd = 1))
   x2 <- data.frame(x = rnorm(n, sd = 3 / 2))
-  expect_lt(cp_ss(x1, x2)$p_value, alpha)
+  expect_lt(at_oob(x1, x2, scorer = split_cp)$p_value, alpha)
 })
 
 test_that("Same distribution", {
   x1 <- data.frame(x = rnorm(n))
   x2 <- data.frame(x = rnorm(n))
-  expect_gt(cp_ss(x1, x2)$p_value, alpha)
+  expect_gt(at_oob(x1, x2, scorer = split_cp)$p_value, alpha)
 })

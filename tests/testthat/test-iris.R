@@ -38,30 +38,30 @@ abs_diff <- function(p1, p2, eps = 1e-3) {
 }
 
 diff_from_samples <- function(x_train, x_test) {
-  permutations <- cp_pt(x_train, x_test)
-  asymptotic <- cp_at(x_train, x_test)
+  permutations <- pt_oob(x_train, x_test, scorer = score_cp)
+  asymptotic <- at_oob(x_train, x_test, scorer = score_cp)
   abs_diff(permutations$p_value, asymptotic$p_value)
 }
 
 test_that("Separate species", {
-  expect_lt(cp_at(setosa, virginica)$p_value, alpha)
-  expect_lt(cp_at(setosa, versicolor)$p_value, alpha)
-  expect_lt(cp_at(versicolor, virginica)$p_value, alpha)
-  expect_lt(od_pt(setosa, virginica)$p_value, alpha)
-  expect_lt(od_pt(setosa, versicolor)$p_value, alpha)
-  expect_lt(od_pt(versicolor, virginica)$p_value, alpha)
+  expect_lt(at_oob(setosa, virginica, scorer = score_cp)$p_value, alpha)
+  expect_lt(at_oob(setosa, versicolor, scorer = score_cp)$p_value, alpha)
+  expect_lt(at_oob(versicolor, virginica, scorer = score_cp)$p_value, alpha)
+  expect_lt(pt_refit(setosa, virginica, scorer = score_od)$p_value, alpha)
+  expect_lt(pt_refit(setosa, versicolor, scorer = score_od)$p_value, alpha)
+  expect_lt(pt_refit(versicolor, virginica, scorer = score_od)$p_value, alpha)
 })
 
 test_that("Same species", {
-  expect_gt(cp_at(setosa, setosa)$p_value, alpha)
-  expect_gt(cp_at(versicolor, versicolor)$p_value, alpha)
-  expect_gt(cp_at(virginica, virginica)$p_value, alpha)
-  expect_gt(od_pt(setosa, setosa)$p_value, alpha)
-  expect_gt(od_pt(versicolor, versicolor)$p_value, alpha)
-  expect_gt(od_pt(virginica, virginica)$p_value, alpha)
+  expect_gt(at_oob(setosa, setosa, scorer = score_cp)$p_value, alpha)
+  expect_gt(at_oob(versicolor, versicolor, scorer = score_cp)$p_value, alpha)
+  expect_gt(at_oob(virginica, virginica, scorer = score_cp)$p_value, alpha)
+  expect_gt(pt_refit(setosa, setosa, scorer = score_od)$p_value, alpha)
+  expect_gt(pt_refit(versicolor, versicolor, scorer = score_od)$p_value, alpha)
+  expect_gt(pt_refit(virginica, virginica, scorer = score_od)$p_value, alpha)
 })
 
-test_that("Permutations versus asymptotic p-values (CP)", {
+test_that("Permutation versus asymptotic", {
   # Iris: random splits
   expect_lte(diff_from_samples(iris_train, iris_test), s_rope)
   expect_lte(diff_from_samples(stratefied_train, stratefied_test), s_rope)
@@ -72,31 +72,32 @@ test_that("Permutations versus asymptotic p-values (CP)", {
   expect_lte(diff_from_samples(versicolor, virginica), s_rope)
 })
 
-test_that("Random splits with class probabilities", {
+test_that("Splits with class probabilities", {
   expect_lte(
     abs_diff(
-      cp_pt(iris_train, iris_test)$p_value,
-      cp_pt(stratefied_train, stratefied_test)$p_value
+      pt_oob(iris_train, iris_test, scorer = score_cp)$p_value,
+      pt_oob(stratefied_train, stratefied_test, scorer = score_cp)$p_value
     ),
     s_rope
   )
 })
 
-test_that("Random splits with outlier scores", {
+test_that("Splits with outlier scores", {
   expect_lte(
     abs_diff(
-      od_pt(iris_train, iris_test)$p_value,
-      od_pt(stratefied_train, stratefied_test)$p_value
+      pt_refit(iris_train, iris_test, scorer = score_od)$p_value,
+      pt_refit(stratefied_train, stratefied_test, scorer = score_od)$p_value
     ),
     s_rope
   )
 })
 
-test_that("Random splits with confidence intervals", {
+test_that("Splits with prediction uncertainty", {
+  scorer <- function(tr, te) score_rue(tr, te, response_name = "Species")
   expect_gte(
     abs_diff(
-      rue_pt(iris_train, iris_test, response_name = "Species")$p_value,
-      rue_pt(stratefied_train, stratefied_test, response_name = "Species")$p_value
+      pt_oob(iris_train, iris_test, scorer = scorer)$p_value,
+      pt_oob(stratefied_train, stratefied_test, scorer = scorer)$p_value
     ),
     s_rope
   )
@@ -104,10 +105,11 @@ test_that("Random splits with confidence intervals", {
 
 
 test_that("Random splits with out-of-bag residuals", {
+  scorer <- function(tr, te) score_rd(tr, te, response_name = "Species")
   expect_gte(
     abs_diff(
-      rd_pt(iris_train, iris_test, response_name = "Species")$p_value,
-      rd_pt(stratefied_train, stratefied_test, response_name = "Species")$p_value
+      pt_oob(iris_train, iris_test, scorer = scorer)$p_value,
+      pt_oob(stratefied_train, stratefied_test, scorer = scorer)$p_value
     ),
     s_rope
   )

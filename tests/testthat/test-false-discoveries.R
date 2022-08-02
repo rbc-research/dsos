@@ -16,7 +16,7 @@ test_that("High null proportion", {
     expr = {
       x1 <- data.frame(x = rnorm(n_obs))
       x2 <- data.frame(x = rnorm(n_obs))
-      cp_split <- cp_ss(x1, x2)
+      cp_split <- at_oob(x1, x2, scorer = split_cp)
       c(cp_split$p_value)
     }
   )
