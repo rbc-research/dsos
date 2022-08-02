@@ -156,7 +156,8 @@ score_rd <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 #' the relevant notion of outlyingness. This function is useful to test for
 #' dataset shift via prediction uncertainty from supervised algorithms.
 #'
-#' @inherit score_rd return param
+#' @inherit score_rd return
+#' @inheritParams score_rd
 #'
 #' @section Notes:
 #' For prediction uncertainty, we essentially implement the approach in
@@ -224,7 +225,8 @@ score_rue <- function(x_train, x_test, n_trees = 500L, response_name = "label") 
 #' test for dataset shift via classifier performance to mimic tests of equal
 #' distribution.
 #'
-#' @inherit score_rd return param
+#' @inherit score_rd return
+#' @inheritParams score_rd
 #'
 #' @section Notes:
 #' Kim et al. (2022) describes how a classifier can serve as a proxy for
