@@ -63,45 +63,53 @@
     </div>
 
     <table class="ref-index"><colgroup><col class="alias"><col class="title"></colgroup><tbody><tr><th colspan="2">
-          <h2 id="cp-class-probability">CP - Class Probability <a href="#cp-class-probability" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>CP (Class Probability) refers to outlier scores based on (probabilistic) discriminative classifiers.</p>
+          <h2 id="pt-permutation-test">PT - Permutation Test <a href="#pt-permutation-test" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Test for no adverse shift via permutations.</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="cp_at.html">cp_at()</a></code> </p>
+          <p><code><a href="pt_refit.html">pt_refit()</a></code> </p>
         </td>
-        <td><p>Dataset Shift via Class Probabilities</p></td>
+        <td><p>Permutation Test By Refitting</p></td>
       </tr><tr><td>
-          <p><code><a href="cp_pt.html">cp_pt()</a></code> </p>
+          <p><code><a href="pt_oob.html">pt_oob()</a></code> </p>
         </td>
-        <td><p>Dataset Shift via Class Probabilities</p></td>
+        <td><p>Permutation Test With Out-Of-Bag Scores</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="at-asymptotic-test">AT - Asymptotic Test <a href="#at-asymptotic-test" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Test for no adverse shift using the asymptotic null distribution.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="at_oob.html">at_oob()</a></code> </p>
+        </td>
+        <td><p>Asymptotic Test With Out-Of-Bag Scores</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="scoring-functions">Scoring Functions <a href="#scoring-functions" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to compute outlier scores based on out-of-bag approximations and/or refitting.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="score_cp.html">score_cp()</a></code> </p>
+        </td>
+        <td><p>Predict Class Probability (Sample Membership)</p></td>
       </tr><tr><td>
-          <p><code><a href="cp_ss.html">cp_ss()</a></code> </p>
+          <p><code><a href="score_od.html">score_od()</a></code> </p>
         </td>
-        <td><p>Dataset Shift via Class Probabilities</p></td>
+        <td><p>Predict Isolation Scores</p></td>
+      </tr><tr><td>
+          <p><code><a href="score_rd.html">score_rd()</a></code> </p>
+        </td>
+        <td><p>Predict Out-of-bag Errors (Residuals)</p></td>
+      </tr><tr><td>
+          <p><code><a href="score_rue.html">score_rue()</a></code> </p>
+        </td>
+        <td><p>Predict Resampling Uncertainty (Prediction Confidence)</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="od-outlier-detection">OD - Outlier Detection <a href="#od-outlier-detection" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>OD (Outlier Detection) refers to outlier scores based on outlier detection.</p>
+          <h2 id="split-functions">Split Functions <a href="#split-functions" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to compute outlier scores based on sample splitting.</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="od_pt.html">od_pt()</a></code> </p>
+          <p><code><a href="split_cp.html">split_cp()</a></code> </p>
         </td>
-        <td><p>Dataset Shift via Isolation Scores</p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="rue-resampling-uncertainty">RUE - Resampling Uncertainty <a href="#rue-resampling-uncertainty" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>RUE (Resampling Uncertainty) refers to outlier scores based on resampling uncertainty.</p>
-        </th>
-      </tr></tbody><tbody><tr><td>
-          <p><code><a href="rue_pt.html">rue_pt()</a></code> </p>
-        </td>
-        <td><p>Dataset Shift via Resampling (Prediction) Uncertainty</p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="rd-residual-diagnostic">RD - Residual diagnostic <a href="#rd-residual-diagnostic" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>RD (Residual Diagnostic) refers to outlier scores based on residuals.</p>
-        </th>
-      </tr></tbody><tbody><tr><td>
-          <p><code><a href="rd_pt.html">rd_pt()</a></code> </p>
-        </td>
-        <td><p>Dataset Shift via Residuals</p></td>
+        <td><p>Split Samples And Predict Class Probability (Sample Membership)</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="plot">Plot <a href="#plot" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Plotting functions.</p>

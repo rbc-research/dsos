@@ -46,7 +46,7 @@ the same goal. The internal function `outliers_no_split` shows the
 implementation of one such score function in the `dsos` package.
 
 ```{r score-isolated-points, message=FALSE, warning=FALSE}
-dsos:::outliers_no_split
+dsos::score_od
 ```
 
 Second, we estimate the empirical null distribution for the $p-$value via
@@ -62,7 +62,7 @@ variants use the asymptotic null distribution for the test statistic. As a
 result, they can be appreciably faster than inference based on permutations.
 
 ```{r dsos-permutation, message=FALSE, warning=FALSE}
-dsos::od_pt
+dsos::pt_refit
 ```
 
 ## In Action
@@ -79,7 +79,7 @@ set.seed(12345)
 data(iris)
 x_train <- iris[1:50,1:4] # Training sample: Species == 'setosa'
 x_test <- iris[51:100,1:4] # Test sample: Species == 'versicolor'
-iris_test <- od_pt(x_train, x_test)
+iris_test <- pt_refit(x_train, x_test, score = dsos::score_od)
 plot(iris_test)
 ```
 

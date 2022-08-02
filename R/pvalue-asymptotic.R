@@ -53,7 +53,7 @@ asymptotic_os <- function(os_train, os_test) {
 }
 
 #' @title
-#' P-Value From Asymptotic Null Distribution
+#' Asymptotic Test With Out-Of-Bag Scores
 #'
 #' @inherit pt_oob description return references
 #' @inheritSection pt_oob Notes

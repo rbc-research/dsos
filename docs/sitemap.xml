@@ -25,13 +25,7 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/cp_at.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cp_pt.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cp_ss.html</loc>
+    <loc>/reference/at_oob.html</loc>
   </url>
   <url>
     <loc>/reference/dsos-package.html</loc>
@@ -40,16 +34,28 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/od_pt.html</loc>
-  </url>
-  <url>
     <loc>/reference/plot.outlier.test.html</loc>
   </url>
   <url>
-    <loc>/reference/rd_pt.html</loc>
+    <loc>/reference/pt_oob.html</loc>
   </url>
   <url>
-    <loc>/reference/rue_pt.html</loc>
+    <loc>/reference/pt_refit.html</loc>
+  </url>
+  <url>
+    <loc>/reference/score_cp.html</loc>
+  </url>
+  <url>
+    <loc>/reference/score_od.html</loc>
+  </url>
+  <url>
+    <loc>/reference/score_rd.html</loc>
+  </url>
+  <url>
+    <loc>/reference/score_rue.html</loc>
+  </url>
+  <url>
+    <loc>/reference/split_cp.html</loc>
   </url>
   <url>
     <loc>/reference/wauc_from_os.html</loc>

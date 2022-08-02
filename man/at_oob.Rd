@@ -2,7 +2,7 @@
 % Please edit documentation in R/pvalue-asymptotic.R
 \name{at_oob}
 \alias{at_oob}
-\title{P-Value From Asymptotic Null Distribution}
+\title{Asymptotic Test With Out-Of-Bag Scores}
 \usage{
 at_oob(x_train, x_test, scorer)
 }

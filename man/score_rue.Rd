@@ -2,7 +2,7 @@
 % Please edit documentation in R/score-permutations.R
 \name{score_rue}
 \alias{score_rue}
-\title{Estimate Resampling Uncertainty (Prediction Confidence)}
+\title{Predict Resampling Uncertainty (Prediction Confidence)}
 \usage{
 score_rue(x_train, x_test, n_trees = 500L, response_name = "label")
 }

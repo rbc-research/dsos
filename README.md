@@ -10,7 +10,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![CRAN](https://www.r-pkg.org/badges/version/dsos)](https://cran.r-project.org/package=dsos)
 [![UAI
-2022](https://img.shields.io/badge/paper-UAI-yellow)](https://openreview.net/forum?id=S5UG2BLi9xc)
+2022](https://img.shields.io/badge/paper-UAI%202022-yellow)](https://openreview.net/forum?id=S5UG2BLi9xc)
 [![Downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
 <!-- badges: end -->
 
@@ -51,7 +51,7 @@ set.seed(12345)
 data(iris)
 versicolor <- iris[51:100,1:4] # Training sample: Species == 'versicolor'
 virginica <- iris[101:150,1:4] # Test sample: Species == 'virginica'
-iris_test <- od_pt(x_train = versicolor, x_test = virginica)
+iris_test <- pt_refit(x_train = versicolor, x_test = virginica, scorer = score_od)
 plot(iris_test)
 ```
 

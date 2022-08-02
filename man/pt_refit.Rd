@@ -2,7 +2,7 @@
 % Please edit documentation in R/pvalue-permutations.R
 \name{pt_refit}
 \alias{pt_refit}
-\title{Permutation P-Value By Refitting}
+\title{Permutation Test By Refitting}
 \usage{
 pt_refit(x_train, x_test, scorer, n_pt = 2000)
 }
