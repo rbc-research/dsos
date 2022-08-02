@@ -1,7 +1,8 @@
 #' @title
 #' Split Samples And Predict Class Probability (Sample Membership)
 #'
-#' @inherit score_cp description return param
+#' @inherit score_cp description return
+#' @inheritParams score_cp
 #'
 #' @section Notes:
 #' See the docs for \code{score_cp} for more information. \code{split_cp} uses

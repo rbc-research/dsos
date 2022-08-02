@@ -121,10 +121,7 @@ wauc_and_os <- function(os_train, os_test) {
 #' @keywords  internal
 wauc_from_data <- function(x_train, x_test, scorer) {
   # Get list of outlier scores
-  os_list <- scorer(
-    x_train = x_train,
-    x_test = x_test
-  )
+  os_list <- scorer(x_train, x_test)
 
   # Calculate stats for two-sample test
   result_list <- wauc_and_os(os_list[["train"]], os_list[["test"]])

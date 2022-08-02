@@ -148,7 +148,8 @@ pt_oob <- function(x_train, x_test, scorer, n_pt = 2e3) {
 #' @title
 #' Permutation P-Value By Refitting
 #'
-#' @inherit pt_oob description param return references details
+#' @inherit pt_oob description return references details
+#' @inheritParams pt_oob
 #'
 #' @section Notes:
 #' The scoring function, \code{scorer}, predicts out-of-sample scores by
