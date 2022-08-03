@@ -24,10 +24,9 @@ weight_function <- function(os_train) {
 #' @noRd
 #' @keywords  internal
 wauc <- function(y, prob, weighter) {
-  # Handle edge cases
-  n_prob <- length(unique(prob))
-  if (n_prob < 2L) {
-    warning("The same outlier score is assigned to all observations.")
+  # Handle edge cases: same score is assigned to all observations.
+  n_unique <- length(unique(prob))
+  if (n_unique < 2L) {
     return(1 / 12)
   }
 
@@ -77,7 +76,7 @@ wauc <- function(y, prob, weighter) {
 #' os_test <- runif(n = 100)
 #' test_stat <- wauc_from_os(os_train, os_test)
 #' }
-#' 
+#'
 #' @family statistic
 #'
 #' @references Kamulete, V. M. (2022).

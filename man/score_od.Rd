@@ -4,7 +4,7 @@
 \alias{score_od}
 \title{Predict Isolation Scores}
 \usage{
-score_od(x_train, x_test, n_trees = 500L)
+score_od(x_train, x_test, n_trees = 500L, threshold = 0.6)
 }
 \arguments{
 \item{x_train}{Training (reference) sample.}
@@ -12,6 +12,10 @@ score_od(x_train, x_test, n_trees = 500L)
 \item{x_test}{Test sample.}
 
 \item{n_trees}{The number of trees in isolation forest.}
+
+\item{threshold}{Decision threshold. Set to a default value of 0.6,
+following Chabchoub et al. (2022). Outlier scores higher than the threshold
+are considered outliers, and lower values are inliers.}
 }
 \value{
 A named list or object of class \code{outlier.test} containing:
@@ -32,7 +36,9 @@ related, if not quite proportional, to densities.
 Isolation forest detects \emph{isolated} points that are typically
 out-of-distribution relative to the high-density regions of the data
 distribution. Any performant method for density-based out-of-distribution
-detection can replace isolation forest.
+detection can replace isolation forest. The decision threshold,
+\code{threshold}, clips (winsorizes) the scores so that lower scores are
+set to the threshold value.
 }
 
 \examples{
@@ -51,10 +57,9 @@ Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December).
 In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422).
 IEEE.
 
-Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December).
-\emph{Isolation forest}.
-In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422).
-IEEE.
+Chabchoub, Y., Togbe, M. U., Boly, A., & Chiky, R. (2022).
+\emph{An in-depth study and improvement of Isolation Forest.}.
+IEEE Access, 10, 10219-10237.
 
 #' @details
 \code{score_od} first fits to the training data and then predict in-sample

@@ -92,7 +92,7 @@ Kamulete</h4>
 Canada<br><a class="author_email" href="mailto:#"></a><a href="mailto:vathy.kamulete@rbc.com" class="email">vathy.kamulete@rbc.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">Last Updated: 2022-08-02</h4>
+            <h4 data-toc-skip class="date">Last Updated: 2022-08-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vathymut/dsos/blob/HEAD/vignettes/diy-score.Rmd" class="external-link"><code>vignettes/diy-score.Rmd</code></a></small>
       <div class="hidden name"><code>diy-score.Rmd</code></div>
@@ -124,7 +124,7 @@ the implementation of one such score function in the <code>dsos</code>
 package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">dsos</span><span class="fu">::</span><span class="va"><a href="../reference/score_od.html">score_od</a></span></span>
-<span><span class="co">## function(x_train, x_test, n_trees = 500L) {</span></span>
+<span><span class="co">## function(x_train, x_test, n_trees = 500L, threshold = 0.6) {</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##   # First fit models</span></span>
 <span><span class="co">##   iso_fit &lt;- isotree::isolation.forest(</span></span>
@@ -135,9 +135,13 @@ package.</p>
 <span><span class="co">##   # Then predict</span></span>
 <span><span class="co">##   os_train &lt;- predict(iso_fit, newdata = x_train)</span></span>
 <span><span class="co">##   os_test &lt;- predict(iso_fit, newdata = x_test)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   # Apply decision threshold according to Chabchoub et al. (2022)</span></span>
+<span><span class="co">##   os_train[os_train &lt; threshold] &lt;- threshold</span></span>
+<span><span class="co">##   os_test[os_test &lt; threshold] &lt;- threshold</span></span>
 <span><span class="co">##   return(list(test = os_test, train = os_train))</span></span>
 <span><span class="co">## }</span></span>
-<span><span class="co">## &lt;bytecode: 0x000001436abebc70&gt;</span></span>
+<span><span class="co">## &lt;bytecode: 0x0000024b8c78bef8&gt;</span></span>
 <span><span class="co">## &lt;environment: namespace:dsos&gt;</span></span></code></pre></div>
 <p>Second, we estimate the empirical null distribution for the <span class="math inline">\(p-\)</span>value via permutations. For speed, this
 is implemented as a sequential Monte Carlo test with the
@@ -163,7 +167,7 @@ inference based on permutations.</p>
 <span><span class="co">##     )</span></span>
 <span><span class="co">##   return(result)</span></span>
 <span><span class="co">## }</span></span>
-<span><span class="co">## &lt;bytecode: 0x000001436ad83a08&gt;</span></span>
+<span><span class="co">## &lt;bytecode: 0x0000024b8c91a350&gt;</span></span>
 <span><span class="co">## &lt;environment: namespace:dsos&gt;</span></span></code></pre></div>
 </div>
 <div class="section level2">

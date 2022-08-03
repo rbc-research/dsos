@@ -77,7 +77,7 @@ related, if not quite proportional, to densities.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">score_od</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span>, n_trees <span class="op">=</span> <span class="fl">500L</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">score_od</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span>, n_trees <span class="op">=</span> <span class="fl">500L</span>, threshold <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -92,6 +92,12 @@ related, if not quite proportional, to densities.</p>
 
 <dt>n_trees</dt>
 <dd><p>The number of trees in isolation forest.</p></dd>
+
+
+<dt>threshold</dt>
+<dd><p>Decision threshold. Set to a default value of 0.6,
+following Chabchoub et al. (2022). Outlier scores higher than the threshold
+are considered outliers, and lower values are inliers.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -108,7 +114,9 @@ related, if not quite proportional, to densities.</p>
 <p>Isolation forest detects <em>isolated</em> points that are typically
 out-of-distribution relative to the high-density regions of the data
 distribution. Any performant method for density-based out-of-distribution
-detection can replace isolation forest.</p>
+detection can replace isolation forest. The decision threshold,
+<code>threshold</code>, clips (winsorizes) the scores so that lower scores are
+set to the threshold value.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -116,10 +124,9 @@ detection can replace isolation forest.</p>
 <em>Isolation forest</em>.
 In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422).
 IEEE.</p>
-<p>Liu, F. T., Ting, K. M., &amp; Zhou, Z. H. (2008, December).
-<em>Isolation forest</em>.
-In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422).
-IEEE.</p>
+<p>Chabchoub, Y., Togbe, M. U., Boly, A., &amp; Chiky, R. (2022).
+<em>An in-depth study and improvement of Isolation Forest.</em>.
+IEEE Access, 10, 10219-10237.</p>
 <p>#' @details
 <code>score_od</code> first fits to the training data and then predict in-sample
 for this reference sample. Then it predicts out-of-sample for the test set.
@@ -161,19 +168,19 @@ algorithm for every permutation.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $train</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3753964 0.4043460 0.4090165 0.4135527 0.3875173 0.4947527 0.4389369 0.3733530 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         9        10        11        12        13        14        15        16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.4561188 0.4524285 0.4089142 0.4073493 0.4583304 0.5705865 0.5719517 0.5770200 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        17        18        19        20        21        22        23        24 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5056910 0.3945233 0.5150036 0.4179205 0.4780639 0.4358804 0.5548246 0.5240163 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        25        26        27        28        29        30        31        32 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5431018 0.4380668 0.4399479 0.3819047 0.3866292 0.4167446 0.4151566 0.4680340 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        33        34        35        36        37        38        39        40 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5214917 0.5025276 0.3894873 0.4480157 0.4620340 0.4493384 0.4458848 0.3725360 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        41        42        43        44        45        46        47        48 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.4247801 0.6042614 0.4398423 0.5568473 0.5573556 0.4421946 0.4300366 0.4009627 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6000000 0.6042614 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 0.6000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        49        50 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3956318 0.3752075 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6000000 0.6000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

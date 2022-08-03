@@ -141,7 +141,7 @@ pt_oob <- function(x_train, x_test, scorer, n_pt = 2e3) {
     scorer = scorer,
     n_pt = n_pt,
     is_oob = TRUE
-    )
+  )
   return(result)
 }
 
@@ -184,6 +184,6 @@ pt_refit <- function(x_train, x_test, scorer, n_pt = 2e3) {
     scorer = scorer,
     n_pt = n_pt,
     is_oob = FALSE
-    )
+  )
   return(result)
 }

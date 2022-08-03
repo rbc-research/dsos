@@ -11,6 +11,9 @@
 #' @param x_train Training (reference) sample.
 #' @param x_test Test sample.
 #' @param n_trees The number of trees in isolation forest.
+#' @param threshold Decision threshold. Set to a default value of 0.6,
+#' following Chabchoub et al. (2022). Outlier scores higher than the threshold
+#' are considered outliers, and lower values are inliers.
 #'
 #' @return
 #' A named list or object of class \code{outlier.test} containing:
@@ -23,17 +26,18 @@
 #' Isolation forest detects \emph{isolated} points that are typically
 #' out-of-distribution relative to the high-density regions of the data
 #' distribution. Any performant method for density-based out-of-distribution
-#' detection can replace isolation forest.
+#' detection can replace isolation forest. The decision threshold,
+#' \code{threshold}, clips (winsorizes) the scores so that lower scores are
+#' set to the threshold value.
 #'
 #' @references Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December).
 #' \emph{Isolation forest}.
 #' In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422).
 #' IEEE.
 #'
-#' @references Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December).
-#' \emph{Isolation forest}.
-#' In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422).
-#' IEEE.
+#' @references Chabchoub, Y., Togbe, M. U., Boly, A., & Chiky, R. (2022).
+#' \emph{An in-depth study and improvement of Isolation Forest.}.
+#' IEEE Access, 10, 10219-10237.
 #'
 #' #' @details
 #' \code{score_od} first fits to the training data and then predict in-sample
@@ -55,7 +59,7 @@
 #' @family scoring
 #'
 #' @export
-score_od <- function(x_train, x_test, n_trees = 500L) {
+score_od <- function(x_train, x_test, n_trees = 500L, threshold = 0.6) {
 
   # First fit models
   iso_fit <- isotree::isolation.forest(
@@ -66,6 +70,10 @@ score_od <- function(x_train, x_test, n_trees = 500L) {
   # Then predict
   os_train <- predict(iso_fit, newdata = x_train)
   os_test <- predict(iso_fit, newdata = x_test)
+
+  # Apply decision threshold according to Chabchoub et al. (2022)
+  os_train[os_train < threshold] <- threshold
+  os_test[os_test < threshold] <- threshold
   return(list(test = os_test, train = os_train))
 }
 

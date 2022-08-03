@@ -72,23 +72,31 @@ test_that("Permutation versus asymptotic", {
   expect_lte(diff_from_samples(versicolor, virginica), s_rope)
 })
 
-test_that("Splits with class probabilities", {
-  expect_lte(
-    abs_diff(
-      pt_oob(iris_train, iris_test, scorer = score_cp)$p_value,
-      pt_oob(stratefied_train, stratefied_test, scorer = score_cp)$p_value
-    ),
-    s_rope
+test_that("Random splits with class probabilities", {
+  expect_gte(
+    pt_oob(iris_train, iris_test, scorer = score_cp)$p_value,
+    alpha
   )
 })
 
-test_that("Splits with outlier scores", {
-  expect_lte(
-    abs_diff(
-      pt_refit(iris_train, iris_test, scorer = score_od)$p_value,
-      pt_refit(stratefied_train, stratefied_test, scorer = score_od)$p_value
-    ),
-    s_rope
+test_that("Stratefied (balanced) splits with class probabilities", {
+  expect_gte(
+    pt_oob(stratefied_train, stratefied_test, scorer = score_cp)$p_value,
+    alpha
+  )
+})
+
+test_that("Random splits with outlier scores", {
+  expect_gte(
+    pt_refit(iris_train, iris_test, scorer = score_od)$p_value,
+    alpha
+  )
+})
+
+test_that("Stratefied (balanced) splits with outlier scores", {
+  expect_gte(
+    pt_refit(stratefied_train, stratefied_test, scorer = score_od)$p_value,
+    alpha
   )
 })
 
