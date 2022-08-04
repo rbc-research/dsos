@@ -56,7 +56,7 @@ stack_data <- function(x_train, x_test, response_name = "label") {
 
 #' @noRd
 #' @keywords  internal
-permute_wauc_from_data <- function(data, n_shuffle, scorer) {
+permute_from_data <- function(data, n_shuffle, scorer) {
   shuffled <- shuffle_data(data, n_shuffle)
   wauc_stat <- wauc_from_data(
     x_train = shuffled[["train"]],
@@ -68,7 +68,7 @@ permute_wauc_from_data <- function(data, n_shuffle, scorer) {
 
 #' @noRd
 #' @keywords  internal
-permute_wauc_from_os <- function(data, n_shuffle) {
+permute_from_os <- function(data, n_shuffle) {
   shuffled <- shuffle_os(data, n_shuffle)
   wauc_stat <- wauc_from_os(
     os_train = shuffled[["train"]],

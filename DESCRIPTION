@@ -24,8 +24,7 @@ Imports:
     ranger (>= 0.12.1),
     scales (>= 1.1.1),
     simctest (>= 2.6),
-    stats (>= 3.6.1),
-    WeightedROC (>= 2020.1.31)
+    stats (>= 3.6.1)
 Suggests: 
     fdrtool (>= 1.2.16),
     knitr (>= 1.33),
