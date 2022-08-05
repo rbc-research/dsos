@@ -32,7 +32,7 @@ exchangeable_null <- function(x_train,
   x_test <- data.table::as.data.table(x_test)
 
   # Get observed wauc and helper functions
-  helper <- wauc_helper(x_train, x_test, scorer)
+  helper <- wauc_helper(x_train, x_test, scorer, weight = NULL)
   test_stat <- helper$test_stat
   if (is_oob) {
     permute_fn <- helper$permute_os_fn
@@ -111,12 +111,12 @@ exchangeable_null <- function(x_train,
 #'
 #' # First example: residual diagnostics
 #' scorer_1 <- function(x_train, x_test) score_rd(x_train, x_test, response_name = "Species")
-#' rd_test <- pt_oob(x_train, x_test, scorer = scorer_1)
+#' rd_test <- pt_oob(xy_train, xy_test, scorer = scorer_1)
 #' str(rd_test)
 #'
 #' # Second example: prediction uncertainty
 #' scorer_2 <- function(x_train, x_test) score_rue(x_train, x_test, response_name = "Species")
-#' rue_test <- pt_oob(x_train, x_test, scorer = scorer_2)
+#' rue_test <- pt_oob(xy_train, xy_test, scorer = scorer_2)
 #' str(rue_test)
 #'
 #' # Third example: sample memberships (class probabilities)

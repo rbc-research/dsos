@@ -7,23 +7,23 @@ weights_from_contamined <- function(contamination_rate) {
 
 #' @noRd
 #' @keywords  internal
-weight_function <- function(os_train) {
+make_threshold_fn <- function(os_train) {
   # Create empirical cumulative distribution function
   fn <- stats::ecdf(os_train)
 
   # Create function closure
-  weighter <- function(os) {
-    contamination_rate <- 1 - fn(os)
-    weights <- weights_from_contamined(contamination_rate)
+  weight_fn <- function(os) {
+    contamined <- 1 - fn(os)
+    weights <- weights_from_contamined(contamined)
     return(weights)
   }
 
-  return(weighter)
+  return(weight_fn)
 }
 
 #' @noRd
 #' @keywords  internal
-weighted_roc <- function(guess, label, weight = rep(1, length(label))) {
+weighted_roc <- function(score, label, weight = rep(1, length(label))) {
   # Copied this function from WeightedROC package. See:
   # https://github.com/tdhock/WeightedROC/blob/master/R/ROC.R
   if (is.factor(label)) {
@@ -43,18 +43,18 @@ weighted_roc <- function(guess, label, weight = rep(1, length(label))) {
     label[label == 2] <- 1
   }
   stopifnot(label %in% c(-1, 1))
-  stopifnot(is.numeric(guess))
-  stopifnot(length(label) == length(guess))
-  if (any(is.na(guess))) {
-    stop("ROC curve undefined for NA guess")
+  stopifnot(is.numeric(score))
+  stopifnot(length(label) == length(score))
+  if (any(is.na(score))) {
+    stop("ROC curve undefined for NA score")
   }
   stopifnot(is.numeric(weight))
   stopifnot(length(label) == length(weight))
   stopifnot(weight > 0)
-  ord <- order(guess)
+  ord <- order(score)
   y <- label[ord]
   w <- weight[ord]
-  y_hat <- guess[ord]
+  y_hat <- score[ord]
   is_positive <- y == 1
   is_negative <- y == -1
   w_positive <- w_negative <- w
@@ -79,18 +79,21 @@ weighted_roc <- function(guess, label, weight = rep(1, length(label))) {
 
 #' @noRd
 #' @keywords  internal
-wauc <- function(y, prob, weighter) {
+wauc <- function(label,
+                 score,
+                 threshold_fn,
+                 weight = rep(1, length(label))) {
   # Handle edge cases: same score is assigned to all observations.
-  n_unique <- length(unique(prob))
+  n_unique <- length(unique(score))
   if (n_unique < 2L) {
     return(1 / 12)
   }
 
   # Get tpr and fpr
-  tpr_fpr <- weighted_roc(guess = prob, label = y)
+  tpr_fpr <- weighted_roc(score, label, weight = weight)
 
   # Get threshold weights
-  tpr_fpr$width_factor <- weighter(tpr_fpr$threshold)
+  tpr_fpr$width_factor <- threshold_fn(tpr_fpr$threshold)
 
   # Calculate widths
   right <- tpr_fpr[-nrow(tpr_fpr), ]
@@ -140,32 +143,39 @@ wauc <- function(y, prob, weighter) {
 #' In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.
 #'
 #' @export
-wauc_from_os <- function(os_train, os_test) {
-  # Pool instance labels and weights
-  actual_pooled <- c(
-    rep(0L, length(os_train)),
-    rep(1L, length(os_test))
+wauc_from_os <- function(os_train, os_test, weight = NULL) {
+  # Pool instance labels
+  n_train <- length(os_train)
+  n_test <- length(os_test)
+  label <- c(rep(0L, n_train), rep(1L, n_test))
+
+  # Create weights if missing
+  if (is.null(weight)) weight <- rep(1, n_train + n_test)
+  stopifnot(
+    length(weight) == n_train + n_test,
+    all(weight >= 0)
   )
 
   # Pool outlier scores
-  predicted_pooled <- c(os_train, os_test)
+  score <- c(os_train, os_test)
 
   # Create function to weigh thresholds
-  weighter <- weight_function(os_train)
+  fn <- make_threshold_fn(os_train)
 
   # Calculate WAUC
-  wauc_stat <- wauc(actual_pooled, predicted_pooled, weighter)
+  wauc_stat <- wauc(label, score, threshold_fn = fn, weight = weight)
   return(wauc_stat)
 }
 
 #' @noRd
 #' @keywords  internal
-wauc_and_os <- function(os_train, os_test) {
+wauc_and_os <- function(os_train, os_test, weight = NULL) {
 
   # Run test on outlier scores
   wauc_stat <- wauc_from_os(
     os_train = os_train,
-    os_test = os_test
+    os_test = os_test,
+    weight = weight
   )
   os_list <- list(train = os_train, test = os_test)
   result_list <- list(wauc = wauc_stat, outlier_scores = os_list)
@@ -174,21 +184,25 @@ wauc_and_os <- function(os_train, os_test) {
 
 #' @noRd
 #' @keywords  internal
-wauc_from_data <- function(x_train, x_test, scorer) {
+wauc_from_data <- function(x_train, x_test, scorer, weight = NULL) {
   # Get list of outlier scores
   os_list <- scorer(x_train, x_test)
 
   # Calculate stats for two-sample test
-  result_list <- wauc_and_os(os_list[["train"]], os_list[["test"]])
+  result_list <- wauc_and_os(
+    os_list[["train"]],
+    os_list[["test"]],
+    weight = weight
+  )
   return(result_list)
 }
 
 #' @noRd
 #' @keywords  internal
-wauc_helper <- function(x_train, x_test, scorer) {
+wauc_helper <- function(x_train, x_test, scorer, weight = NULL) {
 
   # Get observed wauc and outlier scores
-  observed <- wauc_from_data(x_train, x_test, scorer)
+  observed <- wauc_from_data(x_train, x_test, scorer, weight)
   test_stat <- observed$wauc
   os_list <- observed$outlier_scores
 
