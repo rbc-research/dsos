@@ -7,9 +7,9 @@ weights_from_contamined <- function(contamination_rate) {
 
 #' @noRd
 #' @keywords  internal
-make_threshold_fn <- function(os_train) {
+make_threshold_fn <- function(os_train, weight = rep(1, length(os_train))) {
   # Create empirical cumulative distribution function
-  fn <- stats::ecdf(os_train)
+  fn <- ewcdf(os_train, weight)
 
   # Create function closure
   weight_fn <- function(os) {

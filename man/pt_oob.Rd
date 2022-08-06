@@ -62,12 +62,12 @@ xy_test <- iris[-idx, ]
 
 # First example: residual diagnostics
 scorer_1 <- function(x_train, x_test) score_rd(x_train, x_test, response_name = "Species")
-rd_test <- pt_oob(x_train, x_test, scorer = scorer_1)
+rd_test <- pt_oob(xy_train, xy_test, scorer = scorer_1)
 str(rd_test)
 
 # Second example: prediction uncertainty
 scorer_2 <- function(x_train, x_test) score_rue(x_train, x_test, response_name = "Species")
-rue_test <- pt_oob(x_train, x_test, scorer = scorer_2)
+rue_test <- pt_oob(xy_train, xy_test, scorer = scorer_2)
 str(rue_test)
 
 # Third example: sample memberships (class probabilities)
