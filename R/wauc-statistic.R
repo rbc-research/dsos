@@ -123,6 +123,10 @@ wauc <- function(label,
 #'
 #' @param os_train Outlier scores in training set.
 #' @param os_test Outlier scores in test set.
+#' @param weight Numeric vector of weights of length
+#' \code{length(os_train) + length(os_test)}. The first \code{length(os_train)}
+#' weights belongs to the training set, the rest is for the test set. If
+#' \code{NULL}, the default, all weights are set to 1.
 #'
 #' @return
 #' The value (scalar) of the weighted AUC given the weighting scheme.
@@ -160,7 +164,8 @@ wauc_from_os <- function(os_train, os_test, weight = NULL) {
   score <- c(os_train, os_test)
 
   # Create function to weigh thresholds
-  fn <- make_threshold_fn(os_train)
+  w_train <- weight[1:n_train]
+  fn <- make_threshold_fn(os_train, weight = w_train)
 
   # Calculate WAUC
   wauc_stat <- wauc(label, score, threshold_fn = fn, weight = weight)
