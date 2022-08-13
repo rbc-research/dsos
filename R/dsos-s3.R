@@ -53,7 +53,7 @@ annotate_pvalue <- function(p_value) {
     label = scales::pvalue(p_value, add_p = TRUE),
     hjust = 0,
     vjust = 1,
-    size = 10
+    size = 9
   )
   return(pvalue_layer)
 }

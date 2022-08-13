@@ -33,29 +33,71 @@ we have both a training set, the reference distribution, and a test set.
 
 ## Installation
 
-If the package is on [CRAN](https://CRAN.R-project.org), install with
-
-```{r cran, eval=FALSE}
-install.packages("dsos")
-```
-
-From GitHub, install with:
+From GitHub (which includes updates and improvements), install with:
 
 ```{r github, eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("vathymut/dsos")
 ```
 
-## Example
+The package is also on [CRAN](https://CRAN.R-project.org), although it
+lags behind. I recommend the package on GitHub over CRAN for now. The package
+on CRAN (v0.1.0) will eventually be updated to reflect recent changes. From
+CRAN, install the package with:
 
-Use `dsos` to test for adverse shift on the
-[`iris`](https://en.wikipedia.org/wiki/Iris_flower_data_set) dataset.
-Here, the outlier scores are from extended isolation forest for
-density-based out-of-distribution (OOD) detection:
+```{r cran, eval=FALSE}
+install.packages("dsos")
+```
 
-```{r example, eval=TRUE}
+## Quick Start
+
+Use simulated outlier scores to test for no adverse shift when the null (no
+difference) holds. First, we use the permutation test:
+
+```{r null_pt, eval=TRUE}
 library(dsos)
 set.seed(12345)
+n <- 6e2
+os_train <- rnorm(n=n)
+os_test <- rnorm(n=n)
+null_pt <- pt_from_os(os_train, os_test)
+plot(null_pt)
+```
+
+We can also use the (faster) asymptotic test:
+
+```{r null_at, eval=TRUE}
+null_at <- at_from_os(os_train, os_test)
+plot(null_at)
+```
+In both cases, we fail to reject the null of no adverse shift.
+
+We can repeat this exercise when there is an adverse shift. Again, with
+the permutation test:
+
+```{r shift_pt, eval=TRUE}
+os_shift <- rnorm(n=n, mean=0.2)
+shift_pt <- pt_from_os(os_train, os_shift)
+plot(shift_pt)
+```
+
+Once more, with the asymptotic test:
+
+```{r shift_at, eval=TRUE}
+shift_at <- at_from_os(os_train, os_shift)
+plot(shift_at)
+```
+We would reject the null of no adverse shift in both cases: the test set
+is worse off when compared to the reference (training) scores.
+
+## Custom scoring functions
+
+We can use `dsos` to test for adverse shift on the
+[`iris`](https://en.wikipedia.org/wiki/Iris_flower_data_set) dataset.
+Here, the outlier scores are from isolation forest for
+density-based out-of-distribution (OOD) detection:
+
+```{r iris, eval=TRUE}
 data(iris)
 versicolor <- iris[51:100,1:4] # Training sample: Species == 'versicolor'
 virginica <- iris[101:150,1:4] # Test sample: Species == 'virginica'
@@ -63,8 +105,9 @@ iris_test <- pt_refit(x_train = versicolor, x_test = virginica, scorer = score_o
 plot(iris_test)
 ```
 
-Among others, `dsos` also implements a method for confidence-based OOD detection
-via prediction (resampling) uncertainty.
+`dsos` also implements a method for confidence-based OOD detection
+via prediction uncertainty. Users can easily bring their own scores via the
+scoring function when needed.
 
 ## Reference
 
