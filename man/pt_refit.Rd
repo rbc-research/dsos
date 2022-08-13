@@ -30,9 +30,10 @@ A named list of class \code{outlier.test} containing:
 }
 \description{
 Test for no adverse shift with outlier scores. Like goodness-of-fit testing,
-this two-sample comparison takes the training set, \code{x_train}, as the
-the reference. The method checks whether the test set, \code{x_test}, is
-worse off relative to this reference distribution.
+this two-sample comparison takes the training set, \code{x_train} or
+\code{os_train}, as the reference. The method checks whether the test set,
+\code{x_test} or \code{os_test}, is worse off relative to this reference
+set.
 }
 \details{
 The empirical null distribution uses \code{n_pt} permutations to estimate
@@ -82,6 +83,7 @@ Journal of the Royal Statistical Society: Series C (Applied Statistics), 59(4), 
 [at_oob()] for p-value approximation from asymptotic null distribution.
 
 Other permutation-test: 
+\code{\link{pt_from_os}()},
 \code{\link{pt_oob}()}
 }
 \concept{permutation-test}

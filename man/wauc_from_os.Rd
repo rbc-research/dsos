@@ -7,7 +7,7 @@
 wauc_from_os(os_train, os_test, weight = NULL)
 }
 \arguments{
-\item{os_train}{Outlier scores in training set.}
+\item{os_train}{Outlier scores in training (reference) set.}
 
 \item{os_test}{Outlier scores in test set.}
 
@@ -29,8 +29,8 @@ from threshold scores.
 \donttest{
 library(dsos)
 set.seed(12345)
-os_train <- runif(n = 100)
-os_test <- runif(n = 100)
+os_train <- rnorm(n = 100)
+os_test <- rnorm(n = 100)
 test_stat <- wauc_from_os(os_train, os_test)
 }
 

@@ -72,7 +72,7 @@ asymptotic_os <- function(os_train, os_test) {
 #' and can, as a result, be much faster because it sidesteps the need to refit
 #' the scoring function \code{scorer}. This works well for large samples. The
 #' prefix \emph{at} stands for asymptotic test to tell it apart from the
-#' prefix \emph{pt}, the permutation based variant.
+#' prefix \emph{pt}, the permutation test.
 #'
 #' @examples
 #' \donttest{
@@ -85,12 +85,12 @@ asymptotic_os <- function(os_train, os_test) {
 #' # Sample memberships with sample splitting
 #' scorer_split <- function(x_train, x_test) split_cp(x_train, x_test)
 #' cp_test <- at_oob(setosa, versicolor, scorer = scorer_split)
-#' str(cp_test)
+#' cp_test
 #'
 #' # Sample memberships without sample splitting (out-of-bag predictions)
 #' scorer_oob <- function(x_train, x_test) score_cp(x_train, x_test)
 #' oob_test <- at_oob(setosa, versicolor, scorer = scorer_oob)
-#' str(oob_test)
+#' oob_test
 #' }
 #'
 #' @family asymptotic-test
@@ -108,9 +108,49 @@ at_oob <- function(x_train, x_test, scorer) {
   os_list <- scorer(x_train, x_test)
 
   # Gather test info
-  result <- asymptotic_os(
+  result <- at_from_os(
     os_train = os_list[["train"]],
     os_test = os_list[["test"]]
   )
+  return(result)
+}
+
+#' @title
+#' Asymptotic Test from Outlier Scores
+#'
+#' @param os_train Outlier scores in training (reference) set.
+#' @param os_test Outlier scores in test set.
+#'
+#' @inherit pt_oob description return references
+#' @inherit at_oob details
+#'
+#' @section Notes:
+#' These outlier scores should all be out-of-bag scores to mimic out-of-sample
+#' behaviour. Otherwise, the scores from the training (reference) distribution
+#' are biased (overfitted) whereas those from the test set are not. This
+#' mismatch -- in-sample training scores versus out-of-sample (out-of-bag) test
+#' scores -- would void the validity of the statistical test. A simple fix for
+#' this, without using resampling and/or permutations, is to get the training
+#' (reference) scores from a fresh (unused) validation set.
+#'
+#' @examples
+#' \donttest{
+#' library(dsos)
+#' set.seed(12345)
+#' os_train <- rnorm(n = 100)
+#' os_test <- rnorm(n = 100)
+#' test_result <- at_from_os(os_train, os_test)
+#' test_result
+#' }
+#'
+#' @family asymptotic-test
+#'
+#' @seealso
+#' [at_oob()] for variant requiring a scoring function.
+#' [pt_from_os()] for permutation test with the outlier scores.
+#'
+#' @export
+at_from_os <- function(os_train, os_test) {
+  result <- asymptotic_os(os_train, os_test)
   return(result)
 }

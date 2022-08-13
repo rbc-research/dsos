@@ -51,9 +51,10 @@ exchangeable_null <- function(x_train,
 #'
 #' @description
 #' Test for no adverse shift with outlier scores. Like goodness-of-fit testing,
-#' this two-sample comparison takes the training set, \code{x_train}, as the
-#' the reference. The method checks whether the test set, \code{x_test}, is
-#' worse off relative to this reference distribution.
+#' this two-sample comparison takes the training set, \code{x_train} or
+#' \code{os_train}, as the reference. The method checks whether the test set,
+#' \code{x_test} or \code{os_test}, is worse off relative to this reference
+#' set.
 #'
 #' @param x_train Training (reference/validation) sample.
 #' @param x_test Test sample.
@@ -186,4 +187,43 @@ pt_refit <- function(x_train, x_test, scorer, n_pt = 2e3) {
     is_oob = FALSE
   )
   return(result)
+}
+
+#' @title
+#' Permutation Test from Outlier Scores
+#'
+#' @param os_train Outlier scores in training (reference) set.
+#' @param os_test Outlier scores in test set.
+#' @param n_pt The number of permutations.
+#'
+#' @inherit at_from_os description return references
+#' @inherit pt_oob details
+#' @inheritSection at_from_os Notes
+#'
+#' @examples
+#' \donttest{
+#' library(dsos)
+#' set.seed(12345)
+#' os_train <- rnorm(n = 100)
+#' os_test <- rnorm(n = 100)
+#' test_result <- pt_from_os(os_train, os_test)
+#' test_result
+#' }
+#'
+#' @family permutation-test
+#'
+#' @seealso
+#' [pt_oob()] for variant requiring a scoring function.
+#' [at_from_os()] for asymptotic test with the outlier scores.
+#'
+#' @export
+pt_from_os <- function(os_train, os_test, n_pt = 2e3) {
+  wauc_stat <- wauc_from_os(os_train, os_test)
+  # Create function to permute test statistic
+  n_test <- length(os_test)
+  pooled_os <- c(os_train, os_test)
+  permute_fn <- function() permute_from_os(pooled_os, n_test)
+  test_list <- smc_pvalue(wauc_stat, permute_fn, n_pt)
+  test_list[["outlier_scores"]] <- list(train = os_train, test = os_test)
+  return(test_list)
 }

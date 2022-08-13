@@ -4,8 +4,8 @@ suppressPackageStartupMessages({
 })
 
 set.seed(123456)
-null_proportion <- 0.75
-n_obs <- 4e2
+null_proportion <- 0.9
+n_obs <- 5e2
 n_reps <- 2e3
 
 test_that("High null proportion", {
@@ -14,13 +14,25 @@ test_that("High null proportion", {
   pvalues <- replicate(
     n = n_reps,
     expr = {
-      x1 <- data.frame(x = rnorm(n_obs))
-      x2 <- data.frame(x = rnorm(n_obs))
-      cp_split <- at_oob(x1, x2, scorer = split_cp)
-      c(cp_split$p_value)
+      os_train <- rnorm(n_obs)
+      os_test <- rnorm(n_obs)
+      test_at <- at_from_os(os_train, os_test)
+      test_pt <- pt_from_os(os_train, os_test)
+      c(test_at$p_value, test_pt$p_value)
     }
   )
-  fdr_cp <- fdrtool::fdrtool(pvalues, statistic = "pvalue", plot = FALSE, verbose = FALSE)
-  expect_gt(fdr_cp$param[, "eta0"], null_proportion)
-  expect_gt(1.0, null_proportion)
+  fdr_at <- fdrtool::fdrtool(
+    pvalues[1, ],
+    statistic = "pvalue",
+    plot = FALSE,
+    verbose = FALSE
+  )
+  expect_gt(fdr_at$param[, "eta0"], null_proportion)
+  fdr_pt <- fdrtool::fdrtool(
+    pvalues[2, ],
+    statistic = "pvalue",
+    plot = FALSE,
+    verbose = FALSE
+  )
+  expect_gt(fdr_pt$param[, "eta0"], null_proportion)
 })
