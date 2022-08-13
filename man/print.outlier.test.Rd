@@ -22,11 +22,11 @@ Print result of test for no adverse shift.
 \examples{
 \donttest{
 set.seed(12345)
-data(iris)
-x_train <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
-x_test <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-iris_test <- pt_refit(x_train, x_test, scorer = score_od)
-iris_test
+os_train <- rnorm(n=3e2)
+os_test <- rnorm(n=3e2)
+test_to_print <- at_from_os(os_train, os_test)
+# Also: pt_from_os(os_train, os_test) for permutation test
+test_to_print
 }
 
 }

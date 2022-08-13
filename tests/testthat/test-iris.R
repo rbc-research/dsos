@@ -6,9 +6,9 @@ set.seed(12345)
 
 # Split samples by Species
 data(iris)
-setosa <- iris[1:50, 1:4] # Species == 'setosa'
-versicolor <- iris[51:100, 1:4] # Species == 'versicolor'
-virginica <- iris[101:150, 1:4] # Species == 'virginica'
+setosa <- iris[1:50, 1:4]
+versicolor <- iris[51:100, 1:4]
+virginica <- iris[101:150, 1:4]
 
 # Random split
 idx <- sample(nrow(iris), 2 / 3 * nrow(iris))
@@ -43,25 +43,41 @@ diff_from_samples <- function(x_train, x_test) {
   abs_diff(permutations$p_value, asymptotic$p_value)
 }
 
-test_that("Separate species", {
+test_that("Separate species (ranger)", {
+  skip_if_not_installed("ranger")
+
   expect_lt(at_oob(setosa, virginica, scorer = score_cp)$p_value, alpha)
   expect_lt(at_oob(setosa, versicolor, scorer = score_cp)$p_value, alpha)
   expect_lt(at_oob(versicolor, virginica, scorer = score_cp)$p_value, alpha)
+})
+
+test_that("Separate species (isotree)", {
+  skip_if_not_installed("isotree")
+
   expect_lt(pt_refit(setosa, virginica, scorer = score_od)$p_value, alpha)
   expect_lt(pt_refit(setosa, versicolor, scorer = score_od)$p_value, alpha)
   expect_lt(pt_refit(versicolor, virginica, scorer = score_od)$p_value, alpha)
 })
 
-test_that("Same species", {
+test_that("Same species (ranger)", {
+  skip_if_not_installed("ranger")
+
   expect_gt(at_oob(setosa, setosa, scorer = score_cp)$p_value, alpha)
   expect_gt(at_oob(versicolor, versicolor, scorer = score_cp)$p_value, alpha)
   expect_gt(at_oob(virginica, virginica, scorer = score_cp)$p_value, alpha)
+})
+
+test_that("Same species (isotree)", {
+  skip_if_not_installed("isotree")
+
   expect_gt(pt_refit(setosa, setosa, scorer = score_od)$p_value, alpha)
   expect_gt(pt_refit(versicolor, versicolor, scorer = score_od)$p_value, alpha)
   expect_gt(pt_refit(virginica, virginica, scorer = score_od)$p_value, alpha)
 })
 
 test_that("Permutation versus asymptotic", {
+  skip_if_not_installed("ranger")
+
   # Iris: random splits
   expect_lte(diff_from_samples(iris_train, iris_test), s_rope)
   expect_lte(diff_from_samples(stratefied_train, stratefied_test), s_rope)
@@ -73,6 +89,8 @@ test_that("Permutation versus asymptotic", {
 })
 
 test_that("Random splits with class probabilities", {
+  skip_if_not_installed("ranger")
+
   expect_gte(
     pt_oob(iris_train, iris_test, scorer = score_cp)$p_value,
     alpha
@@ -80,6 +98,8 @@ test_that("Random splits with class probabilities", {
 })
 
 test_that("Stratefied (balanced) splits with class probabilities", {
+  skip_if_not_installed("ranger")
+
   expect_gte(
     pt_oob(stratefied_train, stratefied_test, scorer = score_cp)$p_value,
     alpha
@@ -87,6 +107,8 @@ test_that("Stratefied (balanced) splits with class probabilities", {
 })
 
 test_that("Random splits with outlier scores", {
+  skip_if_not_installed("isotree")
+
   expect_gte(
     pt_refit(iris_train, iris_test, scorer = score_od)$p_value,
     alpha
@@ -94,6 +116,8 @@ test_that("Random splits with outlier scores", {
 })
 
 test_that("Stratefied (balanced) splits with outlier scores", {
+  skip_if_not_installed("isotree")
+
   expect_gte(
     pt_refit(stratefied_train, stratefied_test, scorer = score_od)$p_value,
     alpha
@@ -101,6 +125,8 @@ test_that("Stratefied (balanced) splits with outlier scores", {
 })
 
 test_that("Splits with prediction uncertainty", {
+  skip_if_not_installed("ranger")
+
   scorer <- function(tr, te) score_rue(tr, te, response_name = "Species")
   expect_gte(
     abs_diff(
@@ -113,6 +139,8 @@ test_that("Splits with prediction uncertainty", {
 
 
 test_that("Random splits with out-of-bag residuals", {
+  skip_if_not_installed("ranger")
+
   scorer <- function(tr, te) score_rd(tr, te, response_name = "Species")
   expect_gte(
     abs_diff(

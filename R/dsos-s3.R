@@ -91,11 +91,11 @@ prep_os_data <- function(x) {
 #' @examples
 #' \donttest{
 #' set.seed(12345)
-#' data(iris)
-#' x_train <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
-#' x_test <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-#' iris_test <- pt_refit(x_train, x_test, scorer = score_od)
-#' plot(iris_test)
+#' os_train <- rnorm(n=3e2)
+#' os_test <- rnorm(n=3e2)
+#' test_to_plot <- at_from_os(os_train, os_test)
+#' # Also: pt_from_os(os_train, os_test) for permutation test
+#' plot(test_to_plot)
 #' }
 #'
 #' @family s3-method
@@ -129,11 +129,11 @@ plot.outlier.test <- function(x, ...) {
 #' @examples
 #' \donttest{
 #' set.seed(12345)
-#' data(iris)
-#' x_train <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
-#' x_test <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-#' iris_test <- pt_refit(x_train, x_test, scorer = score_od)
-#' iris_test
+#' os_train <- rnorm(n=3e2)
+#' os_test <- rnorm(n=3e2)
+#' test_to_print <- at_from_os(os_train, os_test)
+#' # Also: pt_from_os(os_train, os_test) for permutation test
+#' test_to_print
 #' }
 #'
 #' @family s3-method
@@ -160,7 +160,7 @@ print.outlier.test <- function(x, n = 5, ...) {
             ") from the training (reference) sample:\n"
           )
     )
-  print(head(unname(x[["outlier_scores"]][["train"]]), n))
+  print(utils::head(unname(x[["outlier_scores"]][["train"]]), n))
   cat("\n")
   cat(
     paste0("The first ",
@@ -170,7 +170,7 @@ print.outlier.test <- function(x, n = 5, ...) {
             ") from the test sample:\n"
           )
     )
-  print(head(unname(x[["outlier_scores"]][["test"]]), n))
+  print(utils::head(unname(x[["outlier_scores"]][["test"]]), n))
   cat("\n")
   invisible(x)
 }

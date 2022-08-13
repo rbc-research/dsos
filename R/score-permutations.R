@@ -61,6 +61,13 @@
 #' @export
 score_od <- function(x_train, x_test, n_trees = 500L, threshold = 0.6) {
 
+  if (!requireNamespace("isotree", quietly = TRUE)) {
+    stop(
+      "Package \"isotree\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
+
   # First fit models
   iso_fit <- isotree::isolation.forest(
     data = x_train,
@@ -130,6 +137,13 @@ score_od <- function(x_train, x_test, n_trees = 500L, threshold = 0.6) {
 #'
 #' @export
 score_rd <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
+
+  if (!requireNamespace("ranger", quietly = TRUE)) {
+    stop(
+      "Package \"ranger\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
 
   # First fit models
   rf_args <- classifier_args(
@@ -209,6 +223,13 @@ score_rd <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 #' @export
 score_rue <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 
+  if (!requireNamespace("ranger", quietly = TRUE)) {
+    stop(
+      "Package \"ranger\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
+
   # First fit models
   rue_args <- classifier_args(
     data = x_train,
@@ -272,6 +293,13 @@ score_rue <- function(x_train, x_test, n_trees = 500L, response_name = "label") 
 #'
 #' @export
 score_cp <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
+
+  if (!requireNamespace("ranger", quietly = TRUE)) {
+    stop(
+      "Package \"ranger\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
 
   # First fit models
   rf_data <- stack_data(x_train, x_test, response_name = response_name)

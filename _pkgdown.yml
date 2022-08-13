@@ -11,11 +11,13 @@ reference:
     contents:
       - pt_refit
       - pt_oob
+      - pt_from_os
   - title: "AT - Asymptotic Test"
     desc: >
       Test for no adverse shift using the asymptotic null distribution.
     contents:
       - at_oob
+      - at_from_os
   - title: "Scoring Functions"
     desc: >
       Functions to compute outlier scores based on out-of-bag approximations

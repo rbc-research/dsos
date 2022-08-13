@@ -72,6 +72,7 @@ Journal of the Royal Statistical Society: Series C (Applied Statistics), 59(4), 
 }
 \seealso{
 [at_oob()] for variant requiring a scoring function.
+[pt_from_os()] for permutation test with the outlier scores.
 
 Other asymptotic-test: 
 \code{\link{at_oob}()}

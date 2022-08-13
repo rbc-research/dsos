@@ -98,8 +98,8 @@ bf_empirical_null <- function(os_train,
                               n_pt = 4e3,
                               alpha = 0.5) {
   sampler <- bb_prior_and_posterior(os_train, os_test, n_pt = n_pt)
-  critical_value <- quantile(sampler$prior, probs = 1 - alpha, names = FALSE)
-  tail_prob <- 1 - ecdf(sampler$posterior)(critical_value)
+  critical_value <- stats::quantile(sampler$prior, probs = 1 - alpha, names = FALSE)
+  tail_prob <- 1 - stats::ecdf(sampler$posterior)(critical_value)
   bayes_factor <- tail_prob / (1 - tail_prob)
   result <- list(
     prior = sampler$prior,
@@ -119,7 +119,7 @@ bf_asymptotic_null <- function(os_train,
                                n_pt = 4e3,
                                critical_value = 1 / 12) {
   posterior <- bb_posterior(os_train, os_test, n_pt = n_pt)
-  tail_prob <- 1 - ecdf(posterior)(critical_value)
+  tail_prob <- 1 - stats::ecdf(posterior)(critical_value)
   bayes_factor <- tail_prob / (1 - tail_prob)
   result <- list(
     posterior = posterior,
@@ -137,9 +137,9 @@ bf_compare <- function(os_train,
                        alpha = 0.5,
                        cutoff_asymptotic = 1 / 12) {
   sampler <- bb_prior_and_posterior(os_train, os_test, n_pt = n_pt)
-  cutoff_empirical <- quantile(sampler$prior, probs = 1 - alpha, names = FALSE)
-  tail_empirical <- 1 - ecdf(sampler$posterior)(cutoff_empirical)
-  tail_asymptotic <- 1 - ecdf(sampler$posterior)(cutoff_asymptotic)
+  cutoff_empirical <- stats::quantile(sampler$prior, probs = 1 - alpha, names = FALSE)
+  tail_empirical <- 1 - stats::ecdf(sampler$posterior)(cutoff_empirical)
+  tail_asymptotic <- 1 - stats::ecdf(sampler$posterior)(cutoff_asymptotic)
   bf_empirical <- tail_empirical / (1 - tail_empirical)
   bf_asymptotic <- tail_asymptotic / (1 - tail_asymptotic)
   result <- list(

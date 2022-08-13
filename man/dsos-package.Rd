@@ -6,7 +6,7 @@
 \alias{dsos-package}
 \title{dsos: Dataset Shift with Outlier Scores}
 \description{
-Test for no adverse shift in two-sample comparison when we have a training set, the reference distribution, and a test set. The approach is flexible (extensible) and relies on a robust and powerful test statistic, the weighted AUC.
+Test for no adverse shift in two-sample comparison when we have a training set, the reference distribution, and a test set. The approach is flexible (extensible) and relies on a robust and powerful test statistic, the weighted AUC. See Kamulete, V. M. (2021) \href{https://arxiv.org/abs/1908.04000}{arXiv:1908.04000} for details. Outlier scores such as trust scores and prediction uncertainty can be used as the basis for comparison for example.
 }
 \seealso{
 Useful links:

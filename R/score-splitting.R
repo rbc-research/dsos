@@ -42,6 +42,13 @@
 #' @export
 split_cp <- function(x_train, x_test, n_trees = 500L, response_name = "label") {
 
+  if (!requireNamespace("ranger", quietly = TRUE)) {
+    stop(
+      "Package \"ranger\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
+
   # Split datasets
   train_splits <- split_data(x_train, sub_ratio = 1 / 2)
   test_splits <- split_data(x_test, sub_ratio = 1 / 2)

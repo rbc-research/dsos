@@ -87,7 +87,7 @@ ewcdf <- function(score, weight = rep(1, length(score))) {
     w <- weight[sorted]
     effective_n <- sum(w)
     pct <- cumsum(w) / effective_n
-    rval <- approxfun(
+    rval <- stats::approxfun(
       x,
       pct,
       method = "constant",
