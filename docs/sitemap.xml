@@ -25,6 +25,9 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/at_from_os.html</loc>
+  </url>
+  <url>
     <loc>/reference/at_oob.html</loc>
   </url>
   <url>
@@ -35,6 +38,12 @@
   </url>
   <url>
     <loc>/reference/plot.outlier.test.html</loc>
+  </url>
+  <url>
+    <loc>/reference/print.outlier.test.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pt_from_os.html</loc>
   </url>
   <url>
     <loc>/reference/pt_oob.html</loc>

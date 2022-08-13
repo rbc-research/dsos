@@ -92,7 +92,7 @@ Kamulete</h4>
 Canada<br><a class="author_email" href="mailto:#"></a><a href="mailto:vathy.kamulete@rbc.com" class="email">vathy.kamulete@rbc.com</a>
       </address>
                   
-            <h4 data-toc-skip class="date">Last Updated: 2022-08-03</h4>
+            <h4 data-toc-skip class="date">Last Updated: 2022-08-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vathymut/dsos/blob/HEAD/vignettes/diy-score.Rmd" class="external-link"><code>vignettes/diy-score.Rmd</code></a></small>
       <div class="hidden name"><code>diy-score.Rmd</code></div>
@@ -111,20 +111,26 @@ denote the R package as <code>dsos</code>, to avoid confusion with
 <p>We show how easy it is to implement <code>D-SOS</code> for a
 particular notion of outlyingness. Suppose we want to test for no
 adverse shift based on isolation scores in the context of two-sample
-comparison. To do so, we need two main ingredients: a score function and
-a method to compute the <span class="math inline">\(p-\)</span>value.</p>
+comparison. To do so, we need two main ingredients: a scoring function
+and a method to compute the <span class="math inline">\(p-\)</span>value.</p>
 <p>First, the scores are obtained using predictions from isolation
 forest with the <code>isotree</code> package <span class="citation">(Cortes 2020)</span>. Isolation forest detects
 <em>isolated</em> points, instances that are typically
 out-of-distribution relative to the high-density regions of the data
 distribution. Naturally, any performant method for density-based
 out-of-distribution detection can effectively be used to achieve the
-same goal. The internal function <code>outliers_no_split</code> shows
-the implementation of one such score function in the <code>dsos</code>
-package.</p>
+same goal. The function <code>score_od</code> shows the implementation
+of one such scoring function in the <code>dsos</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">dsos</span><span class="fu">::</span><span class="va"><a href="../reference/score_od.html">score_od</a></span></span>
 <span><span class="co">## function(x_train, x_test, n_trees = 500L, threshold = 0.6) {</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   if (!requireNamespace("isotree", quietly = TRUE)) {</span></span>
+<span><span class="co">##     stop(</span></span>
+<span><span class="co">##       "Package \"isotree\" must be installed to use this function.",</span></span>
+<span><span class="co">##       call. = FALSE</span></span>
+<span><span class="co">##     )</span></span>
+<span><span class="co">##   }</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##   # First fit models</span></span>
 <span><span class="co">##   iso_fit &lt;- isotree::isolation.forest(</span></span>
@@ -141,15 +147,15 @@ package.</p>
 <span><span class="co">##   os_test[os_test &lt; threshold] &lt;- threshold</span></span>
 <span><span class="co">##   return(list(test = os_test, train = os_train))</span></span>
 <span><span class="co">## }</span></span>
-<span><span class="co">## &lt;bytecode: 0x0000024b8c78bef8&gt;</span></span>
+<span><span class="co">## &lt;bytecode: 0x00000151fd814968&gt;</span></span>
 <span><span class="co">## &lt;environment: namespace:dsos&gt;</span></span></code></pre></div>
 <p>Second, we estimate the empirical null distribution for the <span class="math inline">\(p-\)</span>value via permutations. For speed, this
 is implemented as a sequential Monte Carlo test with the
 <code>simctest</code> package <span class="citation">(Gandy
-2009)</span>. The function <code>od_pt</code> in the <code>dsos</code>
-package combines scoring with inference. The prefix <em>od</em> stands
-for outlier detection and the suffix <em>pt</em>, for permutations. The
-code for <code>od_pt</code> is relatively straightforward.</p>
+2009)</span>. The function <code>pt_refit</code> in the
+<code>dsos</code> package combines scoring with inference. The prefix
+<em>pt</em> stands for permutation test. The code for <code>_pt_</code>
+is relatively straightforward.</p>
 <p><code>dsos</code> may use sample splitting and out-of-bag variants as
 alternatives to permutations for <span class="math inline">\(p-\)</span>value calculation. Both sample
 splitting and out-of-bag variants use the asymptotic null distribution
@@ -164,10 +170,10 @@ inference based on permutations.</p>
 <span><span class="co">##     scorer = scorer,</span></span>
 <span><span class="co">##     n_pt = n_pt,</span></span>
 <span><span class="co">##     is_oob = FALSE</span></span>
-<span><span class="co">##     )</span></span>
+<span><span class="co">##   )</span></span>
 <span><span class="co">##   return(result)</span></span>
 <span><span class="co">## }</span></span>
-<span><span class="co">## &lt;bytecode: 0x0000024b8c91a350&gt;</span></span>
+<span><span class="co">## &lt;bytecode: 0x00000151fd9ca748&gt;</span></span>
 <span><span class="co">## &lt;environment: namespace:dsos&gt;</span></span></code></pre></div>
 </div>
 <div class="section level2">

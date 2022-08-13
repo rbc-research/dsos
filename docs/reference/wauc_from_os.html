@@ -63,7 +63,7 @@ from threshold scores."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Weighted AUC from Outlier Scores</h1>
-    <small class="dont-index">Source: <a href="https://github.com/vathymut/dsos/blob/HEAD/R/statistic-wauc.R" class="external-link"><code>R/statistic-wauc.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/vathymut/dsos/blob/HEAD/R/wauc-statistic.R" class="external-link"><code>R/wauc-statistic.R</code></a></small>
     <div class="hidden name"><code>wauc_from_os.Rd</code></div>
     </div>
 
@@ -75,17 +75,24 @@ from threshold scores.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">wauc_from_os</span><span class="op">(</span><span class="va">os_train</span>, <span class="va">os_test</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">wauc_from_os</span><span class="op">(</span><span class="va">os_train</span>, <span class="va">os_test</span>, weight <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>os_train</dt>
-<dd><p>Outlier scores in training set.</p></dd>
+<dd><p>Outlier scores in training (reference) set.</p></dd>
 
 
 <dt>os_test</dt>
 <dd><p>Outlier scores in test set.</p></dd>
+
+
+<dt>weight</dt>
+<dd><p>Numeric vector of weights of length
+<code>length(os_train) + length(os_test)</code>. The first <code>length(os_train)</code>
+weights belongs to the training set, the rest is for the test set. If
+<code>NULL</code>, the default, all weights are set to 1.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -106,8 +113,8 @@ In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vathymut/dsos" class="external-link">dsos</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">os_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">os_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">os_train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">os_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">test_stat</span> <span class="op">&lt;-</span> <span class="fu">wauc_from_os</span><span class="op">(</span><span class="va">os_train</span>, <span class="va">os_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

@@ -35,15 +35,15 @@ We denote the R package as `dsos`, to avoid confusion with `D-SOS`, the method.
 We show how easy it is to implement `D-SOS` for a particular notion of
 outlyingness. Suppose we want to test for no adverse shift based on isolation
 scores in the context of two-sample comparison. To do so, we need
-two main ingredients: a score function and a method to compute the $p-$value.
+two main ingredients: a scoring function and a method to compute the $p-$value.
 
 First, the scores are obtained using predictions from isolation forest with the
 `isotree` package [@isotree]. Isolation forest detects _isolated_ points,
 instances that are typically out-of-distribution relative to the high-density
 regions of the data distribution. Naturally, any performant method for
 density-based out-of-distribution detection can effectively be used to achieve
-the same goal. The internal function `outliers_no_split` shows the
-implementation of one such score function in the `dsos` package.
+the same goal. The function `score_od` shows the implementation of one
+such scoring function in the `dsos` package.
 
 ```{r score-isolated-points, message=FALSE, warning=FALSE}
 dsos::score_od
@@ -51,10 +51,9 @@ dsos::score_od
 
 Second, we estimate the empirical null distribution for the $p-$value via
 permutations. For speed, this is implemented as a sequential Monte Carlo
-test with the `simctest` package [@simctest]. The function `od_pt` in the
-`dsos` package combines scoring with inference. The prefix _od_ stands for
-outlier detection and the suffix _pt_, for permutations. The code for `od_pt` 
-is relatively straightforward.
+test with the `simctest` package [@simctest]. The function `pt_refit` in the
+`dsos` package combines scoring with inference. The prefix _pt_ stands for
+permutation test. The code for `_pt_` is relatively straightforward.
 
 `dsos` may use sample splitting and out-of-bag variants as alternatives to
 permutations for $p-$value calculation. Both sample splitting and out-of-bag
