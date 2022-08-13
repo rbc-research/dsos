@@ -18,7 +18,7 @@ two elements: \emph{train} and \emph{test}, each of which is a vector of
 (outlier) scores. See notes for more information.}
 }
 \value{
-A named list or object of class \code{outlier.test} containing:
+A named list of class \code{outlier.test} containing:
 \itemize{
    \item \code{statistic}: observed WAUC statistic
    \item \code{seq_mct}: sequential Monte Carlo test, when applicable

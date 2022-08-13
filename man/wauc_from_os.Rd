@@ -10,6 +10,11 @@ wauc_from_os(os_train, os_test, weight = NULL)
 \item{os_train}{Outlier scores in training set.}
 
 \item{os_test}{Outlier scores in test set.}
+
+\item{weight}{Numeric vector of weights of length
+\code{length(os_train) + length(os_test)}. The first \code{length(os_train)}
+weights belongs to the training set, the rest is for the test set. If
+\code{NULL}, the default, all weights are set to 1.}
 }
 \value{
 The value (scalar) of the weighted AUC given the weighting scheme.

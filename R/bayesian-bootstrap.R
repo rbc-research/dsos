@@ -109,6 +109,7 @@ bf_empirical_null <- function(os_train,
     tail_prob = tail_prob,
     bayes_factor = bayes_factor
   )
+  return(result)
 }
 
 #' @noRd
@@ -125,6 +126,7 @@ bf_asymptotic_null <- function(os_train,
     critical_value = critical_value,
     bayes_factor = bayes_factor
   )
+  return(result)
 }
 
 #' @noRd
@@ -149,4 +151,5 @@ bf_compare <- function(os_train,
     bf_empirical = bf_empirical,
     bf_asymptotic = bf_asymptotic
   )
+  return(result)
 }

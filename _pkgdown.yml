@@ -30,11 +30,12 @@ reference:
       Functions to compute outlier scores based on sample splitting.
     contents:
       - split_cp
-  - title: "Plot"
+  - title: "Generic Functions"
     desc: >
-      Plotting functions.
+      S3 methods (generics).
     contents:
       - plot.outlier.test
+      - print.outlier.test
   - title: "Test Statistic"
     desc: >
       Compute specified test statistic.

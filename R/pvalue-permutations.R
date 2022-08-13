@@ -65,7 +65,7 @@ exchangeable_null <- function(x_train,
 #' @param n_pt The number of permutations.
 #'
 #' @return
-#' A named list or object of class \code{outlier.test} containing:
+#' A named list of class \code{outlier.test} containing:
 #' \itemize{
 #'    \item \code{statistic}: observed WAUC statistic
 #'    \item \code{seq_mct}: sequential Monte Carlo test, when applicable
