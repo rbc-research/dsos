@@ -164,82 +164,52 @@ Journal of the Royal Statistical Society: Series C (Applied Statistics), 59(4), 
 <span class="r-in"><span><span class="co"># First example: residual diagnostics</span></span></span>
 <span class="r-in"><span><span class="va">scorer_1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span> <span class="fu"><a href="score_rd.html">score_rd</a></span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span>, response_name <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rd_test</span> <span class="op">&lt;-</span> <span class="fu">pt_oob</span><span class="op">(</span><span class="va">xy_train</span>, <span class="va">xy_test</span>, scorer <span class="op">=</span> <span class="va">scorer_1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">rd_test</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ seq_mct       :Formal class 'sampalgontheflyres' [package "simctest"] with 10 slots</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ porig  : num [1:78] 7.54e-06 1.91e-05 3.63e-05 6.20e-05 9.96e-05 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ U      : int [1:500] 111 111 111 111 112 112 112 112 112 112 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ L      : int [1:500] 43 43 43 43 43 43 43 43 43 43 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ ind    : num 499</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ preverr: num [1:2] 0.000666 0.000667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ p.value: num NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ steps  : int 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ pos    : num 68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ alg    :Formal class 'sampalgonthefly' [package "simctest"] with 1 slot</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..@ internal:&lt;environment: 0x00000232d18f5560&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ gen    :function ()  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "srcref")= 'srcref' int [1:8] 6 14 9 3 14 3 510 513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x00000232c711cf68&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ statistic     : num 0.388</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ p_value       : num 0.034</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ outlier_scores:List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ train: num [1:100] 0.00865 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ test : num [1:50] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "outlier.test"</span>
+<span class="r-in"><span><span class="va">rd_test</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Test for no adverse shift</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value = 0.034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 100) from the training (reference) sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.008650362 0.000000000 0.000000000 0.000000000 0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 50) from the test sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0 0 0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Second example: prediction uncertainty</span></span></span>
 <span class="r-in"><span><span class="va">scorer_2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span> <span class="fu"><a href="score_rue.html">score_rue</a></span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span>, response_name <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rue_test</span> <span class="op">&lt;-</span> <span class="fu">pt_oob</span><span class="op">(</span><span class="va">xy_train</span>, <span class="va">xy_test</span>, scorer <span class="op">=</span> <span class="va">scorer_2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">rue_test</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ seq_mct       :Formal class 'sampalgontheflyres' [package "simctest"] with 10 slots</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ porig  : num [1:39] 1.83e-05 8.58e-05 2.58e-04 6.39e-04 1.40e-03 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ U      : int [1:500] 3 4 5 5 5 5 6 6 6 6 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ L      : int [1:500] -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ ind    : num 58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ preverr: num [1:2] 0.00032 0.000332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ p.value: num 0.22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ steps  : int 59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ pos    : num 13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ alg    :Formal class 'sampalgonthefly' [package "simctest"] with 1 slot</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..@ internal:&lt;environment: 0x00000232d51a12c8&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ gen    :function ()  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "srcref")= 'srcref' int [1:8] 6 14 9 3 14 3 510 513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x00000232c711cf68&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ statistic     : num 0.316</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ p_value       : num 0.22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ outlier_scores:List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ train: num [1:100] 0.00561 0.00588 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ test : num [1:50] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "outlier.test"</span>
+<span class="r-in"><span><span class="va">rue_test</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Test for no adverse shift</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value = 0.22034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 100) from the training (reference) sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.005610828 0.005882180 0.000000000 0.000000000 0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 50) from the test sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0 0 0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Third example: sample memberships (class probabilities)</span></span></span>
 <span class="r-in"><span><span class="va">setosa</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'setosa'</span></span></span>
 <span class="r-in"><span><span class="va">versicolor</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'versicolor'</span></span></span>
 <span class="r-in"><span><span class="va">scorer_3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span> <span class="fu"><a href="score_cp.html">score_cp</a></span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cp_test</span> <span class="op">&lt;-</span> <span class="fu">pt_oob</span><span class="op">(</span><span class="va">setosa</span>, <span class="va">versicolor</span>, scorer <span class="op">=</span> <span class="va">scorer_3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">cp_test</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ seq_mct       :Formal class 'sampalgontheflyres' [package "simctest"] with 10 slots</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ porig  : num [1:39] 1.83e-05 8.58e-05 2.58e-04 6.39e-04 1.40e-03 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ U      : int [1:500] 3 4 5 5 5 5 6 6 6 6 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ L      : int [1:500] -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ ind    : num 172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ preverr: num [1:2] 0.00032 0.000332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ p.value: num 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ steps  : int 173</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ pos    : num 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ alg    :Formal class 'sampalgonthefly' [package "simctest"] with 1 slot</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..@ internal:&lt;environment: 0x00000232cdc1b430&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ gen    :function ()  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "srcref")= 'srcref' int [1:8] 6 14 9 3 14 3 510 513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x00000232c711cf68&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ statistic     : num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ p_value       : num 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ outlier_scores:List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ train: num [1:50] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ test : num [1:50] 1 1 1 1 1 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "outlier.test"</span>
+<span class="r-in"><span><span class="va">cp_test</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Test for no adverse shift</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value &lt; 2.22e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 50) from the training (reference) sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0 0 0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 50) from the test sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1 1 1 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

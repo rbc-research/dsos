@@ -21,29 +21,31 @@ knitr::opts_chunk$set(
 [![CRAN](https://www.r-pkg.org/badges/version/dsos)](https://cran.r-project.org/package=dsos)
 [![UAI 2022](https://img.shields.io/badge/paper-UAI 2022-yellow)](https://openreview.net/forum?id=S5UG2BLi9xc)
 [![Downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
+[![useR! 2022](https://img.shields.io/youtube/views/TALE9JUir8Q?style=social)](https://youtu.be/TALE9JUir8Q?t=26)
 <!-- badges: end -->
 
 ## Overview
 
 `dsos` tests for no adverse shift based on outlier scores. Colloquially,
-these tests check whether the new sample is not substantively worse than the old
-sample, not if the two are equal as tests of equal distributions do. `dsos`
-implements a family of two-sample comparison which assumes that
+these tests check whether the new sample is not substantively worse than the
+old sample, not if the two are equal as tests of equal distributions do.
+`dsos` implements a family of two-sample comparison which assumes that
 we have both a training set, the reference distribution, and a test set.
 
 ## Installation
 
-From GitHub (which includes updates and improvements), install with:
+The package is under active development.
+From GitHub (which includes recent improvements), install with:
 
 ```{r github, eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("vathymut/dsos")
 ```
 
-The package is also on [CRAN](https://CRAN.R-project.org), although it
+The package is also on [CRAN](https://CRAN.R-project.org), although that release
 lags behind. I recommend the package on GitHub over CRAN for now. The package
-on CRAN (v0.1.0) will eventually be updated to reflect recent changes. From
-CRAN, install the package with:
+on CRAN (v0.1.0) will eventually be updated. From CRAN, install the package
+with:
 
 ```{r cran, eval=FALSE}
 install.packages("dsos")
@@ -51,7 +53,7 @@ install.packages("dsos")
 
 ## Quick Start
 
-Use simulated outlier scores to test for no adverse shift when the null (no
+Simulate outlier scores to test for no adverse shift when the null (no
 difference) holds. First, we use the permutation test:
 
 ```{r null_pt, eval=TRUE}
@@ -76,7 +78,7 @@ We can repeat this exercise when there is an adverse shift. Again, with
 the permutation test:
 
 ```{r shift_pt, eval=TRUE}
-os_shift <- rnorm(n=n, mean=0.2)
+os_shift <- rnorm(n = n, mean = 0.2)
 shift_pt <- pt_from_os(os_train, os_shift)
 plot(shift_pt)
 ```
@@ -99,15 +101,15 @@ density-based out-of-distribution (OOD) detection:
 
 ```{r iris, eval=TRUE}
 data(iris)
-versicolor <- iris[51:100,1:4] # Training sample: Species == 'versicolor'
-virginica <- iris[101:150,1:4] # Test sample: Species == 'virginica'
+versicolor <- iris[51:100, 1:4] # Training sample: Species == 'versicolor'
+virginica <- iris[101:150, 1:4] # Test sample: Species == 'virginica'
 iris_test <- pt_refit(x_train = versicolor, x_test = virginica, scorer = score_od)
 plot(iris_test)
 ```
 
-`dsos` also implements a method for confidence-based OOD detection
-via prediction uncertainty. Users can easily bring their own scores via the
-scoring function when needed.
+`dsos` also implements a method for confidence-based OOD detection via
+prediction uncertainty. Users can easily plug in their own scores via the
+scoring function.
 
 ## Reference
 
@@ -123,3 +125,15 @@ To cite this work and for technical details, please refer to the
   url       = {https://openreview.net/forum?id=S5UG2BLi9xc}
 }
 ```
+
+I gave a talk introducing the `dsos` R package at
+[useR! 2022](https://youtu.be/TALE9JUir8Q?t=26) during the
+'Unique Applications and Methods' track. It is a 15-minute crash course,
+focused on motivation and interpretation.
+
+## Future work &#128679;
+
+Upcoming in future releases (work in progress) of the package:
+
+- Testing for no adverse shift via Bayes factor (the Bayesian approach).
+- Implementing parallel computing via `future.apply`.

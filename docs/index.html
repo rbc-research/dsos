@@ -103,18 +103,18 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>From GitHub (which includes updates and improvements), install with:</p>
+<p>The package is under active development. From GitHub (which includes recent improvements), install with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"vathymut/dsos"</span><span class="op">)</span></span></code></pre></div>
-<p>The package is also on <a href="https://CRAN.R-project.org" class="external-link">CRAN</a>, although it lags behind. I recommend the package on GitHub over CRAN for now. The package on CRAN (v0.1.0) will eventually be updated to reflect recent changes. From CRAN, install the package with:</p>
+<p>The package is also on <a href="https://CRAN.R-project.org" class="external-link">CRAN</a>, although that release lags behind. I recommend the package on GitHub over CRAN for now. The package on CRAN (v0.1.0) will eventually be updated. From CRAN, install the package with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dsos"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>Use simulated outlier scores to test for no adverse shift when the null (no difference) holds. First, we use the permutation test:</p>
+<p>Simulate outlier scores to test for no adverse shift when the null (no difference) holds. First, we use the permutation test:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vathymut/dsos" class="external-link">dsos</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span>
@@ -131,7 +131,7 @@
 <p><img src="reference/figures/README-null_at-1.png" width="100%"> In both cases, we fail to reject the null of no adverse shift.</p>
 <p>We can repeat this exercise when there is an adverse shift. Again, with the permutation test:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">os_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n<span class="op">=</span><span class="va">n</span>, mean<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">os_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, mean <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="va">shift_pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pt_from_os.html">pt_from_os</a></span><span class="op">(</span><span class="va">os_train</span>, <span class="va">os_shift</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">shift_pt</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-shift_pt-1.png" width="100%"></p>
@@ -147,12 +147,12 @@
 <p>We can use <code>dsos</code> to test for adverse shift on the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set" class="external-link"><code>iris</code></a> dataset. Here, the outlier scores are from isolation forest for density-based out-of-distribution (OOD) detection:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
-<span><span class="va">versicolor</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'versicolor'</span></span>
-<span><span class="va">virginica</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">150</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'virginica'</span></span>
+<span><span class="va">versicolor</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Training sample: Species == 'versicolor'</span></span>
+<span><span class="va">virginica</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">150</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'virginica'</span></span>
 <span><span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pt_refit.html">pt_refit</a></span><span class="op">(</span>x_train <span class="op">=</span> <span class="va">versicolor</span>, x_test <span class="op">=</span> <span class="va">virginica</span>, scorer <span class="op">=</span> <span class="va">score_od</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-iris-1.png" width="100%"></p>
-<p><code>dsos</code> also implements a method for confidence-based OOD detection via prediction uncertainty. Users can easily bring their own scores via the scoring function when needed.</p>
+<p><code>dsos</code> also implements a method for confidence-based OOD detection via prediction uncertainty. Users can easily plug in their own scores via the scoring function.</p>
 </div>
 <div class="section level2">
 <h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
@@ -165,6 +165,16 @@
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>      = {2022},</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">url</span>       = {https://openreview.net/forum?id=S5UG2BLi9xc}</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>I gave a talk introducing the <code>dsos</code> R package at <a href="https://youtu.be/TALE9JUir8Q?t=26" class="external-link">useR! 2022</a> during the ‘Unique Applications and Methods’ track. It is a 15-minute crash course, focused on motivation and interpretation.</p>
+</div>
+<div class="section level2">
+<h2 id="future-work-">Future work 🚧<a class="anchor" aria-label="anchor" href="#future-work-"></a>
+</h2>
+<p>Upcoming in future releases (work in progress) of the package:</p>
+<ul>
+<li>Testing for no adverse shift via Bayes factor (the Bayesian approach).</li>
+<li>Implementing parallel computing via <code>future.apply</code>.</li>
+</ul>
 </div>
 </div>
   </div>
@@ -210,6 +220,7 @@
 <li><a href="https://cran.r-project.org/package=dsos" class="external-link"><img src="https://www.r-pkg.org/badges/version/dsos" alt="CRAN"></a></li>
 <li><a href="https://openreview.net/forum?id=S5UG2BLi9xc" class="external-link"><img src="https://img.shields.io/badge/paper-UAI%202022-yellow" alt="UAI 2022"></a></li>
 <li><a href="https://cran.r-project.org/package=dsos" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/dsos" alt="Downloads"></a></li>
+<li><a href="https://youtu.be/TALE9JUir8Q?t=26" class="external-link"><img src="https://img.shields.io/youtube/views/TALE9JUir8Q?style=social" alt="useR! 2022"></a></li>
 </ul>
 </div>
 

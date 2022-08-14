@@ -161,30 +161,18 @@ Journal of the Royal Statistical Society: Series C (Applied Statistics), 59(4), 
 <span class="r-in"><span><span class="va">versicolor</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">51</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="co"># Test sample: Species == 'versicolor'</span></span></span>
 <span class="r-in"><span><span class="va">scorer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span> <span class="fu"><a href="score_od.html">score_od</a></span><span class="op">(</span><span class="va">x_train</span>, <span class="va">x_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">iris_test</span> <span class="op">&lt;-</span> <span class="fu">pt_refit</span><span class="op">(</span><span class="va">setosa</span>, <span class="va">versicolor</span>, scorer <span class="op">=</span> <span class="va">scorer</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">iris_test</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ seq_mct       :Formal class 'sampalgontheflyres' [package "simctest"] with 10 slots</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ porig  : num [1:39] 1.83e-05 8.58e-05 2.58e-04 6.39e-04 1.40e-03 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ U      : int [1:500] 3 4 5 5 5 5 6 6 6 6 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ L      : int [1:500] -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ ind    : num 172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ preverr: num [1:2] 0.00032 0.000332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ p.value: num 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ steps  : int 173</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ pos    : num 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ alg    :Formal class 'sampalgonthefly' [package "simctest"] with 1 slot</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..@ internal:&lt;environment: 0x00000232cd2a5928&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..@ gen    :function ()  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. ..- attr(*, "srcref")= 'srcref' int [1:8] 6 14 9 3 14 3 510 513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' &lt;environment: 0x00000232c711cf68&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ statistic     : num 0.961</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ p_value       : num 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ outlier_scores:List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ train: Named num [1:50] 0.6 0.6 0.6 0.6 0.6 0.6 0.6 0.6 0.6 0.6 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "names")= chr [1:50] "1" "2" "3" "4" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ test : Named num [1:50] 0.674 0.673 0.674 0.674 0.673 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, "names")= chr [1:50] "1" "2" "3" "4" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "class")= chr "outlier.test"</span>
+<span class="r-in"><span><span class="va">iris_test</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Test for no adverse shift</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value &lt; 2.22e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 50) from the training (reference) sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6 0.6 0.6 0.6 0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first 5 outlier scores (out of 50) from the test sample:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6743432 0.6725356 0.6740814 0.6735455 0.6729925</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

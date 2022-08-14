@@ -12,6 +12,8 @@ GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://www.gnu.org/
 [![UAI
 2022](https://img.shields.io/badge/paper-UAI%202022-yellow)](https://openreview.net/forum?id=S5UG2BLi9xc)
 [![Downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
+[![useR!
+2022](https://img.shields.io/youtube/views/TALE9JUir8Q?style=social)](https://youtu.be/TALE9JUir8Q?t=26)
 <!-- badges: end -->
 
 ## Overview
@@ -25,17 +27,18 @@ set.
 
 ## Installation
 
-From GitHub (which includes updates and improvements), install with:
+The package is under active development. From GitHub (which includes
+recent improvements), install with:
 
 ``` r
 # install.packages("remotes")
 remotes::install_github("vathymut/dsos")
 ```
 
-The package is also on [CRAN](https://CRAN.R-project.org), although it
-lags behind. I recommend the package on GitHub over CRAN for now. The
-package on CRAN (v0.1.0) will eventually be updated to reflect recent
-changes. From CRAN, install the package with:
+The package is also on [CRAN](https://CRAN.R-project.org), although that
+release lags behind. I recommend the package on GitHub over CRAN for
+now. The package on CRAN (v0.1.0) will eventually be updated. From CRAN,
+install the package with:
 
 ``` r
 install.packages("dsos")
@@ -43,8 +46,8 @@ install.packages("dsos")
 
 ## Quick Start
 
-Use simulated outlier scores to test for no adverse shift when the null
-(no difference) holds. First, we use the permutation test:
+Simulate outlier scores to test for no adverse shift when the null (no
+difference) holds. First, we use the permutation test:
 
 ``` r
 library(dsos)
@@ -72,7 +75,7 @@ We can repeat this exercise when there is an adverse shift. Again, with
 the permutation test:
 
 ``` r
-os_shift <- rnorm(n=n, mean=0.2)
+os_shift <- rnorm(n = n, mean = 0.2)
 shift_pt <- pt_from_os(os_train, os_shift)
 plot(shift_pt)
 ```
@@ -99,8 +102,8 @@ out-of-distribution (OOD) detection:
 
 ``` r
 data(iris)
-versicolor <- iris[51:100,1:4] # Training sample: Species == 'versicolor'
-virginica <- iris[101:150,1:4] # Test sample: Species == 'virginica'
+versicolor <- iris[51:100, 1:4] # Training sample: Species == 'versicolor'
+virginica <- iris[101:150, 1:4] # Test sample: Species == 'virginica'
 iris_test <- pt_refit(x_train = versicolor, x_test = virginica, scorer = score_od)
 plot(iris_test)
 ```
@@ -108,8 +111,8 @@ plot(iris_test)
 <img src="man/figures/README-iris-1.png" width="100%" />
 
 `dsos` also implements a method for confidence-based OOD detection via
-prediction uncertainty. Users can easily bring their own scores via the
-scoring function when needed.
+prediction uncertainty. Users can easily plug in their own scores via
+the scoring function.
 
 ## Reference
 
@@ -126,3 +129,16 @@ given below:
   url       = {https://openreview.net/forum?id=S5UG2BLi9xc}
 }
 ```
+
+I gave a talk introducing the `dsos` R package at [useR!
+2022](https://youtu.be/TALE9JUir8Q?t=26) during the ‘Unique Applications
+and Methods’ track. It is a 15-minute crash course, focused on
+motivation and interpretation.
+
+## Future work 🚧
+
+Upcoming in future releases (work in progress) of the package:
+
+-   Testing for no adverse shift via Bayes factor (the Bayesian
+    approach).
+-   Implementing parallel computing via `future.apply`.

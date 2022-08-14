@@ -61,7 +61,7 @@ setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
 scorer <- function(x_train, x_test) score_od(x_train, x_test)
 iris_test <- pt_refit(setosa, versicolor, scorer = scorer)
-str(iris_test)
+iris_test
 }
 
 }
