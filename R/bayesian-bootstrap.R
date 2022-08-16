@@ -94,6 +94,21 @@ bb_prior_and_posterior <- function(os_train, os_test, n_pt = 4e3) {
   return(list(prior = wauc_dist[1, ], posterior = wauc_dist[2, ]))
 }
 
+#' @examples
+#' \donttest{
+#' library(dsos)
+#' set.seed(12345)
+#' os_train <- rnorm(n = 100)
+#' os_test <- rnorm(n = 100)
+#' test_result <- bf_empirical_null(os_train, os_test)
+#' test_result
+#' # Run in parallel on local cluster
+#' library(future)
+#' future::plan(future::multisession)
+#' parallel_result <- bf_empirical_null(os_train, os_test)
+#' parallel_result
+#' }
+#'
 #' @noRd
 #' @keywords  internal
 bf_empirical_null <- function(os_train,
@@ -115,6 +130,21 @@ bf_empirical_null <- function(os_train,
   return(result)
 }
 
+#' @examples
+#' \donttest{
+#' library(dsos)
+#' set.seed(12345)
+#' os_train <- rnorm(n = 100)
+#' os_test <- rnorm(n = 100)
+#' test_result <- bf_asymptotic_null(os_train, os_test)
+#' test_result
+#' # Run in parallel on local cluster
+#' library(future)
+#' future::plan(future::multisession)
+#' parallel_result <- bf_asymptotic_null(os_train, os_test)
+#' parallel_result
+#' }
+#'
 #' @noRd
 #' @keywords  internal
 bf_asymptotic_null <- function(os_train,

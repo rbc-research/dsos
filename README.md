@@ -141,4 +141,3 @@ Upcoming in future releases (work in progress) of the package:
 
 -   Testing for no adverse shift via Bayes factor (the Bayesian
     approach).
--   Implementing parallel computing via `future.apply`.
