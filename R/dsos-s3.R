@@ -84,7 +84,7 @@ prep_os_data <- function(x) {
 #' Plot result of test for no adverse shift.
 #'
 #' @param x A \code{outlier.test} object from a D-SOS test.
-#' @param ... Placeholder to be comptatible with S3 `plot` generic.
+#' @param ... Placeholder to be compatible with S3 `plot` generic.
 #'
 #' @return A \pkg{ggplot2} plot with outlier scores and p-value.
 #'
@@ -122,7 +122,7 @@ plot.outlier.test <- function(x, ...) {
 #'
 #' @param x A \code{outlier.test} object from a D-SOS test.
 #' @param n The number of outlier scores to print for each sample.
-#' @param ... Placeholder to be comptatible with S3 `print` generic.
+#' @param ... Placeholder to be compatible with S3 `print` generic.
 #'
 #' @return A \pkg{ggplot2} plot with outlier scores and p-value.
 #'

@@ -47,7 +47,7 @@ The scoring function, \code{scorer}, predicts out-of-bag scores to mimic
 out-of-sample behaviour. The suffix \emph{oob} stands for out-of-bag to
 highlight this point. This out-of-bag variant avoids refitting the
 underlying algorithm from \code{scorer} at every permutation. It can, as a
-result, be computionally appealing.
+result, be computationally appealing.
 }
 
 \examples{

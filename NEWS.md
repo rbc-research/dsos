@@ -23,8 +23,8 @@ directly: `pt_from_os` and `at_from_os`
 
 * Removed dependency on `WeightedROC` package.
 
-* Made dependecies on `ranger` and `isotree` optional, required only when
-using specific scoring funtions.
+* Made dependencies on `ranger` and `isotree` optional, required only when
+using specific scoring functions.
 
 # dsos 0.1.0
 

@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{A \code{outlier.test} object from a D-SOS test.}
 
-\item{...}{Placeholder to be comptatible with S3 `plot` generic.}
+\item{...}{Placeholder to be compatible with S3 `plot` generic.}
 }
 \value{
 A \pkg{ggplot2} plot with outlier scores and p-value.

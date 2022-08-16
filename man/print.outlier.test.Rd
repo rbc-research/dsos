@@ -11,7 +11,7 @@
 
 \item{n}{The number of outlier scores to print for each sample.}
 
-\item{...}{Placeholder to be comptatible with S3 `print` generic.}
+\item{...}{Placeholder to be compatible with S3 `print` generic.}
 }
 \value{
 A \pkg{ggplot2} plot with outlier scores and p-value.

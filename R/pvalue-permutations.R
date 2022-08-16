@@ -99,7 +99,7 @@ exchangeable_null <- function(x_train,
 #' out-of-sample behaviour. The suffix \emph{oob} stands for out-of-bag to
 #' highlight this point. This out-of-bag variant avoids refitting the
 #' underlying algorithm from \code{scorer} at every permutation. It can, as a
-#' result, be computionally appealing.
+#' result, be computationally appealing.
 #'
 #' @examples
 #' \donttest{
@@ -157,7 +157,7 @@ pt_oob <- function(x_train, x_test, scorer, n_pt = 2e3) {
 #' refitting the underlying algorithm from \code{scorer} at every permutation
 #' The suffix \emph{refit} emphasizes this point. This is in contrast to the
 #' out-of-bag variant, \code{pt_oob}, which only fits once. This method can be
-#' be computionally expensive.
+#' be computationally expensive.
 #'
 #' @examples
 #' \donttest{

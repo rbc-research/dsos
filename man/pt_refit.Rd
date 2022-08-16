@@ -49,7 +49,7 @@ The scoring function, \code{scorer}, predicts out-of-sample scores by
 refitting the underlying algorithm from \code{scorer} at every permutation
 The suffix \emph{refit} emphasizes this point. This is in contrast to the
 out-of-bag variant, \code{pt_oob}, which only fits once. This method can be
-be computionally expensive.
+be computationally expensive.
 }
 
 \examples{
