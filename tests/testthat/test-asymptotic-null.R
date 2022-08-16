@@ -11,7 +11,7 @@ mean_asym <- 1 / 12
 
 test_that("n_test = n_train = 1e3", {
   suppressWarnings(testthat::skip_on_cran())
-  wauc_null <- replicate(
+  wauc_null <- future.apply::future_replicate(
     n = n_rep,
     expr = {
       os_train <- runif(n = n_obs)
@@ -29,7 +29,7 @@ test_that("n_test = n_train = 1e3", {
 
 test_that("n_test = 2 * n_train; n_train = 1e3", {
   suppressWarnings(testthat::skip_on_cran())
-  wauc_null <- replicate(
+  wauc_null <- future.apply::future_replicate(
     n = n_rep,
     expr = {
       os_train <- runif(n = n_obs)
@@ -47,7 +47,7 @@ test_that("n_test = 2 * n_train; n_train = 1e3", {
 
 test_that("n_test = 0.1 * n_train; n_train = 1e3 (runif)", {
   suppressWarnings(testthat::skip_on_cran())
-  wauc_null <- replicate(
+  wauc_null <- future.apply::future_replicate(
     n = n_rep,
     expr = {
       os_train <- runif(n = n_obs)
@@ -65,7 +65,7 @@ test_that("n_test = 0.1 * n_train; n_train = 1e3 (runif)", {
 
 test_that("n_test = 0.1 * n_train; n_train = 1e3 (rlnorm)", {
   suppressWarnings(testthat::skip_on_cran())
-  wauc_null <- replicate(
+  wauc_null <- future.apply::future_replicate(
     n = n_rep,
     expr = {
       os_train <- rlnorm(n = n_obs)

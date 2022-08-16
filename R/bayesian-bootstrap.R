@@ -35,7 +35,10 @@ iter_prior <- function(os_train, os_test) {
 #' @noRd
 #' @keywords  internal
 repeat_fn <- function(os_train, os_test, fn, n_pt = 4e3) {
-  wauc_dist <- replicate(n_pt, fn(os_train, os_test))
+  wauc_dist <- future.apply::future_replicate(
+    n_pt,
+    fn(os_train, os_test)
+  )
   return(wauc_dist)
 }
 
@@ -137,7 +140,11 @@ bf_compare <- function(os_train,
                        alpha = 0.5,
                        cutoff_asymptotic = 1 / 12) {
   sampler <- bb_prior_and_posterior(os_train, os_test, n_pt = n_pt)
-  cutoff_empirical <- stats::quantile(sampler$prior, probs = 1 - alpha, names = FALSE)
+  cutoff_empirical <- stats::quantile(
+    sampler$prior,
+    probs = 1 - alpha,
+    names = FALSE
+  )
   tail_empirical <- 1 - stats::ecdf(sampler$posterior)(cutoff_empirical)
   tail_asymptotic <- 1 - stats::ecdf(sampler$posterior)(cutoff_asymptotic)
   bf_empirical <- tail_empirical / (1 - tail_empirical)

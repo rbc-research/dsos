@@ -164,7 +164,7 @@ mean_se <- function(x) sqrt(var(x) / length(x))
 boot_se <- function(x, oob_prop, n_iter = 200) {
   n <- length(x)
   size <- floor(n * oob_prop)
-  se_sub <- replicate(
+  se_sub <- future.apply::future_replicate(
     n = n_iter,
     expr = {
       x_sub <- sample(x, size = size)

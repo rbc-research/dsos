@@ -11,7 +11,7 @@ n_reps <- 2e3
 test_that("High null proportion", {
   suppressWarnings(skip_on_cran())
 
-  pvalues <- replicate(
+  pvalues <- future.apply::future_replicate(
     n = n_reps,
     expr = {
       os_train <- rnorm(n_obs)
