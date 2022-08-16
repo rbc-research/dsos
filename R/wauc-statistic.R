@@ -24,7 +24,7 @@ make_threshold_fn <- function(os_train, weight = rep(1, length(os_train))) {
 #' @noRd
 #' @keywords  internal
 weighted_roc <- function(score, label, weight = rep(1, length(label))) {
-  # Copied this function from WeightedROC package. See:
+  # Adapted this function from WeightedROC package. See:
   # https://github.com/tdhock/WeightedROC/blob/master/R/ROC.R
   if (is.factor(label)) {
     label <- as.integer(label)
