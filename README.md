@@ -35,10 +35,9 @@ recent improvements), install with:
 remotes::install_github("vathymut/dsos")
 ```
 
-The package is also on [CRAN](https://CRAN.R-project.org), although that
-release lags behind. I recommend the package on GitHub over CRAN for
-now. The package on CRAN (v0.1.0) will eventually be updated. From CRAN,
-install the package with:
+The package is also on [CRAN](https://CRAN.R-project.org), although the
+CRAN release may lag behind GitHub updates. From CRAN, install the
+package with:
 
 ``` r
 install.packages("dsos")
