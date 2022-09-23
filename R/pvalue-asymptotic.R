@@ -41,15 +41,13 @@ asymptotic_os <- function(os_train, os_test) {
     n_test = length(os_test),
     obs = result_list$wauc
   )
-
-  # Wrap result in a list
-  test_list <- list()
-  test_list[["seq_mct"]] <- NULL
-  test_list[["statistic"]] <- result_list$wauc
-  test_list[["p_value"]] <- p_value
-  test_list[["outlier_scores"]] <- result_list$outlier_scores
-  class(test_list) <- "outlier.test"
-  return(test_list)
+  dsos_test <- list()
+  dsos_test[["seq_mct"]] <- NULL
+  dsos_test[["statistic"]] <- result_list$wauc
+  dsos_test[["p_value"]] <- p_value
+  dsos_test[["outlier_scores"]] <- result_list$outlier_scores
+  class(dsos_test) <- "outlier.test"
+  return(dsos_test)
 }
 
 #' @title

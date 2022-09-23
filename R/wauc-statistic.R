@@ -129,7 +129,7 @@ wauc <- function(label,
 #' \code{NULL}, the default, all weights are set to 1.
 #'
 #' @return
-#' The value (scalar) of the weighted AUC given the weighting scheme.
+#' The weighted AUC (scalar value) given the weighting scheme.
 #'
 #' @examples
 #' \donttest{

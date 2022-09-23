@@ -9,7 +9,7 @@ n_obs <- 1e3
 n_rep <- 1e4
 mean_asym <- 1 / 12
 
-test_that("n_test = n_train = 1e3", {
+test_that("Equal sample size", {
   suppressWarnings(testthat::skip_on_cran())
   wauc_null <- future.apply::future_replicate(
     n = n_rep,
@@ -27,7 +27,7 @@ test_that("n_test = n_train = 1e3", {
   expect_equal(sd_emp, sd_asymp, tolerance = diff_pct * sd_emp)
 })
 
-test_that("n_test = 2 * n_train; n_train = 1e3", {
+test_that("Upsample test set by a factor of 2", {
   suppressWarnings(testthat::skip_on_cran())
   wauc_null <- future.apply::future_replicate(
     n = n_rep,
@@ -45,7 +45,7 @@ test_that("n_test = 2 * n_train; n_train = 1e3", {
   expect_equal(sd_emp, sd_asymp, tolerance = diff_pct * sd_emp)
 })
 
-test_that("n_test = 0.1 * n_train; n_train = 1e3 (runif)", {
+test_that("Downsample test set by a factor of 10 (runif)", {
   suppressWarnings(testthat::skip_on_cran())
   wauc_null <- future.apply::future_replicate(
     n = n_rep,
@@ -63,7 +63,7 @@ test_that("n_test = 0.1 * n_train; n_train = 1e3 (runif)", {
   expect_equal(sd_emp, sd_asymp, tolerance = diff_pct * sd_emp)
 })
 
-test_that("n_test = 0.1 * n_train; n_train = 1e3 (rlnorm)", {
+test_that("Downsample test set by a factor of 10 (rlnorm)", {
   suppressWarnings(testthat::skip_on_cran())
   wauc_null <- future.apply::future_replicate(
     n = n_rep,

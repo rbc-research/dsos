@@ -2,28 +2,26 @@
 % Please edit documentation in R/dsos-s3.R
 \name{print.outlier.test}
 \alias{print.outlier.test}
-\title{Print result of test for no adverse shift.}
+\title{Print frequentist test for no adverse shift.}
 \usage{
-\method{print}{outlier.test}(x, n = 5, ...)
+\method{print}{outlier.test}(x, ...)
 }
 \arguments{
 \item{x}{A \code{outlier.test} object from a D-SOS test.}
 
-\item{n}{The number of outlier scores to print for each sample.}
-
-\item{...}{Placeholder to be compatible with S3 `print` generic.}
+\item{...}{Placeholder to be compatible with S3 method \code{plot}.}
 }
 \value{
-A \pkg{ggplot2} plot with outlier scores and p-value.
+Print to screen: display p-value and other information.
 }
 \description{
-Print result of test for no adverse shift.
+Print frequentist test for no adverse shift.
 }
 \examples{
 \donttest{
 set.seed(12345)
-os_train <- rnorm(n=3e2)
-os_test <- rnorm(n=3e2)
+os_train <- rnorm(n = 3e2)
+os_test <- rnorm(n = 3e2)
 test_to_print <- at_from_os(os_train, os_test)
 # Also: pt_from_os(os_train, os_test) for permutation test
 test_to_print
@@ -32,6 +30,8 @@ test_to_print
 }
 \seealso{
 Other s3-method: 
-\code{\link{plot.outlier.test}()}
+\code{\link{plot.outlier.bayes}()},
+\code{\link{plot.outlier.test}()},
+\code{\link{print.outlier.bayes}()}
 }
 \concept{s3-method}

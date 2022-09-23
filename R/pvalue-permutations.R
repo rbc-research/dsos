@@ -9,15 +9,13 @@ smc_pvalue <- function(test_stat, permute_fn, n_pt = 2e3) {
   }
   res <- simctest::simctest(gen_smc, maxsteps = n_pt)
   p_value <- res@pos / res@steps
-
-  # Wrap result in a list
-  test_list <- list()
-  test_list[["seq_mct"]] <- res
-  test_list[["statistic"]] <- test_stat
-  test_list[["p_value"]] <- p_value
-  test_list[["outlier_scores"]] <- NULL
-  class(test_list) <- "outlier.test"
-  return(test_list)
+  dsos_test <- list()
+  dsos_test[["seq_mct"]] <- res
+  dsos_test[["statistic"]] <- test_stat
+  dsos_test[["p_value"]] <- p_value
+  dsos_test[["outlier_scores"]] <- NULL
+  class(dsos_test) <- "outlier.test"
+  return(dsos_test)
 }
 
 #' @noRd
@@ -41,9 +39,9 @@ exchangeable_null <- function(x_train,
   }
 
   # Gather test info
-  test_list <- smc_pvalue(test_stat, permute_fn, n_pt)
-  test_list[["outlier_scores"]] <- helper$os_list
-  return(test_list)
+  dsos_test <- smc_pvalue(test_stat, permute_fn, n_pt)
+  dsos_test[["outlier_scores"]] <- helper$os_list
+  return(dsos_test)
 }
 
 #' @title
@@ -111,19 +109,19 @@ exchangeable_null <- function(x_train,
 #' xy_test <- iris[-idx, ]
 #'
 #' # First example: residual diagnostics
-#' scorer_1 <- function(x_train, x_test) score_rd(x_train, x_test, response_name = "Species")
+#' scorer_1 <- function(tr, te) score_rd(tr, te, response_name = "Species")
 #' rd_test <- pt_oob(xy_train, xy_test, scorer = scorer_1)
 #' rd_test
 #'
 #' # Second example: prediction uncertainty
-#' scorer_2 <- function(x_train, x_test) score_rue(x_train, x_test, response_name = "Species")
+#' scorer_2 <- function(tr, te) score_rue(tr, te, response_name = "Species")
 #' rue_test <- pt_oob(xy_train, xy_test, scorer = scorer_2)
 #' rue_test
 #'
 #' # Third example: sample memberships (class probabilities)
 #' setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 #' versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-#' scorer_3 <- function(x_train, x_test) score_cp(x_train, x_test)
+#' scorer_3 <- function(tr, te) score_cp(tr, te)
 #' cp_test <- pt_oob(setosa, versicolor, scorer = scorer_3)
 #' cp_test
 #' }
@@ -206,8 +204,8 @@ pt_refit <- function(x_train, x_test, scorer, n_pt = 2e3) {
 #' set.seed(12345)
 #' os_train <- rnorm(n = 100)
 #' os_test <- rnorm(n = 100)
-#' test_result <- pt_from_os(os_train, os_test)
-#' test_result
+#' null_test <- pt_from_os(os_train, os_test)
+#' null_test
 #' }
 #'
 #' @family permutation-test
@@ -223,7 +221,7 @@ pt_from_os <- function(os_train, os_test, n_pt = 2e3) {
   n_test <- length(os_test)
   pooled_os <- c(os_train, os_test)
   permute_fn <- function() permute_from_os(pooled_os, n_test)
-  test_list <- smc_pvalue(wauc_stat, permute_fn, n_pt)
-  test_list[["outlier_scores"]] <- list(train = os_train, test = os_test)
-  return(test_list)
+  dsos_test <- smc_pvalue(wauc_stat, permute_fn, n_pt)
+  dsos_test[["outlier_scores"]] <- list(train = os_train, test = os_test)
+  return(dsos_test)
 }

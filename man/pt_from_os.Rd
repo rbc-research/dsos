@@ -54,8 +54,8 @@ library(dsos)
 set.seed(12345)
 os_train <- rnorm(n = 100)
 os_test <- rnorm(n = 100)
-test_result <- pt_from_os(os_train, os_test)
-test_result
+null_test <- pt_from_os(os_train, os_test)
+null_test
 }
 
 }

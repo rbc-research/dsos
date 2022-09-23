@@ -17,7 +17,7 @@ weights belongs to the training set, the rest is for the test set. If
 \code{NULL}, the default, all weights are set to 1.}
 }
 \value{
-The value (scalar) of the weighted AUC given the weighting scheme.
+The weighted AUC (scalar value) given the weighting scheme.
 }
 \description{
 Computes the weighted AUC with the weighting scheme described in
