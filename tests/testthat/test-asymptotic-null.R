@@ -5,7 +5,7 @@ suppressPackageStartupMessages({
 set.seed(123456)
 
 diff_pct <- 0.02
-n_obs <- 1e3
+n_obs <- 1e4
 n_rep <- 1e4
 mean_asym <- 1 / 12
 

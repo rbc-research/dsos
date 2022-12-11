@@ -81,8 +81,8 @@ wauc_samples <- function(os_train, os_test, n_pt = 4e3) {
 #' @return
 #' A named list of class \code{outlier.bayes} containing:
 #' \itemize{
-#'    \item \code{permuted}: WAUC samples from permutations, if applicable
-#'    \item \code{posterior}: WAUC samples from posterior distribution
+#'    \item \code{permuted}: WAUC from permutations, if applicable
+#'    \item \code{posterior}: WAUC from posterior distribution
 #'    \item \code{adverse_threshold}: WAUC threshold for adverse shift
 #'    \item \code{adverse_probability}: probability of adverse shift
 #'    \item \code{bayes_factor}: Bayes factor
@@ -171,7 +171,7 @@ as_bf <- function(pvalue) {
 #'
 #' @param bf Bayes factor.
 #'
-#' @return P-value (scalar value)
+#' @return p-value (scalar value).
 #'
 #' @examples
 #' \donttest{

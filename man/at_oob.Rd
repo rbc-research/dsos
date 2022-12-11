@@ -58,15 +58,11 @@ data(iris)
 setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
 
-# Sample memberships with sample splitting
-scorer_split <- function(x_train, x_test) split_cp(x_train, x_test)
-cp_test <- at_oob(setosa, versicolor, scorer = scorer_split)
-cp_test
-
-# Sample memberships without sample splitting (out-of-bag predictions)
-scorer_oob <- function(x_train, x_test) score_cp(x_train, x_test)
-oob_test <- at_oob(setosa, versicolor, scorer = scorer_oob)
+# Using fake scoring function
+scorer <- function(tr, te) list(train=runif(nrow(tr)), test=runif(nrow(te)))
+oob_test <- at_oob(setosa, versicolor, scorer = scorer)
 oob_test
+
 }
 
 }

@@ -8,6 +8,7 @@ bf_from_os(
   os_train,
   os_test,
   n_pt = 4000,
+  percentile_cutoff = 0.5,
   use_asymptotic = FALSE,
   asymptotic_cutoff = 1/12
 )
@@ -19,6 +20,8 @@ bf_from_os(
 
 \item{n_pt}{The number of permutations.}
 
+\item{percentile_cutoff}{The number of permutations.}
+
 \item{use_asymptotic}{Numeric vector of weights of length}
 
 \item{asymptotic_cutoff}{Numeric vector of weights of length}
@@ -26,8 +29,8 @@ bf_from_os(
 \value{
 A named list of class \code{outlier.bayes} containing:
 \itemize{
-   \item \code{permuted}: WAUC samples from permutations, if applicable
-   \item \code{posterior}: WAUC samples from posterior distribution
+   \item \code{permuted}: WAUC from permutations, if applicable
+   \item \code{posterior}: WAUC from posterior distribution
    \item \code{adverse_threshold}: WAUC threshold for adverse shift
    \item \code{adverse_probability}: probability of adverse shift
    \item \code{bayes_factor}: Bayes factor

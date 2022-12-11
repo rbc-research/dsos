@@ -59,9 +59,9 @@ set.seed(12345)
 data(iris)
 setosa <- iris[1:50, 1:4] # Training sample: Species == 'setosa'
 versicolor <- iris[51:100, 1:4] # Test sample: Species == 'versicolor'
-scorer <- function(x_train, x_test) score_od(x_train, x_test)
-iris_test <- pt_refit(setosa, versicolor, scorer = scorer)
-iris_test
+scorer <- function(tr, te) list(train=runif(nrow(tr)), test=runif(nrow(te)))
+pt_test <- pt_refit(setosa, versicolor, scorer = scorer)
+pt_test
 }
 
 }

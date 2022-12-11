@@ -10,7 +10,7 @@ as_pvalue(bf)
 \item{bf}{Bayes factor.}
 }
 \value{
-P-value (scalar value)
+p-value (scalar value).
 }
 \description{
 Convert Bayes Factor to P-value

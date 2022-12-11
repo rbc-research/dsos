@@ -91,25 +91,6 @@ plot(shift_at)
 We would reject the null of no adverse shift in both cases: the test set
 is worse off when compared to the reference (training) scores.
 
-## Custom scoring functions
-
-We can use `dsos` to test for adverse shift on the
-[`iris`](https://en.wikipedia.org/wiki/Iris_flower_data_set) dataset.
-Here, the outlier scores are from isolation forest for
-density-based out-of-distribution (OOD) detection:
-
-```{r iris, eval=TRUE}
-data(iris)
-versicolor <- iris[51:100, 1:4] # Training sample: Species == 'versicolor'
-virginica <- iris[101:150, 1:4] # Test sample: Species == 'virginica'
-iris_test <- pt_refit(x_train = versicolor, x_test = virginica, scorer = score_od)
-plot(iris_test)
-```
-
-`dsos` also implements a method for confidence-based OOD detection via
-prediction uncertainty. Users can easily plug in their own scores via the
-scoring function.
-
 ## Reference
 
 To cite this work and for technical details, please refer to the
