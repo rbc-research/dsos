@@ -15,9 +15,8 @@ Description: Test for no adverse shift in two-sample comparison when we
     trust scores and prediction uncertainty can be used as the underlying
     scores for example.
 License: GPL (>= 3)
-URL: https://github.com/vathymut/dsos,
-    https://github.com/rbc-research/dsos
-BugReports: https://github.com/rbc-research/dsos/issues
+URL: https://github.com/vathymut/dsos
+BugReports: https://github.com/vathymut/dsos/issues
 Imports: 
     data.table (>= 1.14.2),
     future.apply (>= 1.9.0),
