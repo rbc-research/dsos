@@ -119,13 +119,13 @@ at_oob <- function(x_train, x_test, scorer) {
 #' @inherit at_oob details
 #'
 #' @section Notes:
-#' These outlier scores should all be out-of-bag scores to mimic out-of-sample
-#' behaviour. Otherwise, the scores from the training (reference) distribution
-#' are biased (overfitted) whereas those from the test set are not. This
-#' mismatch -- in-sample training scores versus out-of-sample (out-of-bag) test
-#' scores -- would void the validity of the statistical test. A simple fix for
-#' this, without using resampling and/or permutations, is to get the training
-#' (reference) scores from a fresh (unused) validation set.
+#' The outlier scores should all mimic out-of-sample behaviour. Mind that the
+#' training scores are not in-sample and thus, biased (overfitted) while the
+#' test scores are out-of-sample. The mismatch -- in-sample versus out-of-sample
+#' scores -- voids the test validity. A simple fix for this is to get the
+#' training scores from an indepedent (fresh) validation set; this follows
+#' the train/validation/test sample splitting convention and the validation set
+#' is effectively the reference set or distribution in this case.
 #'
 #' @examples
 #' \donttest{
