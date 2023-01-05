@@ -15,7 +15,7 @@ pt_oob(x_train, x_test, scorer, n_pt = 2000)
 the training and test sample. The first argument to \code{scorer} must be
 \code{x_train}; the second, \code{x_test}. The returned named list contains
 two elements: \emph{train} and \emph{test}, each of which is a vector of
-(outlier) scores. See notes below for more information.}
+corresponding (outlier) scores. See notes below for more information.}
 
 \item{n_pt}{The number of permutations.}
 }
@@ -30,10 +30,10 @@ A named list of class \code{outlier.test} containing:
 }
 \description{
 Test for no adverse shift with outlier scores. Like goodness-of-fit testing,
-this two-sample comparison takes the training set, \code{x_train} or
-\code{os_train}, as the reference. The method checks whether the test set,
-\code{x_test} or \code{os_test}, is worse off relative to this reference
-set.
+this two-sample comparison takes the training set, \code{x_train} as the
+as the reference. The method checks whether the test set, \code{x_test}, is
+worse off relative to this reference set. The function \code{scorer} assigns
+an outlier score to each instance/observation in both training and test set.
 }
 \details{
 The empirical null distribution uses \code{n_pt} permutations to estimate
@@ -58,12 +58,11 @@ library(dsos)
 set.seed(12345)
 data(iris)
 idx <- sample(nrow(iris), 2 / 3 * nrow(iris))
-xy_train <- iris[idx, ]
-xy_test <- iris[-idx, ]
-
-# First example: residual diagnostics
+iris_train <- iris[idx, ]
+iris_test <- iris[-idx, ]
+# Use a synthetic (fake) scoring function for illustration
 scorer <- function(tr, te) list(train=runif(nrow(tr)), test=runif(nrow(te)))
-pt_test <- pt_oob(xy_train, xy_test, scorer = scorer)
+pt_test <- pt_oob(iris_train, iris_test, scorer = scorer)
 pt_test
 }
 
@@ -76,10 +75,6 @@ In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.
 Gandy, A. (2009).
 \emph{Sequential implementation of Monte Carlo tests with uniformly bounded resampling risk}.
 Journal of the American Statistical Association, 104(488), 1504-1511.
-
-Li, J., & Fine, J. P. (2010).
-\emph{Weighted area under the receiver operating characteristic curve and its application to gene selection}.
-Journal of the Royal Statistical Society: Series C (Applied Statistics), 59(4), 673-692.
 }
 \seealso{
 [pt_refit()] for (slower) p-value approximation via refitting.

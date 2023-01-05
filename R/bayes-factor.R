@@ -179,6 +179,10 @@ bf_from_os <- function(os_train,
 #'
 #' @return Bayes Factor (scalar value).
 #'
+#' @references Marsman, M., & Wagenmakers, E. J. (2017).
+#' \emph{Three insights from a Bayesian interpretation of the one-sided P value}.
+#' Educational and Psychological Measurement, 77(3), 529-539.
+#'
 #' @examples
 #' \donttest{
 #' library(dsos)
@@ -205,6 +209,10 @@ as_bf <- function(pvalue) {
 #'
 #' @return p-value (scalar value).
 #'
+#' @references Marsman, M., & Wagenmakers, E. J. (2017).
+#' \emph{Three insights from a Bayesian interpretation of the one-sided P value}.
+#' Educational and Psychological Measurement, 77(3), 529-539.
+#' 
 #' @examples
 #' \donttest{
 #' library(dsos)

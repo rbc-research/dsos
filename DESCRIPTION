@@ -1,6 +1,6 @@
 Package: dsos
 Title: Dataset Shift with Outlier Scores
-Version: 0.1.0
+Version: 0.1.2
 Authors@R: c(
     person("Vathy M.", "Kamulete", , "vathy.kamulete@rbccm.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4451-3743")),

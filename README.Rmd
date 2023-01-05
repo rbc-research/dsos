@@ -20,7 +20,8 @@ knitr::opts_chunk$set(
 [![License: GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![CRAN](https://www.r-pkg.org/badges/version/dsos)](https://cran.r-project.org/package=dsos)
 [![UAI 2022](https://img.shields.io/badge/paper-UAI 2022-yellow)](https://openreview.net/forum?id=S5UG2BLi9xc)
-[![Downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
+[![downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
+[![total-downloads](http://cranlogs.r-pkg.org/badges/grand-total/dsos)](https://cran.r-project.org/package=dsos)
 [![useR! 2022](https://img.shields.io/youtube/views/TALE9JUir8Q?style=social)](https://youtu.be/TALE9JUir8Q?t=26)
 <!-- badges: end -->
 
@@ -67,11 +68,21 @@ plot(null_pt)
 
 We can also use the (faster) asymptotic test:
 
-```{r null_at, eval=TRUE}
+```{r null_at, eval=FALSE}
 null_at <- at_from_os(os_train, os_test)
 plot(null_at)
 ```
-In both cases, we fail to reject the null of no adverse shift.
+
+Doing the same exercise the Bayesian way (with Bayes factors):
+
+```{r null_bf, eval=TRUE}
+null_bf <- bf_from_os(os_train, os_test)
+# plot(null_bf)
+as_pvalue(null_bf$bayes_factor)
+```
+
+In all cases, we fail to reject the null of no adverse shift. Note how we
+can convert Bayes factors into $p$-value.
 
 We can repeat this exercise when there is an adverse shift. Again, with
 the permutation test:
@@ -84,17 +95,26 @@ plot(shift_pt)
 
 Once more, with the asymptotic test:
 
-```{r shift_at, eval=TRUE}
+```{r shift_at, eval=FALSE}
 shift_at <- at_from_os(os_train, os_shift)
 plot(shift_at)
 ```
+
+Doing it the Bayesian way (with Bayes factors):
+
+```{r shift_bf, eval=TRUE}
+shift_bf <- bf_from_os(os_train, os_shift)
+# plot(shift_bf)
+as_pvalue(shift_bf$bayes_factor)
+```
+
 We would reject the null of no adverse shift in both cases: the test set
 is worse off when compared to the reference (training) scores.
 
 ## Reference
 
-To cite this work and for technical details, please refer to the
-[paper](https://openreview.net/forum?id=S5UG2BLi9xc). Sample Bibtex is given below:
+To cite this work, please refer to the
+[paper](https://openreview.net/forum?id=S5UG2BLi9xc). Sample Bibtex is below:
 
 ```bibtex
 @inproceedings{kamulete2022test,
@@ -109,10 +129,6 @@ To cite this work and for technical details, please refer to the
 I gave a talk introducing the `dsos` R package at
 [useR! 2022](https://youtu.be/TALE9JUir8Q?t=26) during the
 'Unique Applications and Methods' track. It is a 15-minute crash course,
-focused on motivation and interpretation.
-
-## Future work &#128679;
-
-Upcoming in future releases (work in progress) of the package:
-
-- Testing for no adverse shift via Bayes factor (the Bayesian approach).
+focused on interpretation. I also wrote a 
+[blog post](https://vathymut.org/posts/2023-01-03-are-you-ok/)
+to motivate the need for tests of adverse shift.

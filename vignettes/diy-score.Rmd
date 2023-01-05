@@ -33,59 +33,35 @@ We denote the R package as `dsos`, to avoid confusion with `D-SOS`, the method.
 ## DIY
 
 We show how easy it is to implement `D-SOS` for a particular notion of
-outlyingness. Suppose we want to test for no adverse shift based on isolation
-scores in the context of two-sample comparison. To do so, we need
-two main ingredients: a scoring function and a method to compute the $p-$value.
-
-First, the scores are obtained using predictions from isolation forest with the
-`isotree` package [@isotree]. Isolation forest detects _isolated_ points,
-instances that are typically out-of-distribution relative to the high-density
-regions of the data distribution. Naturally, any performant method for
-density-based out-of-distribution detection can effectively be used to achieve
-the same goal. The function `score_od` shows the implementation of one
-such scoring function in the `dsos` package.
-
-```{r score-isolated-points, message=FALSE, warning=FALSE}
-dsos::score_od
-```
-
-Second, we estimate the empirical null distribution for the $p-$value via
-permutations. For speed, this is implemented as a sequential Monte Carlo
-test with the `simctest` package [@simctest]. The function `pt_refit` in the
-`dsos` package combines scoring with inference. The prefix _pt_ stands for
-permutation test. The code for `_pt_` is relatively straightforward.
+outlyingness. To do so, we need two main ingredients: outlier scores from
+some scoring function and a way to compute $p-$value. Typically, for $p-$values,
+we use permutations. The prefix _pt_ stands for permutation test. For speed,
+this is implemented as a sequential Monte Carlo test with the `simctest`
+package [@simctest]. The function `pt_refit` provides the scaffolding for
+this approach, provided we supply it a user-defined scoring function.
 
 `dsos` may use sample splitting and out-of-bag variants as alternatives to
 permutations for $p-$value calculation. Both sample splitting and out-of-bag
 variants use the asymptotic null distribution for the test statistic. As a
 result, they can be appreciably faster than inference based on permutations.
 
-```{r dsos-permutation, message=FALSE, warning=FALSE}
-dsos::pt_refit
-```
-
 ## In Action
 
 Take the [`iris`](https://en.wikipedia.org/wiki/Iris_flower_data_set) dataset
-for example. When the training set only consists of `setosa` (flower species)
-and the test set, only of `versicolor`, the data is incompatible with the null
-of no adverse shift. In other words, we have strong evidence that the test
-contains a disproportionate number of outliers, if the training set is the
-reference distribution.
+for example. The training set consists of `setosa` (flower species)
+and the test set, of `versicolor`.
 
 ```{r iris-od}
 set.seed(12345)
 data(iris)
 x_train <- iris[1:50,1:4] # Training sample: Species == 'setosa'
 x_test <- iris[51:100,1:4] # Test sample: Species == 'versicolor'
-iris_test <- pt_refit(x_train, x_test, score = dsos::score_od)
+scorer <- function(tr, te) list(train=runif(nrow(tr)), test=runif(nrow(te)))
+iris_test <- pt_refit(x_train, x_test, score = scorer)
 plot(iris_test)
 ```
 
-You can plug in your own scores in this framework. Those already implemented
-in `dsos` can be useful but they are by means the only ones. If you favour a
-different method for out-of-distribution (outlier) detection, want to tune
-the hyperparameters, or choose a different notion of outlyingness altogether,
+You can plug in your own scoring functions in this framework. 
 `dsos` provides the building blocks to build your own. The workhorse function,
 powering the approach behind the scenes, is a way to calculate the test
 statistic from outlier scores (see `wauc_from_os`).

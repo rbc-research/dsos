@@ -4,3 +4,4 @@
 .RData
 .Ruserdata
 *.Rproj
+pkg-setup.R

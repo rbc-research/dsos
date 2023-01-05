@@ -22,8 +22,7 @@ Print Bayesian test for no adverse shift.
 set.seed(12345)
 os_train <- rnorm(n = 3e2)
 os_test <- rnorm(n = 3e2)
-test_to_print <- at_from_os(os_train, os_test)
-# Also: pt_from_os(os_train, os_test) for permutation test
+test_to_print <- bf_from_os(os_train, os_test)
 test_to_print
 }
 

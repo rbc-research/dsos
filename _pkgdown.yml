@@ -18,26 +18,21 @@ reference:
     contents:
       - at_oob
       - at_from_os
-  - title: "Scoring Functions"
+  - title: "BF - Bayes Factor"
     desc: >
-      Functions to compute outlier scores based on out-of-bag approximations
-      and/or refitting.
+      Bayesian test for no adverse shift via Bayesian bootstrap.
     contents:
-      - score_cp
-      - score_od
-      - score_rd
-      - score_rue
-  - title: "Split Functions"
-    desc: >
-      Functions to compute outlier scores based on sample splitting.
-    contents:
-      - split_cp
+      - bf_from_os
+      - as_pvalue
+      - as_bf
   - title: "Generic Functions"
     desc: >
       S3 methods (generics).
     contents:
       - plot.outlier.test
+      - plot.outlier.bayes
       - print.outlier.test
+      - print.outlier.bayes
   - title: "Test Statistic"
     desc: >
       Compute specified test statistic.

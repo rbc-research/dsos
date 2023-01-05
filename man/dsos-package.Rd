@@ -12,8 +12,7 @@ Test for no adverse shift in two-sample comparison when we have a training set, 
 Useful links:
 \itemize{
   \item \url{https://github.com/vathymut/dsos}
-  \item \url{https://github.com/rbc-research/dsos}
-  \item Report bugs at \url{https://github.com/rbc-research/dsos/issues}
+  \item Report bugs at \url{https://github.com/vathymut/dsos/issues}
 }
 
 }

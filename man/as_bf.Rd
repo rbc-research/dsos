@@ -23,12 +23,16 @@ bf_from_pvalue
 }
 
 }
+\references{
+Marsman, M., & Wagenmakers, E. J. (2017).
+\emph{Three insights from a Bayesian interpretation of the one-sided P value}.
+Educational and Psychological Measurement, 77(3), 529-539.
+}
 \seealso{
 [as_pvalue()] to convert Bayes factor to p-value.
 
 Other bayesian-test: 
 \code{\link{as_pvalue}()},
-\code{\link{bf_from_os}()},
-\code{\link{pt_from_bayes}()}
+\code{\link{bf_from_os}()}
 }
 \concept{bayesian-test}

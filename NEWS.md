@@ -1,4 +1,24 @@
 
+# dsos 0.1.2
+
+## New features
+
+* Added functions for Bayesian test (`bf_from_os`), the corresponding S3 methods
+(`print` and `plot`) and helper functions to convert bayes factors to p-values
+(`as_pvalue` and `as_bf`).
+
+## Breaking changes
+
+* Deleted custom scoring functions (`score_*`) which depended on
+`ranger` and `isotree`. Users can now pass a scoring function as an argument
+to recreate this behaviour.
+
+## Enhancements
+
+* Removed dependency on `ranger` and `isotree` packages.
+
+* Updated README with Bayesian example and new links.
+
 # dsos 0.1.1
 
 ## Breaking changes

@@ -11,7 +11,8 @@ GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://www.gnu.org/
 [![CRAN](https://www.r-pkg.org/badges/version/dsos)](https://cran.r-project.org/package=dsos)
 [![UAI
 2022](https://img.shields.io/badge/paper-UAI%202022-yellow)](https://openreview.net/forum?id=S5UG2BLi9xc)
-[![Downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
+[![downloads](https://cranlogs.r-pkg.org/badges/dsos)](https://cran.r-project.org/package=dsos)
+[![total-downloads](http://cranlogs.r-pkg.org/badges/grand-total/dsos)](https://cran.r-project.org/package=dsos)
 [![useR!
 2022](https://img.shields.io/youtube/views/TALE9JUir8Q?style=social)](https://youtu.be/TALE9JUir8Q?t=26)
 <!-- badges: end -->
@@ -67,8 +68,18 @@ null_at <- at_from_os(os_train, os_test)
 plot(null_at)
 ```
 
-<img src="man/figures/README-null_at-1.png" width="100%" /> In both
-cases, we fail to reject the null of no adverse shift.
+Doing the same exercise the Bayesian way (with Bayes factors):
+
+``` r
+null_bf <- bf_from_os(os_train, os_test)
+# plot(null_bf)
+as_pvalue(null_bf$bayes_factor)
+#> [1] 0.903
+```
+
+In all cases, we fail to reject the null of no adverse shift. Note how
+we can convert Bayes factors into
+![p](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;p "p")-value.
 
 We can repeat this exercise when there is an adverse shift. Again, with
 the permutation test:
@@ -88,36 +99,23 @@ shift_at <- at_from_os(os_train, os_shift)
 plot(shift_at)
 ```
 
-<img src="man/figures/README-shift_at-1.png" width="100%" /> We would
-reject the null of no adverse shift in both cases: the test set is worse
-off when compared to the reference (training) scores.
-
-## Custom scoring functions
-
-We can use `dsos` to test for adverse shift on the
-[`iris`](https://en.wikipedia.org/wiki/Iris_flower_data_set) dataset.
-Here, the outlier scores are from isolation forest for density-based
-out-of-distribution (OOD) detection:
+Doing it the Bayesian way (with Bayes factors):
 
 ``` r
-data(iris)
-versicolor <- iris[51:100, 1:4] # Training sample: Species == 'versicolor'
-virginica <- iris[101:150, 1:4] # Test sample: Species == 'virginica'
-iris_test <- pt_refit(x_train = versicolor, x_test = virginica, scorer = score_od)
-plot(iris_test)
+shift_bf <- bf_from_os(os_train, os_shift)
+# plot(shift_bf)
+as_pvalue(shift_bf$bayes_factor)
+#> [1] 0.0215
 ```
 
-<img src="man/figures/README-iris-1.png" width="100%" />
-
-`dsos` also implements a method for confidence-based OOD detection via
-prediction uncertainty. Users can easily plug in their own scores via
-the scoring function.
+We would reject the null of no adverse shift in both cases: the test set
+is worse off when compared to the reference (training) scores.
 
 ## Reference
 
-To cite this work and for technical details, please refer to the
+To cite this work, please refer to the
 [paper](https://openreview.net/forum?id=S5UG2BLi9xc). Sample Bibtex is
-given below:
+below:
 
 ``` bibtex
 @inproceedings{kamulete2022test,
@@ -132,11 +130,6 @@ given below:
 I gave a talk introducing the `dsos` R package at [useR!
 2022](https://youtu.be/TALE9JUir8Q?t=26) during the ‘Unique Applications
 and Methods’ track. It is a 15-minute crash course, focused on
-motivation and interpretation.
-
-## Future work 🚧
-
-Upcoming in future releases (work in progress) of the package:
-
--   Testing for no adverse shift via Bayes factor (the Bayesian
-    approach).
+interpretation. I also wrote a [blog
+post](https://vathymut.org/posts/2023-01-03-are-you-ok/) to motivate the
+need for tests of adverse shift.

@@ -22,10 +22,10 @@ A named list of class \code{outlier.test} containing:
 }
 \description{
 Test for no adverse shift with outlier scores. Like goodness-of-fit testing,
-this two-sample comparison takes the training set, \code{x_train} or
-\code{os_train}, as the reference. The method checks whether the test set,
-\code{x_test} or \code{os_test}, is worse off relative to this reference
-set.
+this two-sample comparison takes the training set, \code{x_train} as the
+as the reference. The method checks whether the test set, \code{x_test}, is
+worse off relative to this reference set. The function \code{scorer} assigns
+an outlier score to each instance/observation in both training and test set.
 }
 \details{
 Li and Fine (2010) derives the asymptotic null distribution for the weighted
@@ -37,13 +37,13 @@ prefix \emph{pt}, the permutation test.
 }
 \section{Notes}{
 
-These outlier scores should all be out-of-bag scores to mimic out-of-sample
-behaviour. Otherwise, the scores from the training (reference) distribution
-are biased (overfitted) whereas those from the test set are not. This
-mismatch -- in-sample training scores versus out-of-sample (out-of-bag) test
-scores -- would void the validity of the statistical test. A simple fix for
-this, without using resampling and/or permutations, is to get the training
-(reference) scores from a fresh (unused) validation set.
+The outlier scores should all mimic out-of-sample behaviour. Mind that the
+training scores are not in-sample and thus, biased (overfitted) while the
+test scores are out-of-sample. The mismatch -- in-sample versus out-of-sample
+scores -- voids the test validity. A simple fix for this is to get the
+training scores from an indepedent (fresh) validation set; this follows
+the train/validation/test sample splitting convention and the validation set
+is effectively the reference set or distribution in this case.
 }
 
 \examples{
@@ -65,10 +65,6 @@ In The 38th Conference on Uncertainty in Artificial Intelligence. PMLR.
 Gandy, A. (2009).
 \emph{Sequential implementation of Monte Carlo tests with uniformly bounded resampling risk}.
 Journal of the American Statistical Association, 104(488), 1504-1511.
-
-Li, J., & Fine, J. P. (2010).
-\emph{Weighted area under the receiver operating characteristic curve and its application to gene selection}.
-Journal of the Royal Statistical Society: Series C (Applied Statistics), 59(4), 673-692.
 }
 \seealso{
 [at_oob()] for variant requiring a scoring function.

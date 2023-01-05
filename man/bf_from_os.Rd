@@ -4,14 +4,7 @@
 \alias{bf_from_os}
 \title{Bayesian Test from Outlier Scores}
 \usage{
-bf_from_os(
-  os_train,
-  os_test,
-  n_pt = 4000,
-  percentile_cutoff = 0.5,
-  use_asymptotic = FALSE,
-  asymptotic_cutoff = 1/12
-)
+bf_from_os(os_train, os_test, n_pt = 4000, adverse_threshold = 1/12)
 }
 \arguments{
 \item{os_train}{Outlier scores in training (reference) set.}
@@ -20,17 +13,12 @@ bf_from_os(
 
 \item{n_pt}{The number of permutations.}
 
-\item{percentile_cutoff}{The number of permutations.}
-
-\item{use_asymptotic}{Numeric vector of weights of length}
-
-\item{asymptotic_cutoff}{Numeric vector of weights of length}
+\item{adverse_threshold}{WAUC threshold for adverse shift.}
 }
 \value{
 A named list of class \code{outlier.bayes} containing:
 \itemize{
-   \item \code{permuted}: WAUC from permutations, if applicable
-   \item \code{posterior}: WAUC from posterior distribution
+   \item \code{posterior}: Posterior distribution of WAUC test statistic
    \item \code{adverse_threshold}: WAUC threshold for adverse shift
    \item \code{adverse_probability}: probability of adverse shift
    \item \code{bayes_factor}: Bayes factor
@@ -38,7 +26,18 @@ A named list of class \code{outlier.bayes} containing:
 }
 }
 \description{
-Bayesian Test from Outlier Scores
+Test for no adverse shift with outlier scores. Like goodness-of-fit testing,
+this two-sample comparison takes the training (outlier) scores,
+\code{os_train}, as the reference. The method checks whether the test
+scores, \code{os_test}, are worse off relative to the training set.
+}
+\details{
+The posterior distribution of the WAUC test statistic is based on \code{n_pt}
+(boostrap) permutations. The method relies on the Bayesian bootstrap as
+a resampling procedure to smooth the instance weights as in Gu et al (2008).
+This framework borrows from Johnson (2005), which shows how to turn a test
+statistic, which may very well be frequentist, into its Bayesian counterpart,
+the bayes factor.
 }
 \examples{
 \donttest{
@@ -46,23 +45,32 @@ library(dsos)
 set.seed(12345)
 os_train <- rnorm(n = 100)
 os_test <- rnorm(n = 100)
-bayes_pt <- bf_from_os(os_train, os_test)
-bayes_pt
-# Use the (faster) asymptotic cutoff
-bayes_at <- bf_from_os(os_train, os_test, use_asymptotic = TRUE)
-bayes_at
+bayes_test <- bf_from_os(os_train, os_test)
+bayes_test
 # Run in parallel on local cluster
 library(future)
 future::plan(future::multisession)
-bayes_parallel <- bf_from_os(os_train, os_test)
-bayes_parallel
+parallel_test <- bf_from_os(os_train, os_test)
+parallel_test
 }
 
+}
+\references{
+Kamulete, V. M. (2023).
+\emph{Are you OK? A Bayesian sequential test for adverse shift}.
+Manuscript in preparation.
+
+Johnson, V. E. (2005).
+\emph{Bayes factors based on test statistics}.
+Journal of the Royal Statistical Society: Series B (Statistical Methodology), 67(5), 689-701.
+
+Gu, J., Ghosal, S., & Roy, A. (2008).
+\emph{Bayesian bootstrap estimation of ROC curve}.
+Statistics in medicine, 27(26), 5407-5420.
 }
 \seealso{
 Other bayesian-test: 
 \code{\link{as_bf}()},
-\code{\link{as_pvalue}()},
-\code{\link{pt_from_bayes}()}
+\code{\link{as_pvalue}()}
 }
 \concept{bayesian-test}
